@@ -9,11 +9,16 @@ const JUMP_VELOCITY = 3
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _enter_tree():
+	Logger.debug("Setting multiplayer authority to %s for self" % name)
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
-	if not is_multiplayer_authority(): return
+	if not is_multiplayer_authority():
+		Logger.debug("Local is not authority for %s, skipping _ready()" % name)
+		return
 	
+	Logger.debug("Local is authority for %s, capturing mouse and setting \
+				  current camera" % name)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	
@@ -35,6 +40,7 @@ func _physics_process(delta):
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
+		Logger.trace("Player (%s) jumped with vel. y: " % [name, JUMP_VELOCITY])
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
@@ -44,6 +50,7 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		Logger.trace("Moving Player %s with vel. x: %f z: %f" % [name, velocity.x, velocity.z])
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
