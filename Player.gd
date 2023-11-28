@@ -14,8 +14,8 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority(): return
 	
-	camera.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	camera.current = true
 	
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
