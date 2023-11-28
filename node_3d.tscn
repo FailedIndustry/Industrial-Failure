@@ -1,3 +1,15 @@
-[gd_scene format=3 uid="uid://q7ava2ndfeyd"]
+[gd_scene load_steps=3 format=3 uid="uid://q7ava2ndfeyd"]
 
-[node name="Node3D" type="Node3D"]
+[ext_resource type="PackedScene" uid="uid://dndmrhxy0lg5b" path="res://world_environment.tscn" id="1_35n66"]
+[ext_resource type="PackedScene" uid="uid://d221bbe81j2o8" path="res://player.tscn" id="2_u056o"]
+
+[node name="Main" type="Node"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ground" parent="." instance=ExtResource("1_35n66")]
+
+[node name="Player" parent="." instance=ExtResource("2_u056o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.91731, 0)
