@@ -1,7 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://dndmrhxy0lg5b"]
 
 [ext_resource type="Texture2D" uid="uid://drwpe0emesvuf" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="1_4rv8m"]
-[ext_resource type="Script" path="res://world_environment.gd" id="1_8mg3o"]
+
+[sub_resource type="GDScript" id="GDScript_cvru0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vvc3p"]
 size = Vector3(50, 1, 50)
@@ -14,7 +15,7 @@ uv1_triplanar = true
 size = Vector3(50, 1, 50)
 
 [node name="World" type="Node"]
-script = ExtResource("1_8mg3o")
+script = SubResource("GDScript_cvru0")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 
