@@ -50,11 +50,33 @@ func interact():
 		
 		var result = get_world_3d().direct_space_state.intersect_ray(query)
 		if result.is_empty():
-			Logger.debug("No item found in raycast")
+			Logger.debug("Player.interact: No item found in raycast")
 			return
 		
-		Logger.debug("Found item in raycast(id:%d)" % result["collider_id"])
-		result["collider"].test_event()
+		if check_valid_method(result["collider"], "interact", []):
+			result["collider"].interact()
+		
+func check_valid_method(
+	collider: Object, 
+	method_name: String, 
+	## Array of arguments to the function. No args would be []
+	args: Array
+) -> bool:
+		Logger.debug("Player.check_valid_method: checking functionality on %s"\
+				  % collider)
+		for method in collider.get_method_list():
+			if method["name"] == method_name:
+				if method["args"] == args:
+					Logger.debug("Player.check_valid_method: Valid method found") 
+					return true
+				else:
+					Logger.debug("Player.check_valid_method: (args) %s != %s" \
+								% [method["args"], args])
+			else:
+				Logger.trace("Player.check_valid_method: %s != %s"\
+							% [method["name"], method_name])
+		
+		return false
 		
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return

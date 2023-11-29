@@ -21,7 +21,7 @@ Logger="*res://addons/gs_logger/logger.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-vim/plugin.cfg", "res://addons/gs_logger/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_vim/plugin.cfg", "res://addons/gs_logger/plugin.cfg")
 
 [input]
 

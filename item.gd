@@ -1,4 +1,4 @@
 extends Node3D
 
-func test_event():
-	Logger.error("event triggered")
+func interact():
+	Logger.info("event triggered")
