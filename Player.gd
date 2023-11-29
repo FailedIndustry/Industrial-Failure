@@ -4,7 +4,7 @@ extends CharacterBody3D
 
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
-@export var MOUSE_SPEED = 0.05
+@export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 1
 
 
@@ -35,8 +35,11 @@ func _unhandled_input(event):
 		return
 	
 	if event.is_action_pressed("interact"):
-		const ITEM_MASK = 0b100
 		Logger.debug("Player pressed interact button")
+		interact()
+
+func interact():
+		const ITEM_MASK = 0b100
 		
 		var query = PhysicsRayQueryParameters3D.create(
 			camera.position, 
@@ -50,8 +53,9 @@ func _unhandled_input(event):
 			Logger.debug("No item found in raycast")
 			return
 		
+		Logger.debug("Found item in raycast(id:%d)" % result["collider_id"])
 		result["collider"].test_event()
-
+		
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
 	
