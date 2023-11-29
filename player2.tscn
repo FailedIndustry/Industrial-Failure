@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://bbwgs1bjc22tm"]
+
+[ext_resource type="Script" path="res://Character.gd" id="1_ibwvd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43jcc"]
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_kwxn0"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_l2o0a"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_e2ykb"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kwmw6"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath("Camera3D:rotation")
+properties/2/spawn = true
+properties/2/sync = true
+properties/2/watch = false
+
+[node name="Player" type="Node3D"]
+
+[node name="PlayerObject" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="PlayerObject"]
+collision_layer = 2
+collision_mask = 7
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+can_sleep = false
+script = ExtResource("1_ibwvd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerObject/RigidBody3D"]
+shape = SubResource("CapsuleShape3D_43jcc")
+
+[node name="Mesh" type="MeshInstance3D" parent="PlayerObject/RigidBody3D"]
+mesh = SubResource("ImmediateMesh_kwxn0")
+
+[node name="Body" type="MeshInstance3D" parent="PlayerObject/RigidBody3D/Mesh"]
+mesh = SubResource("CapsuleMesh_l2o0a")
+
+[node name="Head" type="MeshInstance3D" parent="PlayerObject/RigidBody3D/Mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62337, -0.186697)
+mesh = SubResource("SphereMesh_e2ykb")
+
+[node name="Camera3D" type="Camera3D" parent="PlayerObject/RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.526454, -0.176086)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="PlayerObject"]
+replication_config = SubResource("SceneReplicationConfig_kwmw6")
