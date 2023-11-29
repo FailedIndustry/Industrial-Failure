@@ -1,8 +1,8 @@
 extends Node
 
-const PLAYER = preload("res://player.tscn")
-const Server = preload("res://Server.gd")
-const Client = preload("res://Client.gd")
+const PLAYER = preload("res://player/player.tscn")
+const Server = preload("res://multiplayer/Server.gd")
+const Client = preload("res://multiplayer/Client.gd")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -1,4 +1,4 @@
-extends "res://Multiplayer.gd"
+extends "res://multiplayer/Multiplayer.gd"
 
 var start_server = func start_server(
 	port: int,

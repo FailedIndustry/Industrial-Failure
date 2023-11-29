@@ -1,6 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://uvw14dohnkyn"]
+[gd_scene load_steps=4 format=3 uid="uid://bloeiue5sua18"]
 
-[ext_resource type="Script" path="res://item.gd" id="1_psdqv"]
+[sub_resource type="GDScript" id="GDScript_plxnk"]
+script/source = "extends Node3D
+
+func interact():
+	Logger.info(\"event triggered\")
+"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k6ygt"]
 size = Vector3(2, 2, 2)
@@ -14,7 +19,7 @@ size = Vector3(2, 2, 2)
 collision_layer = 4
 collision_mask = 7
 mass = 0.01
-script = ExtResource("1_psdqv")
+script = SubResource("GDScript_plxnk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_k6ygt")

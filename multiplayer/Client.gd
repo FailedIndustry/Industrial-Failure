@@ -1,4 +1,4 @@
-extends "res://Multiplayer.gd"
+extends "res://multiplayer/Multiplayer.gd"
 
 var join_server = func join_server(
 	remote_server, 
