@@ -6,6 +6,12 @@ const Client = preload("res://Client.gd")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Logger.set_logger_format(Logger.LOG_FORMAT_FULL)
+	var filelogger = Logger.add_appender(FileAppender.new("res://game.log"))
+	filelogger.logger_level = Logger.LOG_LEVEL_FINE
+	
+	var consolelogger = Logger.add_appender(ConsoleAppender.new())
+	consolelogger.logger_level = Logger.LOG_LEVEL_DEBUG
 	Logger.debug("Main scene ready")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
