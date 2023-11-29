@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpxh5hbpbrlae"]
+[gd_scene load_steps=4 format=3 uid="uid://cpxh5hbpbrlae"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_537cu"]
 [ext_resource type="PackedScene" uid="uid://dndmrhxy0lg5b" path="res://world_environment.tscn" id="1_v4ulg"]
+[ext_resource type="PackedScene" uid="uid://uvw14dohnkyn" path="res://item.tscn" id="3_ug6o5"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_537cu")
@@ -14,6 +15,8 @@ shadow_enabled = true
 
 [node name="Ground" parent="Game" instance=ExtResource("1_v4ulg")]
 script = null
+
+[node name="Item" parent="Game" instance=ExtResource("3_ug6o5")]
 
 [node name="MainMenu" type="Node" parent="."]
 
