@@ -15,6 +15,7 @@ script = ExtResource("1_psdqv")
 collision_layer = 4
 collision_mask = 7
 mass = 0.01
+script = ExtResource("1_psdqv")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_k6ygt")

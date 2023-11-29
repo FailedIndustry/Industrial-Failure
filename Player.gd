@@ -29,7 +29,22 @@ func _unhandled_input(event):
 		rotate_y(-event.relative.x * .005)
 		camera.rotate_x(-event.relative.y * .005)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+		return
+	
+	if event.is_action_pressed("interact"):
+		const ITEM_MASK = 0b100
+		Logger.debug("Player pressed interact button")
 		
+		var query = PhysicsRayQueryParameters3D.create(camera.position, camera.global_rotation * 100) 
+		query.collide_with_areas = true
+		query.collision_mask = ITEM_MASK
+		
+		var result = get_world_3d().direct_space_state.intersect_ray(query)
+		if result.is_empty():
+			Logger.debug("No item found in raycast")
+			return
+		
+		result["collider"].test_event()
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
