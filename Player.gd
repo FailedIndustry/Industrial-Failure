@@ -40,7 +40,7 @@ func _physics_process(delta):
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		Logger.trace("Player (%s) jumped with vel. y: " % [name, JUMP_VELOCITY])
+		Logger.trace("Player (%s) jumped with vel. y: %f" % [name, JUMP_VELOCITY])
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
