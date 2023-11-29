@@ -2,8 +2,11 @@ extends CharacterBody3D
 
 @onready var camera = $Camera3D
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 3
+@export var SPEED = 5.0
+@export var JUMP_VELOCITY = 3
+@export var MOUSE_SPEED = 0.05
+@export var INTERACTION_DISTANCE = 1
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -26,8 +29,8 @@ func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * .005)
-		camera.rotate_x(-event.relative.y * .005)
+		rotate_y(-event.relative.x * MOUSE_SPEED)
+		camera.rotate_x(-event.relative.y * MOUSE_SPEED)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 		return
 	
@@ -35,7 +38,10 @@ func _unhandled_input(event):
 		const ITEM_MASK = 0b100
 		Logger.debug("Player pressed interact button")
 		
-		var query = PhysicsRayQueryParameters3D.create(camera.position, camera.global_rotation * 100) 
+		var query = PhysicsRayQueryParameters3D.create(
+			camera.position, 
+			-camera.global_rotation.normalized() * INTERACTION_DISTANCE
+		) 
 		query.collide_with_areas = true
 		query.collision_mask = ITEM_MASK
 		

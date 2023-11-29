@@ -9,7 +9,6 @@ size = Vector3(2, 2, 2)
 size = Vector3(2, 2, 2)
 
 [node name="Item" type="Node3D"]
-script = ExtResource("1_psdqv")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 collision_layer = 4
