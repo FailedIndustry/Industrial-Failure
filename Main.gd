@@ -7,7 +7,11 @@ const Client = preload("res://Client.gd")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Logger.set_logger_format(Logger.LOG_FORMAT_FULL)
-	var filelogger = Logger.add_appender(FileAppender.new("res://game.log"))
+	
+	var datetime = Time.get_datetime_string_from_system()
+	var filelogger = Logger.add_appender(
+		FileAppender.new("res://.log/%s.log" % datetime)
+	)
 	filelogger.logger_level = Logger.LOG_LEVEL_FINE
 	
 	var consolelogger = Logger.add_appender(ConsoleAppender.new())
