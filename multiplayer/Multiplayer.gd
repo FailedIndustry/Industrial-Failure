@@ -1,5 +1,7 @@
 extends Node
-
+const COMPRESSION = ENetConnection.COMPRESS_RANGE_CODER
+const MAX_PLAYERS = 4095
+const PORT = 5413
 
 enum GenericResult {
 	OK,

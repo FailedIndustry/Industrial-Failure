@@ -19,10 +19,10 @@ func _ready():
 	Logger.debug("Main scene ready")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_just_pressed("quit"):
 		Logger.info("Exiting game")
 		get_tree().quit()
@@ -48,14 +48,13 @@ func remove_player(peer_id):
 	else:
 		Logger.warn("\tAttempted to remove non-existant player")
 
-const PORT = 5413
 @onready var main_menu = $MainMenu/CanvasLayer/MainMenu
 
 func _on_host_button_pressed():
 	var enet_peer = ENetMultiplayerPeer.new()
 	var server = Server.new()
 	
-	if server.start_server.call(PORT, enet_peer, false) != 0: return 
+	if server.start_server.call(enet_peer, false) != 0: return 
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
@@ -68,8 +67,9 @@ func _on_join_button_pressed():
 	var enet_peer = ENetMultiplayerPeer.new()
 	var client = Client.new()
 	
-	if client.join_server.call('localhost', PORT, enet_peer) !=0 : return
+	if client.join_server.call('localhost', enet_peer) !=0 : return
 	main_menu.hide()
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.server_disconnected.connect(main_menu.show)
 	multiplayer.connection_failed.connect(main_menu.show)
+	

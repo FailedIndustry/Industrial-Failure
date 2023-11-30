@@ -43,7 +43,7 @@ func interact():
 					   % sender_id)
 			local_update_state.rpc()
 		else:
-			Logger.info(\"item.server_update_state: %d id != %d id\" \\
+			Logger.info(\"item.server_update_state: %s id != %d id\" \\
 					  % [node.name, sender_id])
 	
 @rpc(\"authority\",	# Only accept rpc calls from the server
