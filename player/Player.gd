@@ -6,21 +6,24 @@ extends CharacterBody3D
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 100
+var client_id: int
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _enter_tree():
-	Logger.debug("Setting multiplayer authority to %s for self" % name)
+	Logger.debug("_enter_tree: Setting multiplayer authority to %s for self" \
+				% name)
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
 	if not is_multiplayer_authority():
-		Logger.debug("Local is not authority for %s, skipping _ready()" % name)
+		Logger.trace("_ready: Local is not authority for %s, skipping _ready()" \
+					% name)
 		return
 	
-	Logger.debug("Local is authority for %s, capturing mouse and setting \
+	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
@@ -35,23 +38,24 @@ func _unhandled_input(event):
 		return
 	
 	if event.is_action_pressed("interact"):
-		Logger.debug("Player pressed interact button")
+		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 
 func interact():
-		const ITEM_MASK = 0b100
-		var origin = camera.project_ray_origin(Vector2.ZERO)
-		var end = origin + camera.project_ray_normal(Vector2.ZERO) * INTERACTION_DISTANCE
-		var query = PhysicsRayQueryParameters3D.create(origin, end)
-		query.collide_with_areas = true
-		
-		var result = get_world_3d().direct_space_state.intersect_ray(query)
-		if result.is_empty():
-			Logger.debug("Player.interact: No item found in raycast")
-			return
-		
-		if check_valid_method(result["collider"], "iinteract", []):
-			result["collider"].iinteract()
+	const ITEM_MASK = 0b100
+	var origin = camera.project_ray_origin(Vector2.ZERO)
+	var end = origin + camera.project_ray_normal(Vector2.ZERO) * INTERACTION_DISTANCE
+	var query = PhysicsRayQueryParameters3D.create(origin, end)
+	query.collide_with_areas = true
+	query.collision_mask = ITEM_MASK
+	
+	var result = get_world_3d().direct_space_state.intersect_ray(query)
+	if result.is_empty():
+		Logger.debug("Player.interact: No item found in raycast")
+		return
+	
+	if check_valid_method(result["collider"], "interact", []):
+		result["collider"].interact()
 		
 func check_valid_method(
 	collider: Object, 

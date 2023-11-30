@@ -32,6 +32,9 @@ func add_player(peer_id):
 	Logger.debug("Player id: %s" % peer_id)
 	
 	var player = PLAYER.instantiate()
+	
+	# this being set to peer_id is required for item's interaction check
+	# and other functions.
 	player.name = str(peer_id)
 	add_child(player)
 	Logger.info("Created Player")
