@@ -68,3 +68,5 @@ func _on_join_button_pressed():
 	if client.join_server.call('localhost', PORT, enet_peer) !=0 : return
 	main_menu.hide()
 	multiplayer.multiplayer_peer = enet_peer
+	multiplayer.server_disconnected.connect(main_menu.show)
+	multiplayer.connection_failed.connect(main_menu.show)
