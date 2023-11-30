@@ -5,7 +5,7 @@ extends CharacterBody3D
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
-@export var INTERACTION_DISTANCE = 1
+@export var INTERACTION_DISTANCE = 100
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -40,21 +40,18 @@ func _unhandled_input(event):
 
 func interact():
 		const ITEM_MASK = 0b100
-		
-		var query = PhysicsRayQueryParameters3D.create(
-			camera.position, 
-			-camera.global_rotation.normalized() * INTERACTION_DISTANCE
-		) 
+		var origin = camera.project_ray_origin(Vector2.ZERO)
+		var end = origin + camera.project_ray_normal(Vector2.ZERO) * INTERACTION_DISTANCE
+		var query = PhysicsRayQueryParameters3D.create(origin, end)
 		query.collide_with_areas = true
-		query.collision_mask = ITEM_MASK
 		
 		var result = get_world_3d().direct_space_state.intersect_ray(query)
 		if result.is_empty():
 			Logger.debug("Player.interact: No item found in raycast")
 			return
 		
-		if check_valid_method(result["collider"], "interact", []):
-			result["collider"].interact()
+		if check_valid_method(result["collider"], "iinteract", []):
+			result["collider"].iinteract()
 		
 func check_valid_method(
 	collider: Object, 

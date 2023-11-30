@@ -17,6 +17,7 @@ shadow_enabled = true
 script = null
 
 [node name="Item" parent="Game" instance=ExtResource("3_ug6o5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.312881, 2, -7.11508)
 
 [node name="MainMenu" type="Node" parent="."]
 

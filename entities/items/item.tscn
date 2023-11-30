@@ -2,9 +2,23 @@
 
 [sub_resource type="GDScript" id="GDScript_plxnk"]
 script/source = "extends Node3D
-
-func interact():
+@onready var mesh = $MeshInstance3D
+func iinteract():
 	Logger.info(\"event triggered\")
+	Logger.info(\"%d\" %multiplayer.get_unique_id())
+	server_update_state.rpc_id(1)
+
+@rpc(\"any_peer\", \"call_local\", \"reliable\")
+func server_update_state():
+	Logger.info(\"server_update_state\")
+	Logger.info(\"%d\" %multiplayer.get_unique_id())
+	local_update_state.rpc()
+	
+@rpc(\"authority\", \"call_local\", \"reliable\")
+func local_update_state():
+	Logger.info(\"local_update_state\")
+	Logger.info(\"%d\" %multiplayer.get_unique_id())
+	mesh.hide()
 "
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k6ygt"]
@@ -18,7 +32,7 @@ size = Vector3(2, 2, 2)
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 collision_layer = 4
 collision_mask = 7
-mass = 0.01
+mass = 1000.0
 script = SubResource("GDScript_plxnk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
