@@ -41,6 +41,8 @@ func _unhandled_input(event):
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 
+## Players interact function. If an interactive object is found, it will be
+## sent to that object's interact function. See [method item.interact]
 func interact():
 	const ITEM_MASK = 0b100
 	var origin = camera.project_ray_origin(Vector2.ZERO)
@@ -57,15 +59,17 @@ func interact():
 	if check_valid_method(result["collider"], "interact", []):
 		result["collider"].interact()
 		
+## Check for a valid method on the object matching method name and args
+## (`<object>.<method_name>(<args>)`)
 func check_valid_method(
-	collider: Object, 
+	object: Object, 
 	method_name: String, 
 	## Array of arguments to the function. No args would be []
 	args: Array
 ) -> bool:
 		Logger.debug("Player.check_valid_method: checking functionality on %s"\
-				  % collider)
-		for method in collider.get_method_list():
+				  % object)
+		for method in object.get_method_list():
 			if method["name"] == method_name:
 				if method["args"] == args:
 					Logger.debug("Player.check_valid_method: Valid method found") 
@@ -80,6 +84,10 @@ func check_valid_method(
 		return false
 		
 func _physics_process(delta):
+	# This function will be called on each client for all player instances.
+	# This means that in a game with 4 players, each client will have this function
+	# called for all 4 players, but we do not want the player to control all 4
+	# players so we return early here.
 	if not is_multiplayer_authority(): return
 	
 	# Add the gravity.
@@ -92,7 +100,6 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:

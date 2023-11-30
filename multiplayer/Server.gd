@@ -1,5 +1,9 @@
 extends "res://multiplayer/Multiplayer.gd"
 
+## Create a new server on enet_peer.
+##
+## enet_peer is modified in place, but only impliments compression and
+## .start_server. Other funcationality has to be implimented elsewhere.
 var start_server = func start_server(
 	enet_peer: ENetMultiplayerPeer,
 	upnp: bool = false,
