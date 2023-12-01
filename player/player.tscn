@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://d221bbe81j2o8"]
+[gd_scene load_steps=11 format=3 uid="uid://d221bbe81j2o8"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_jbh7w"]
 [ext_resource type="Resource" uid="uid://cwkeu6ofeffag" path="res://player/inventory/new_inv.tres" id="2_eysol"]
 [ext_resource type="PackedScene" uid="uid://bhdjgy0l512a8" path="res://player/inventory/inv.tscn" id="3_ms0di"]
 [ext_resource type="Script" path="res://player/InventoryInterface.gd" id="3_py33g"]
+[ext_resource type="PackedScene" uid="uid://ctoelbg183c5t" path="res://player/inventory/inv_slot.tscn" id="5_oqmf5"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rmgbt"]
 properties/0/path = NodePath(".:position")
@@ -49,6 +50,15 @@ metadata/_edit_use_anchors_ = true
 
 [node name="InventoryPanel" parent="UI/InventoryInterface" instance=ExtResource("3_ms0di")]
 layout_mode = 0
+
+[node name="GrabbedSlotPanel" parent="UI/InventoryInterface" instance=ExtResource("5_oqmf5")]
+visible = false
+modulate = Color(1, 1, 1, 0.8)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.526454, -0.176086)

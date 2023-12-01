@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://player/inventory/inv.gd" id="1_1xa8b"]
 
-[node name="PanelContainer" type="PanelContainer"]
+[node name="InventoryPanel" type="PanelContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_1xa8b")
@@ -15,6 +15,6 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+[node name="Slots" type="GridContainer" parent="MarginContainer"]
 layout_mode = 2
 columns = 10

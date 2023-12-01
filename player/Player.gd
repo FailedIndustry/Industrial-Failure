@@ -41,10 +41,10 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 		return
 	
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("interact") and not event.is_echo():
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
-	elif event.is_action_pressed("open_inventory"):
+	elif event.is_action_pressed("open_inventory") and not event.is_echo():
 		if inventory_interface.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			inventory_interface.hide()
