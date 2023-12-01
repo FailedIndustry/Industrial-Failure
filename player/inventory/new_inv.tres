@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="InventoryData" load_steps=6 format=3 uid="uid://cwkeu6ofeffag"]
+
+[ext_resource type="Script" path="res://player/inventory/inventory_data.gd" id="1_m3ami"]
+[ext_resource type="Resource" uid="uid://dqt3t1a38wn33" path="res://entities/items/new_resource.tres" id="2_wv5py"]
+[ext_resource type="Script" path="res://player/inventory/slot_data.gd" id="3_pc18h"]
+
+[sub_resource type="Resource" id="Resource_ysa2f"]
+script = ExtResource("3_pc18h")
+item_data = ExtResource("2_wv5py")
+quantity = 5
+
+[sub_resource type="Resource" id="Resource_sviw1"]
+script = ExtResource("3_pc18h")
+item_data = ExtResource("2_wv5py")
+quantity = 2
+
+[resource]
+script = ExtResource("1_m3ami")
+slot_datas = Array[ExtResource("3_pc18h")]([SubResource("Resource_ysa2f"), null, SubResource("Resource_sviw1"), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
