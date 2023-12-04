@@ -1,40 +1,46 @@
-extends "res://Multiplayer.gd"
+extends "res://multiplayer/Multiplayer.gd"
 
+## Create a new server on enet_peer.
+##
+## enet_peer is modified in place, but only impliments compression and
+## .start_server. Other funcationality has to be implimented elsewhere.
 var start_server = func start_server(
-	port: int,
 	enet_peer: ENetMultiplayerPeer,
 	upnp: bool = false,
 ) -> GenericResult:
 	Logger.info("Creating host server")
 	
-	var server_start = func() -> GenericResult:
-		if enet_peer.create_server(port) == Error.OK:
+	# Server function to be later passed into retry function
+	var enet_server_start = func() -> GenericResult:
+		if enet_peer.create_server(PORT, 4095) == Error.OK:
 			return GenericResult.OK
 		else:
 			return GenericResult.SoftError
 	
+	# Upnp to be later passed to retry function
 	var upnp_start = func() -> GenericResult: 
 		if upnp_setup.call(): return GenericResult.SoftError
 		else: return GenericResult.OK
 
 	Logger.info("Starting server")
-	var server_result = await retry_function(server_start, 5)
+	var server_result = retry_function(enet_server_start, 5)
 	if server_result == GenericResult.OK: 
-		Logger.debug("\tCreated server on localhost:%s" % port)
+		Logger.debug("\tCreated server on localhost:%s" % PORT)
 	else: 
 		return server_result
 	
 	if upnp:
-		var upnp_result = await retry_function(func(): upnp_start.call(port), 5)
+		var upnp_result = retry_function(upnp_start, 5)
 		if upnp_result == GenericResult.OK:
-			Logger.debug("\tCreated upnp on localhost:%s" % port)
+			Logger.debug("\tCreated upnp on localhost:%s" % PORT)
 		else: 
 			return upnp_result
 	
+	enet_peer.get_host().compress(COMPRESSION)
 	Logger.info("Created Server")
 	return GenericResult.OK
 
-var upnp_setup = func upnp_setup(port: int) -> GenericResult:
+var upnp_setup = func upnp_setup() -> GenericResult:
 	Logger.info("Setting up UPNP")
 	var upnp = UPNP.new()
 	
@@ -47,7 +53,7 @@ var upnp_setup = func upnp_setup(port: int) -> GenericResult:
 		Logger.error("UPNP Invalid Gateway")
 		return GenericResult.SoftError
 	
-	var map_result = upnp.add_port_mapping(port)
+	var map_result = upnp.add_port_mapping(PORT)
 	if map_result != UPNP.UPNP_RESULT_SUCCESS:
 		Logger.error("UPNP port Mapping Failed (err %s)" % map_result)
 		return GenericResult.SoftError
