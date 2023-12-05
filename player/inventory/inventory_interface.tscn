@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhdjgy0l512a8"]
+
+[sub_resource type="GDScript" id="GDScript_b4k8w"]
+script/source = "extends PanelContainer
+
+const Slot = preload(\"res://player/inventory/inv_slot.tscn\")
+
+@onready var item_grid: GridContainer = $MarginContainer/Slots
+
+func populate(inventory_data: InventoryData) -> void:
+	inventory_data.inventory_updated.connect(create_from)
+	create_from(inventory_data)
+
+func create_from(inventory_data: InventoryData) -> void:
+	for child in item_grid.get_children():
+		child.queue_free()
+	
+	for slot_data in inventory_data.slot_datas:
+		var slot = Slot.instantiate()
+		item_grid.add_child(slot)
+		
+		slot.slot_clicked.connect(inventory_data.on_slot_clicked)
+		
+		if slot_data:
+			slot.set_slot_data(slot_data)
+"
+
+[node name="InventoryPanel" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_b4k8w")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Slots" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+columns = 10

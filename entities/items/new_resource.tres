@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dqt3t1a38wn33"]
 
 [ext_resource type="Script" path="res://entities/item/item-data.gd" id="1_t5hkp"]
-[ext_resource type="Texture2D" uid="uid://bjtihw5ccbitu" path="res://entities/frame.png" id="2_3m0i7"]
+[ext_resource type="Texture2D" uid="uid://te8npx3vgjdb" path="res://addons/godot-vim/icon.svg" id="2_bhudp"]
 
 [resource]
 script = ExtResource("1_t5hkp")
 name = ""
 description = ""
 stackable = true
-texture = ExtResource("2_3m0i7")
+texture = ExtResource("2_bhudp")

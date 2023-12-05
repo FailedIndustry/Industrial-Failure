@@ -1,8 +1,12 @@
 extends Control
 @onready var inventory_panel = $InventoryPanel
 @onready var grabbed_slot_panel = $GrabbedSlotPanel
+@onready var player = $"../.."
+var inventory: InventoryData
+var grabbed_index: int = -1
 
-var grabbed_slot_data: SlotData
+func _ready():
+	inventory = player.inventory_data
 
 func _physics_process(delta):
 	if grabbed_slot_panel.visible:
@@ -23,19 +27,24 @@ func on_inventory_interact(
 ) -> void:
 	Logger.debug("InventoryInterface: %s clicked with button %s" % [index, button])
 	
-	match [grabbed_slot_data, button]:
-		[null, MOUSE_BUTTON_LEFT]:
-			grabbed_slot_data = inventory_data.grab_slot_data(index)
+	match [grabbed_index, button]:
+		[-1, MOUSE_BUTTON_LEFT]:
+			grabbed_index = index
 		[_, MOUSE_BUTTON_LEFT]:
-			grabbed_slot_data = inventory_data.drop_slot_data(grabbed_slot_data, index)
+			grabbed_index = inventory_data.drop_slot_data(grabbed_index, index)
 		[_, MOUSE_BUTTON_RIGHT]:
-			grabbed_slot_data = inventory_data.drop_single_slot_data(grabbed_slot_data, index)
+			grabbed_index = inventory_data.drop_single_slot_data(grabbed_index, index)
 	
-	Logger.info("%s" % grabbed_slot_data)
+	Logger.info("%s" % grabbed_index)
 	update_grabbed_slot()
 	
 
 func update_grabbed_slot() -> void:
+	if grabbed_index == -1:
+		grabbed_slot_panel.hide()
+		return
+	
+	var grabbed_slot_data = inventory.slot_datas[grabbed_index]
 	if grabbed_slot_data:
 		grabbed_slot_panel.show()
 		grabbed_slot_panel.set_slot_data(grabbed_slot_data)
