@@ -25,7 +25,8 @@ func drop_slot_data(from_index: int, to_index: int) -> int:
 	var merge_type = merge_in_inventory(from_index, to_index)
 	
 	if get_quantity(from, to) != initial_quantity:
-		Logger.error("drop_slot_data: mismatch in end quantity after functions")
+		Logger.error("drop_slot_data: mismatch in end quantity after functions\
+					  (initial: %s, final: %s)" % [initial_quantity, get_quantity(from, to)] )
 	
 	match merge_type:
 		StackableType.FullyMergeable:
@@ -64,6 +65,9 @@ func merge_in_inventory(from_index: int, to_index: int) -> StackableType:
 			Logger.debug("FullyMerging %s and %s" \
 					   % [from.quantity, to.quantity])
 			to.quantity += from.quantity
+			# If there are any dangling poniters to this, we should make sure
+			# that they don't get the wrong idea *couch* get_quantity *cough*
+			from.quantity = 0
 			slot_datas[from_index] = null
 			inventory_updated.emit(self)
 			Logger.debug("Final: %s" % to.quantity)
