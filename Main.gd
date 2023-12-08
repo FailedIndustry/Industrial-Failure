@@ -71,6 +71,7 @@ func start_logger():
 	
 	# File appender
 	var datetime = Time.get_datetime_string_from_system()
+	datetime = datetime.replace(":", "-")
 	var filelogger = Logger.add_appender(
 		FileAppender.new("res://.log/%s.log" % datetime)
 	)
