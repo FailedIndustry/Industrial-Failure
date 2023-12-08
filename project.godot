@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 Logger="*res://addons/gs_logger/logger.gd"
 
+[debug]
+
+settings/stdout/print_fps=true
+settings/stdout/print_gpu_profile=true
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot-vim/plugin.cfg", "res://addons/gs_logger/plugin.cfg")
@@ -63,4 +68,5 @@ interact={
 
 [physics]
 
-3d/physics_engine="JoltPhysics3D"
+3d/default_linear_damp=1.071
+3d/default_angular_damp=1.394

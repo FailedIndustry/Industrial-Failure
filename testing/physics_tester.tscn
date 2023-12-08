@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://8xrn3nift1qn"]
+
+[ext_resource type="Script" path="res://testing/physics_tester.gd" id="1_w163g"]
+
+[node name="Physics_tester" type="Node3D"]
+script = ExtResource("1_w163g")
