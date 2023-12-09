@@ -1,27 +1,7 @@
-[gd_resource type="Resource" script_class="InventoryData" load_steps=7 format=3 uid="uid://cwkeu6ofeffag"]
+[gd_resource type="Resource" script_class="InventoryDataNew" load_steps=2 format=3 uid="uid://cwkeu6ofeffag"]
 
 [ext_resource type="Script" path="res://player/new_inventory/inventory.gd" id="1_m3ami"]
-[ext_resource type="Resource" uid="uid://dqt3t1a38wn33" path="res://entities/items/new_resource.tres" id="2_wv5py"]
-[ext_resource type="Script" path="res://player/inventory/slot/slot_data.gd" id="3_rj0ex"]
-
-[sub_resource type="Resource" id="Resource_8ggjw"]
-script = ExtResource("3_rj0ex")
-stackable = true
-item_data = ExtResource("2_wv5py")
-quantity = 51
-
-[sub_resource type="Resource" id="Resource_878n4"]
-script = ExtResource("3_rj0ex")
-stackable = true
-item_data = ExtResource("2_wv5py")
-quantity = 80
-
-[sub_resource type="Resource" id="Resource_1flyp"]
-script = ExtResource("3_rj0ex")
-stackable = true
-item_data = ExtResource("2_wv5py")
-quantity = 1
 
 [resource]
 script = ExtResource("1_m3ami")
-slot_datas = Array[ExtResource("3_rj0ex")]([SubResource("Resource_8ggjw"), SubResource("Resource_878n4"), SubResource("Resource_1flyp"), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+items = Array[Resource("res://entities/item/item-data.gd")]([])
