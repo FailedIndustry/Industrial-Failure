@@ -53,6 +53,7 @@ func add_player(peer_id):
 	# this being set to peer_id is required for item's interaction check
 	# and other functions.
 	player.name = str(peer_id)
+	player.position = Vector3(0,10,0)
 	add_child(player)
 	Logger.info("Created Player")
 

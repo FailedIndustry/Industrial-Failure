@@ -27,6 +27,7 @@ mesh = SubResource("BoxMesh_3irdy")
 skeleton = NodePath("../..")
 
 [node name="Area3D" type="Area3D" parent="RigidBody3D"]
+collision_layer = 32768
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/Area3D"]

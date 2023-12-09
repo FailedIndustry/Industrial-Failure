@@ -1,20 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://d221bbe81j2o8"]
+[gd_scene load_steps=8 format=3 uid="uid://d221bbe81j2o8"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_jbh7w"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rmgbt"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
-properties/0/sync = true
-properties/0/watch = false
+properties/0/replication_mode = 1
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
-properties/1/sync = true
-properties/1/watch = false
+properties/1/replication_mode = 1
 properties/2/path = NodePath("Camera3D:rotation")
 properties/2/spawn = true
-properties/2/sync = true
-properties/2/watch = false
+properties/2/replication_mode = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dqykd"]
 
@@ -23,6 +20,8 @@ properties/2/watch = false
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0n4p4"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_7wu1w"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u0ns0"]
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -48,3 +47,9 @@ mesh = SubResource("CapsuleMesh_0n4p4")
 [node name="Head" type="MeshInstance3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62337, -0.186697)
 mesh = SubResource("SphereMesh_7wu1w")
+
+[node name="FloorCheck" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FloorCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0355034, 0)
+shape = SubResource("CapsuleShape3D_u0ns0")

@@ -82,25 +82,27 @@ func check_valid_method(
 							% [method["name"], method_name])
 		
 		return false
-		
+
+@onready var floor_check = $FloorCheck
+var on_floor = false
+func update_on_floor():
+	on_floor = floor_check.get_overlapping_bodies()
+
 func _physics_process(delta):
 	# This function will be called on each client for all player instances.
 	# This means that in a game with 4 players, each client will have this function
 	# called for all 4 players, but we do not want the player to control all 4
 	# players so we return early here.
 	if not is_multiplayer_authority(): return
-	
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
 
+	var input_dir = Input.get_vector("left", "right", "up", "down")
+	
 	# Handle Jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump"):
 		Logger.trace("Player (%s) jumped with vel. y: %f" % [name, JUMP_VELOCITY])
-		velocity.y = JUMP_VELOCITY
+		velocity.y += JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
-	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * SPEED
@@ -110,4 +112,22 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
-	move_and_slide()
+	update_on_floor()
+	Logger.info("vel: %s" % velocity)
+	if on_floor and velocity.y < 0:
+		velocity.y = 0
+	else:
+		Logger.info("gravity")
+		velocity.y -= gravity / 100
+	
+	var collision = move_and_collide(velocity * delta)
+	if collision:
+		var collision_amount = collision.get_collision_count()
+		for i in range(collision_amount):
+			var collider = collision.get_collider(i)
+			if collider is RigidBody3D:
+				var is_ground = collider.collision_layer == 0x1
+				var angle = collision.get_angle(i)
+				var normal = collision.get_normal(i)
+				collider.apply_force(1000 * normal)
+				Logger.info("%s, %s" % [angle, normal])
