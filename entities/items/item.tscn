@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://ucofy6vt0xeo"]
+
+[ext_resource type="Script" path="res://entities/items/item.gd" id="1_vuht1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k6ygt"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3irdy"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b3u3q"]
+radius = 10.0
+
+[node name="Item" type="Node3D"]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+collision_layer = 4
+collision_mask = 7
+mass = 1000.0
+script = ExtResource("1_vuht1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_k6ygt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_3irdy")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="RigidBody3D"]
+collision_layer = 32768
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/Area3D"]
+shape = SubResource("SphereShape3D_b3u3q")
