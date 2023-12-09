@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cr5yjrsbhucde"]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer2"]
+layout_mode = 2
+color = Color(0, 1, 1, 0.223529)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer2"]
+layout_mode = 2
+bbcode_enabled = true
+text = "Food"
+fit_content = true
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 10
