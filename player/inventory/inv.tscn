@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgr4dakhhk6rb"]
+[gd_scene load_steps=2 format=3 uid="uid://dchq6tiit47xv"]
 
 [sub_resource type="GDScript" id="GDScript_i0tbp"]
 script/source = "extends PanelContainer
