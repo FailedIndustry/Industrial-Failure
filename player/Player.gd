@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 @onready var camera = $Camera3D
 
@@ -6,8 +7,9 @@ extends CharacterBody3D
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 100
-@export var inventory_data: InventoryData
-@onready var inventory_interface = $UI/InventoryInterface
+@export var inventory: Inventory
+@onready var new_inventory = $UI/NewInventory
+
 
 var client_id: int
 
@@ -28,7 +30,7 @@ func _ready():
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
 	
-	inventory_interface.set_player_inventory(inventory_data)
+	new_inventory.create(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 
@@ -45,12 +47,12 @@ func _unhandled_input(event):
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 	elif event.is_action_pressed("open_inventory") and not event.is_echo():
-		if inventory_interface.visible:
+		if new_inventory.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			inventory_interface.hide()
+			new_inventory.hide()
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			inventory_interface.show()
+			new_inventory.show()
 
 
 

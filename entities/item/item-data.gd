@@ -7,4 +7,7 @@ class_name ItemData
 @export var texture: Texture
 
 ## This needs to be abstracted out
-var quantity: int
+@export var quantity: int = 1
+
+## This should be changed to owner_id or something like that
+var owner: Object

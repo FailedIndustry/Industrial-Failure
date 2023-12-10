@@ -1,4 +1,9 @@
-[gd_scene format=3 uid="uid://dwagi3friv266"]
+[gd_scene load_steps=5 format=3 uid="uid://dwagi3friv266"]
+
+[ext_resource type="Script" path="res://player/new_inventory/GUI/new_inventory.gd" id="1_oo4qg"]
+[ext_resource type="PackedScene" uid="uid://bpbydykh21aim" path="res://player/new_inventory/GUI/GrabbedSlot.tscn" id="2_80g3a"]
+[ext_resource type="Resource" uid="uid://k34sa4w6s0db" path="res://entities/items/new_resource2.tres" id="2_gfq70"]
+[ext_resource type="Resource" uid="uid://dqt3t1a38wn33" path="res://entities/items/new_resource.tres" id="3_0cwta"]
 
 [node name="NewInventory" type="PanelContainer"]
 anchors_preset = 8
@@ -8,20 +13,25 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_oo4qg")
+items = Array[Resource("res://entities/item/item-data.gd")]([ExtResource("2_gfq70"), ExtResource("3_0cwta")])
 
 [node name="ColorRect" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 2
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
 custom_minimum_size = Vector2(400, 400)
-layout_mode = 0
-offset_right = 398.0
-offset_bottom = 328.0
+layout_mode = 2
+offset_right = 400.0
+offset_bottom = 400.0
+mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="ColorRect/VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="ColorRect/VBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -32,3 +42,9 @@ layout_mode = 2
 bbcode_enabled = true
 text = "[font_size={20}][b]Weight:[/b] 50kg[/font_size]"
 fit_content = true
+
+[node name="GrabbedSlot" parent="." instance=ExtResource("2_80g3a")]
+layout_mode = 2
+mouse_filter = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

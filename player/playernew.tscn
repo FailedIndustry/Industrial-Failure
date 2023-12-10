@@ -1,20 +1,22 @@
-[gd_scene load_steps=10 format=3 uid="uid://d221bbe81j2o8"]
+[gd_scene format=3 uid="uid://b3852i1e0lt5t"]
+
+[[gd_scene load_steps=7 format=3 uid="uid://d221bbe81j2o8"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_jbh7w"]
-[ext_resource type="PackedScene" uid="uid://dwagi3friv266" path="res://player/new_inventory/GUI/NewInventory.tscn" id="2_57v6g"]
-[ext_resource type="Resource" uid="uid://dqt3t1a38wn33" path="res://entities/items/new_resource.tres" id="3_x758s"]
-[ext_resource type="Resource" uid="uid://k34sa4w6s0db" path="res://entities/items/new_resource2.tres" id="4_i7tar"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rmgbt"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/sync = true
+properties/0/watch = false
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
-properties/1/replication_mode = 1
+properties/1/sync = true
+properties/1/watch = false
 properties/2/path = NodePath("Camera3D:rotation")
 properties/2/spawn = true
-properties/2/replication_mode = 1
+properties/2/sync = true
+properties/2/watch = false
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dqykd"]
 
@@ -39,16 +41,6 @@ replication_config = SubResource("SceneReplicationConfig_rmgbt")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_dqykd")
 
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="NewInventory" parent="UI" instance=ExtResource("2_57v6g")]
-visible = false
-offset_left = -200.0
-offset_top = -200.0
-offset_right = 200.0
-offset_bottom = 200.0
-items = Array[Resource("res://entities/item/item-data.gd")]([ExtResource("3_x758s"), ExtResource("4_i7tar")])
-
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("ImmediateMesh_r1u4s")
 
@@ -57,4 +49,4 @@ mesh = SubResource("CapsuleMesh_0n4p4")
 
 [node name="Head" type="MeshInstance3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62337, -0.186697)
-mesh = SubResource("SphereMesh_7wu1w")
+mesh = SubResource("SphereMesh_7wu1w")node name="Playernew" type="Node2D"]

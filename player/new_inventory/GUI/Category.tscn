@@ -1,15 +1,21 @@
-[gd_scene format=3 uid="uid://cr5yjrsbhucde"]
+[gd_scene load_steps=2 format=3 uid="uid://bsymgexlgk3a6"]
+
+[ext_resource type="Script" path="res://player/new_inventory/GUI/category.gd" id="1_esggu"]
 
 [node name="VBoxContainer" type="VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+mouse_filter = 2
+script = ExtResource("1_esggu")
 
-[node name="PanelContainer2" type="PanelContainer" parent="."]
+[node name="CategoryLabel" type="PanelContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer2"]
+[node name="ColorRect" type="ColorRect" parent="CategoryLabel"]
 layout_mode = 2
 color = Color(0, 1, 1, 0.223529)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CategoryLabel"]
 layout_mode = 2
 bbcode_enabled = true
 text = "Food"
@@ -17,4 +23,5 @@ fit_content = true
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 columns = 10
