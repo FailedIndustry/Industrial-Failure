@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dwagi3friv266"]
 
-[ext_resource type="Script" path="res://player/new_inventory/GUI/new_inventory.gd" id="1_oo4qg"]
-[ext_resource type="PackedScene" uid="uid://bpbydykh21aim" path="res://player/new_inventory/GUI/GrabbedSlot.tscn" id="2_80g3a"]
+[ext_resource type="Script" path="res://player/inventory/GUI/inventory_gui.gd" id="1_oo4qg"]
+[ext_resource type="PackedScene" uid="uid://bpbydykh21aim" path="res://player/inventory/GUI/GrabbedSlot.tscn" id="2_80g3a"]
 [ext_resource type="Resource" uid="uid://k34sa4w6s0db" path="res://entities/items/new_resource2.tres" id="2_gfq70"]
 [ext_resource type="Resource" uid="uid://dqt3t1a38wn33" path="res://entities/items/new_resource.tres" id="3_0cwta"]
 

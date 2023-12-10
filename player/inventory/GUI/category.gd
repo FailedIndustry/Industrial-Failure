@@ -1,6 +1,6 @@
 extends VBoxContainer
 @onready var grid_container = $GridContainer
-const SLOT = preload("res://player/new_inventory/GUI/Slot.tscn")
+const SLOT = preload("res://player/inventory/GUI/Slot.tscn")
 
 var items: Array[ItemData]
 var gui: Inventory_GUI

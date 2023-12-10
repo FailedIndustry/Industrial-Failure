@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="InventoryDataNew" load_steps=2 format=3 uid="uid://cwkeu6ofeffag"]
-
-[ext_resource type="Script" path="res://player/new_inventory/inventory.gd" id="1_m3ami"]
-
-[resource]
-script = ExtResource("1_m3ami")
-items = Array[Resource("res://entities/item/item-data.gd")]([])

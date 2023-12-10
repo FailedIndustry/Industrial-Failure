@@ -1,7 +1,7 @@
 extends PanelContainer
 class_name Inventory_GUI
 
-const CATEGORY = preload("res://player/new_inventory/GUI/Category.tscn")
+const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
 @onready var v_box_container = $ColorRect/VBoxContainer
 @onready var grabbed_visual = $GrabbedSlot
 var grabbed_slot: Slot
