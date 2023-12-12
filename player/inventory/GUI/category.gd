@@ -22,5 +22,5 @@ func _ready() -> void:
 		slot.set_item(gui, item, counter)
 		counter += 1
 		
-		Logger.info("category on ready: adding %s" % slot)
+		Logger.debug("category on ready: adding %s" % slot)
 		grid_container.add_child(slot)
