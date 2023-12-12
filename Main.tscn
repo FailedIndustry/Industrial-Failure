@@ -1,8 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpxh5hbpbrlae"]
+[gd_scene load_steps=10 format=3 uid="uid://cpxh5hbpbrlae"]
 
 [ext_resource type="PackedScene" uid="uid://dndmrhxy0lg5b" path="res://world/world_environment.tscn" id="1_v4ulg"]
 [ext_resource type="Script" path="res://Main.gd" id="1_wum0p"]
 [ext_resource type="PackedScene" uid="uid://bloeiue5sua18" path="res://entities/items/item.tscn" id="3_ug6o5"]
+[ext_resource type="PackedScene" uid="uid://8xrn3nift1qn" path="res://testing/physics_tester.tscn" id="4_r6prq"]
+[ext_resource type="PackedScene" uid="uid://b0n6ph0jj5bwf" path="res://testing/Other.tscn" id="5_s68u2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bavfq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0uxp2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iuybl"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0ksnv"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_wum0p")
@@ -17,6 +27,78 @@ shadow_enabled = true
 
 [node name="Item" parent="Game" instance=ExtResource("3_ug6o5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.312881, 2, -3.07517)
+
+[node name="Stairs" type="Node3D" parent="Game"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00432, 9.82942)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Game/Stairs"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Stairs/StaticBody3D"]
+shape = SubResource("BoxShape3D_bavfq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Stairs/StaticBody3D"]
+mesh = SubResource("BoxMesh_0uxp2")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Game/Stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.174903, -0.281275)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Stairs/StaticBody3D2"]
+shape = SubResource("BoxShape3D_bavfq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Stairs/StaticBody3D2"]
+mesh = SubResource("BoxMesh_0uxp2")
+skeleton = NodePath("../../StaticBody3D2")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="Game/Stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.30758, -0.602795)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Stairs/StaticBody3D3"]
+shape = SubResource("BoxShape3D_bavfq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Stairs/StaticBody3D3"]
+mesh = SubResource("BoxMesh_0uxp2")
+skeleton = NodePath("../../StaticBody3D3")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="Game/Stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.492508, -0.932726)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Stairs/StaticBody3D4"]
+shape = SubResource("BoxShape3D_bavfq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Stairs/StaticBody3D4"]
+mesh = SubResource("BoxMesh_0uxp2")
+skeleton = NodePath("../../StaticBody3D4")
+
+[node name="StaticBody3D5" type="StaticBody3D" parent="Game/Stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.714358, -1.15626)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Stairs/StaticBody3D5"]
+shape = SubResource("BoxShape3D_bavfq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Stairs/StaticBody3D5"]
+mesh = SubResource("BoxMesh_0uxp2")
+skeleton = NodePath("../../StaticBody3D5")
+
+[node name="StaticBody3D6" type="StaticBody3D" parent="Game/Stairs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.858078, -1.34586)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Stairs/StaticBody3D6"]
+shape = SubResource("BoxShape3D_bavfq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Stairs/StaticBody3D6"]
+mesh = SubResource("BoxMesh_0uxp2")
+skeleton = NodePath("../../StaticBody3D6")
+
+[node name="Ramp" type="Node3D" parent="Game"]
+transform = Transform3D(4.49048, 2.19899, 0, -2.19899, 4.49048, 0, 0, 0, 5, -5.0802, -1.74864, 5.15602)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Game/Ramp"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Game/Ramp/StaticBody3D"]
+shape = SubResource("BoxShape3D_iuybl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Ramp/StaticBody3D"]
+mesh = SubResource("BoxMesh_0ksnv")
 
 [node name="MainMenu" type="Node" parent="."]
 
@@ -68,6 +150,28 @@ alignment = 1
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player/player.tscn")
 spawn_path = NodePath("..")
+
+[node name="Physics_tester3" parent="." instance=ExtResource("4_r6prq")]
+transform = Transform3D(-0.917186, 0, -0.398461, 0, 1, 0, 0.398461, 0, -0.917186, 0.00178951, 4.03, -0.00409096)
+wait = 100
+
+[node name="Physics_tester2" parent="." instance=ExtResource("4_r6prq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10034, 1.64702, 9.30101)
+wait = 100
+
+[node name="Physics_tester" parent="Physics_tester2" instance=ExtResource("4_r6prq")]
+transform = Transform3D(0.203488, 0, -0.979078, 0, 1, 0, 0.979078, 0, 0.203488, -5.98628, 0.977351, -2.80038)
+wait = 100
+
+[node name="Physics_tester" parent="." instance=ExtResource("4_r6prq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.361512, 3.13786, 9.30893)
+OBJECT = ExtResource("5_s68u2")
+wait = 100
+
+[node name="Physics_tester" parent="Physics_tester" instance=ExtResource("4_r6prq")]
+transform = Transform3D(0.203488, 0, -0.979078, 0, 1, 0, 0.979078, 0, 0.203488, -6.25757, -0.338283, -4.88918)
+OBJECT = ExtResource("5_s68u2")
+wait = 100
 
 [connection signal="pressed" from="MainMenu/CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MainMenu/CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
