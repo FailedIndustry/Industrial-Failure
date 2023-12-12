@@ -118,9 +118,7 @@ func check_valid_method(
 	args: Array
 ) -> bool:
 		Logger.debug("Player.check_valid_method: checking functionality on %s"\
-				
-        
-        % object)
+			    % object)
 		for method in object.get_method_list():
 			if method["name"] == method_name:
 				if method["args"] == args:
