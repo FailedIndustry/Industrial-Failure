@@ -10,7 +10,6 @@ class_name Player
 @export var inventory: Inventory
 @onready var new_inventory = $UI/NewInventory
 
-
 var client_id: int
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.

@@ -31,8 +31,8 @@ func render():
 		Logger.error("mismatch in owners during inventory render")
 		# self.hide()
 		# return 
-	texture_rect.texture = item.texture
-	tooltip_text = "%s\n%s" % [item.name, item.description]
+	texture_rect.texture = item.item_type.texture
+	tooltip_text = "%s\n%s" % [item.item_type.name, item.item_type.description]
 
 	if item.quantity > 1:
 		quantity_label.text = "%s" % item.quantity

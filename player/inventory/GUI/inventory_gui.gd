@@ -23,15 +23,14 @@ func grab_item(slot: Slot):
 	if slot.is_grabbed:
 		pass
 	else:
-		Logger.debug("Grabbed %s" % slot.item.name)
+		Logger.debug("Grabbed %s" % slot.item.item_type.name)
 		grabbed_visual.set_item(slot.item)
 		grabbed_visual.show()
 		grabbed_slot = slot
 
 func swap_item(slot: Slot):
 	if grabbed_slot:
-		Logger.debug("Swapping %s and %s" % [slot.item.name, grabbed_slot.item.name])
-		Logger.debug("Swapping %s and %s" % [slot.item.name, grabbed_slot.item.name])
+		Logger.debug("Swapping %s and %s" % [slot.item.item_type.name, grabbed_slot.item.item_type.name])
 		var temp_item = grabbed_slot.item
 		var temp_index = grabbed_slot.index
 		grabbed_slot.item = slot.item

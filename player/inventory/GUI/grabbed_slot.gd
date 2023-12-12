@@ -4,7 +4,7 @@ extends PanelContainer
 @onready var texture_rect = $MarginContainer/TextureRect
 
 func set_item(item: ItemWrapper):
-	texture_rect.texture = item.texture
+	texture_rect.texture = item.item_type.texture
 
 	if item.quantity > 1:
 		quantity_label.text = "%s" % item.quantity
