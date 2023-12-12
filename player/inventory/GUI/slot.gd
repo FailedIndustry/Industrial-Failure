@@ -31,7 +31,6 @@ func render():
 		Logger.error("mismatch in owners during inventory render")
 		# self.hide()
 		# return 
-	Logger.info("setting texture to %s from %s" % [item.texture, texture_rect.texture])
 	texture_rect.texture = item.texture
 	tooltip_text = "%s\n%s" % [item.name, item.description]
 
@@ -56,5 +55,4 @@ func _on_gui_input(event):
 		if (event.button_index == MOUSE_BUTTON_LEFT \
 				or event.button_index == MOUSE_BUTTON_RIGHT) \
 				and event.is_pressed():
-			Logger.info("Grabbing")
 			gui.press_on_item(self)

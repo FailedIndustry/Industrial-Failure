@@ -14,7 +14,7 @@ func create(inventory_owner: Player) -> void:
 	Logger.info("Creating inventory for %s" % self)
 	var category = CATEGORY.instantiate()
 	for i in items:
-		Logger.info("inventory.create: adding %s" % i)
+		Logger.debug("inventory.create: adding %s" % i)
 	category.set_category(self, items)
 	
 	v_box_container.add_child(category)
