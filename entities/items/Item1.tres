@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemType" load_steps=3 format=3 uid="uid://de820ux77e5ik"]
+
+[ext_resource type="Script" path="res://entities/item/item-type.gd" id="1_mb1tc"]
+[ext_resource type="Texture2D" uid="uid://bjtihw5ccbitu" path="res://entities/items/frame.png" id="2_4yf2h"]
+
+[resource]
+script = ExtResource("1_mb1tc")
+name = "Box"
+description = "box"
+stackable = true
+texture = ExtResource("2_4yf2h")

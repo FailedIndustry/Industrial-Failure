@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemType" load_steps=3 format=3 uid="uid://7j4wxqrlbf7y"]
+
+[ext_resource type="Script" path="res://entities/item/item-type.gd" id="1_ec2q5"]
+[ext_resource type="Texture2D" uid="uid://drwpe0emesvuf" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="2_3rlwu"]
+
+[resource]
+script = ExtResource("1_ec2q5")
+name = "vim"
+description = "vim"
+stackable = true
+texture = ExtResource("2_3rlwu")

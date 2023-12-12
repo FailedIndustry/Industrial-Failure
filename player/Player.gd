@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 @onready var camera = $Camera3D
 
@@ -6,8 +7,10 @@ extends CharacterBody3D
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 100
-var client_id: int
+@export var inventory: Inventory
+@onready var new_inventory = $UI/NewInventory
 
+var client_id: int
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -25,9 +28,11 @@ func _ready():
 	
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
+	
+	new_inventory.create(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
-	
+
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
@@ -37,9 +42,18 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 		return
 	
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("interact") and not event.is_echo():
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
+	elif event.is_action_pressed("open_inventory") and not event.is_echo():
+		if new_inventory.visible:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			new_inventory.hide()
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			new_inventory.show()
+
+
 
 ## Players interact function. If an interactive object is found, it will be
 ## sent to that object's interact function. See [method item.interact]

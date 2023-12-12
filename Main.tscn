@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://cpxh5hbpbrlae"]
 
-[ext_resource type="Script" path="res://Main.gd" id="1_537cu"]
 [ext_resource type="PackedScene" uid="uid://dndmrhxy0lg5b" path="res://world/world_environment.tscn" id="1_v4ulg"]
+[ext_resource type="Script" path="res://Main.gd" id="1_wum0p"]
 [ext_resource type="PackedScene" uid="uid://bloeiue5sua18" path="res://entities/items/item.tscn" id="3_ug6o5"]
 [ext_resource type="PackedScene" uid="uid://8xrn3nift1qn" path="res://testing/physics_tester.tscn" id="4_r6prq"]
 [ext_resource type="PackedScene" uid="uid://b0n6ph0jj5bwf" path="res://testing/Other.tscn" id="5_s68u2"]
@@ -15,7 +15,7 @@
 [sub_resource type="BoxMesh" id="BoxMesh_0ksnv"]
 
 [node name="Main" type="Node"]
-script = ExtResource("1_537cu")
+script = ExtResource("1_wum0p")
 
 [node name="Game" type="Node3D" parent="."]
 
@@ -24,7 +24,6 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="Ground" parent="Game" instance=ExtResource("1_v4ulg")]
-script = null
 
 [node name="Item" parent="Game" instance=ExtResource("3_ug6o5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.312881, 2, -3.07517)
