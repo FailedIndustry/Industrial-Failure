@@ -1,12 +1,12 @@
 [gd_scene load_steps=2 format=3 uid="uid://c0em3hty0ueyx"]
 
-[ext_resource type="Script" path="res://player/inventory/GUI/slot.gd" id="1_krv5x"]
+[ext_resource type="Script" path="res://player/inventory/GUI/slot.gd" id="1_apphb"]
 
 [node name="ItemSlot" type="PanelContainer"]
 custom_minimum_size = Vector2(64, 64)
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_krv5x")
+script = ExtResource("1_apphb")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(12, 12)

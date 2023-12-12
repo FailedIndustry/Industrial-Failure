@@ -1,9 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://d221bbe81j2o8"]
+[gd_scene load_steps=8 format=3 uid="uid://d221bbe81j2o8"]
 
-[ext_resource type="Script" path="res://player/Player.gd" id="1_jbh7w"]
+[ext_resource type="Script" path="res://player/Player.gd" id="1_uv6ux"]
 [ext_resource type="PackedScene" uid="uid://dwagi3friv266" path="res://player/inventory/GUI/Inventory.tscn" id="2_57v6g"]
-[ext_resource type="Resource" uid="uid://dqt3t1a38wn33" path="res://entities/items/new_resource.tres" id="3_x758s"]
-[ext_resource type="Resource" uid="uid://k34sa4w6s0db" path="res://entities/items/new_resource2.tres" id="4_i7tar"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rmgbt"]
 properties/0/path = NodePath(".:position")
@@ -28,7 +26,7 @@ properties/2/replication_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 collision_layer = 2
 collision_mask = 5
-script = ExtResource("1_jbh7w")
+script = ExtResource("1_uv6ux")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.526454, -0.176086)
@@ -47,7 +45,6 @@ offset_left = -200.0
 offset_top = -200.0
 offset_right = 200.0
 offset_bottom = 200.0
-items = Array[Resource("res://entities/item/item-data.gd")]([ExtResource("3_x758s"), ExtResource("4_i7tar")])
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("ImmediateMesh_r1u4s")
