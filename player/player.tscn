@@ -1,14 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://d221bbe81j2o8"]
+[gd_scene load_steps=16 format=3 uid="uid://d221bbe81j2o8"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_ldrkm"]
+[ext_resource type="Texture2D" uid="uid://cct550e52ibdj" path="res://player/health/textures/backhealthbar.png" id="2_0xsdf"]
 [ext_resource type="PackedScene" uid="uid://dwagi3friv266" path="res://player/inventory/GUI/Inventory.tscn" id="2_57v6g"]
 [ext_resource type="Resource" uid="uid://de820ux77e5ik" path="res://entities/items/Item1.tres" id="3_f8udo"]
-[ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="4_ahwjo"]
-[ext_resource type="Resource" uid="uid://7j4wxqrlbf7y" path="res://entities/items/Item2.tres" id="5_i3tof"]
-[ext_resource type="Texture2D" uid="uid://cct550e52ibdj" path="res://player/health/textures/backhealthbar.png" id="2_0xsdf"]
 [ext_resource type="Texture2D" uid="uid://dtkyhc37ku0mp" path="res://player/health/textures/border.png" id="3_uym45"]
+[ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="4_ahwjo"]
 [ext_resource type="Texture2D" uid="uid://odclbl6v2on6" path="res://player/health/textures/healthbar.png" id="4_vyk6h"]
-[ext_resource type="Script" path="res://player/health/Healthbar.gd" id="5_gae4k"]
+[ext_resource type="Resource" uid="uid://7j4wxqrlbf7y" path="res://entities/items/Item2.tres" id="5_i3tof"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rmgbt"]
 properties/0/path = NodePath(".:position")
@@ -84,5 +83,4 @@ value = 10.0
 texture_under = ExtResource("2_0xsdf")
 texture_over = ExtResource("3_uym45")
 texture_progress = ExtResource("4_vyk6h")
-script = ExtResource("5_gae4k")
 metadata/_edit_use_anchors_ = true

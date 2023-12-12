@@ -35,6 +35,7 @@ func _ready():
 	new_inventory.create(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
+	healthbar.value = health
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
@@ -118,7 +119,7 @@ func check_valid_method(
 	args: Array
 ) -> bool:
 		Logger.debug("Player.check_valid_method: checking functionality on %s"\
-			    % object)
+				% object)
 		for method in object.get_method_list():
 			if method["name"] == method_name:
 				if method["args"] == args:
