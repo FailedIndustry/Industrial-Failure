@@ -54,7 +54,7 @@ kind of functionality.
 As said before, we cannot compete with AAA studios on technical features or
 graphical fedelity, instead we should focus on creativity, great ideas, and
 reducing time-cost. An interesting, engaging concept implemented in five lines
-of unprefomant code will always be better than implimenting preformant
+of unpreformant code will always be better than implementing preformant
 photo-realistic grass.
 
 ## Generally
@@ -77,7 +77,7 @@ encouraged.
 At this extremely early stage of the game, we do not have a sufficient base to
 expand on too many features, so creating a strong foundation of the game is what
 we need to focus on. More features can always be added later. For instance, we
-do need some kind of inventory system. However, adding funcionality for items to
+do need some kind of inventory system. However, adding functionality for items to
 stack on the ground, auto-stacking, and more are not in high priority. As
 always, however, feel free to work on these features if it interests you.
 
@@ -87,7 +87,7 @@ not focus on making each new system perfect or even fully complete. Instead, it
 is more important to create a foundation from which to build off of.
 
 If something that you are working on is starting to bore or frustrate you, just
-commit the work you have already done and more on to something else that
+commit the work you have already done and move on to something else that
 interests you. If you do not know of something that you would like to contribute
 to, then you can always ask in the discord and we can try to find something that
 fits what you are looking to work on.
