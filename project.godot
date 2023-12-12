@@ -68,5 +68,6 @@ interact={
 
 [physics]
 
+3d/physics_engine="JoltPhysics3D"
 3d/default_linear_damp=1.071
 3d/default_angular_damp=1.394
