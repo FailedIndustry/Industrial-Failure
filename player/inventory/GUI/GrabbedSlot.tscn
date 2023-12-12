@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bpbydykh21aim"]
 
-[ext_resource type="Script" path="res://player/inventory/GUI/grabbed_slot.gd" id="1_su54b"]
+[ext_resource type="Script" path="res://player/inventory/GUI/grabbed_slot.gd" id="1_wgyt4"]
 
 [node name="GrabbedSlot" type="PanelContainer"]
 visible = false
@@ -10,6 +10,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+script = ExtResource("1_wgyt4")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(12, 12)
