@@ -44,9 +44,9 @@ func _unhandled_input(event):
 		camera.rotate_x(-event.relative.y * MOUSE_SPEED)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 		return
-	
+
 	if event.is_action_pressed("interact") and not event.is_echo():
-		# TEST: Damages player by 10.
+		# TEST for damage system
 		damage(10)
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
@@ -57,17 +57,16 @@ func _unhandled_input(event):
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			new_inventory.show()
-	# TEST: Heals player by 10.
+	# TEST for heal system. Jump is handled in [method _physics_process]
 	elif event.is_action_pressed("jump"):
 		heal(10)
-		Logger.debug("_unhandled_input: Player pressed jump button")
 
-## Damages the player by an integer through the set_health function.
+## Damages through [method set_health]. If health < 0, [method death] will be called.
 func damage(dmg: int):
 	Logger.info("Player took %s damage." % dmg)
 	health = health - dmg
 	
-## Heals the player by an integer through the set_health function.
+## Heals through [method set_health]. Health will be clamped to maxHealth.
 func heal(hl: int):
 	Logger.info("Player healed by %s." % hl)
 	health = health + hl
