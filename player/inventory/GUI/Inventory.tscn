@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://dwagi3friv266"]
+
+[ext_resource type="Script" path="res://player/inventory/GUI/inventory_gui.gd" id="1_8vt6t"]
+[ext_resource type="PackedScene" uid="uid://bpbydykh21aim" path="res://player/inventory/GUI/GrabbedSlot.tscn" id="2_80g3a"]
+[ext_resource type="Resource" uid="uid://de820ux77e5ik" path="res://entities/items/Item1.tres" id="2_ywjrf"]
+[ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="3_f25o8"]
+[ext_resource type="Resource" uid="uid://7j4wxqrlbf7y" path="res://entities/items/Item2.tres" id="4_eht8v"]
+
+[sub_resource type="Resource" id="Resource_1hi42"]
+script = ExtResource("3_f25o8")
+quantity = 10
+item_type = ExtResource("2_ywjrf")
+
+[sub_resource type="Resource" id="Resource_om0qb"]
+script = ExtResource("3_f25o8")
+quantity = 50
+item_type = ExtResource("4_eht8v")
+
+[node name="NewInventory" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8vt6t")
+items = Array[ExtResource("3_f25o8")]([SubResource("Resource_1hi42"), SubResource("Resource_om0qb")])
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+offset_right = 400.0
+offset_bottom = 400.0
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/VBoxContainer/PanelContainer"]
+layout_mode = 2
+color = Color(0.364706, 1, 0.843137, 0.709804)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect/VBoxContainer/PanelContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[font_size={20}][b]Weight:[/b] 50kg[/font_size]"
+fit_content = true
+
+[node name="GrabbedSlot" parent="." instance=ExtResource("2_80g3a")]
+layout_mode = 2
+mouse_filter = 2
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -1,17 +1,19 @@
 extends CharacterBody3D
+class_name Player
 
 @onready var camera = $Camera3D
 @onready var healthbar = $Healthbar
+@onready var new_inventory = $UI/NewInventory
 
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 100
 @export var maxHealth: int = 100
+@export var inventory: Inventory
 
 var client_id: int
 var health: int = maxHealth : set = set_health 
-
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -29,9 +31,11 @@ func _ready():
 	
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
+	
+	new_inventory.create(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
-	
+
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
@@ -41,14 +45,20 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 		return
 	
-	# TEST: Damages player by 10.
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("interact") and not event.is_echo():
+		# TEST: Damages player by 10.
 		damage(10)
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
-	
+	elif event.is_action_pressed("open_inventory") and not event.is_echo():
+		if new_inventory.visible:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			new_inventory.hide()
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			new_inventory.show()
 	# TEST: Heals player by 10.
-	if event.is_action_pressed("jump"):
+	elif event.is_action_pressed("jump"):
 		heal(10)
 		Logger.debug("_unhandled_input: Player pressed jump button")
 
@@ -109,7 +119,9 @@ func check_valid_method(
 	args: Array
 ) -> bool:
 		Logger.debug("Player.check_valid_method: checking functionality on %s"\
-				  % object)
+				
+        
+        % object)
 		for method in object.get_method_list():
 			if method["name"] == method_name:
 				if method["args"] == args:
