@@ -11,7 +11,7 @@ var grabbed_slot: Slot
 var inventory_owner: Player
 
 func create(inventory_owner: Player) -> void:
-	Logger.info("inv: %s" % self)
+	Logger.info("Creating inventory for %s" % self)
 	var category = CATEGORY.instantiate()
 	for i in items:
 		Logger.info("inventory.create: adding %s" % i)
