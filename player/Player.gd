@@ -2,13 +2,12 @@ extends CharacterBody3D
 class_name Player
 
 @onready var camera = $Camera3D
-
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 100
 @export var inventory: Inventory
-@onready var new_inventory = $UI/NewInventory
+@onready var inventory_gui = $UI/InventoryGUI
 
 var client_id: int
 
@@ -29,7 +28,8 @@ func _ready():
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
 	
-	new_inventory.create(self)
+	inventory_gui.set_player(self)
+	inventory_gui.update(inventory.items)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 
@@ -46,14 +46,13 @@ func _unhandled_input(event):
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 	elif event.is_action_pressed("open_inventory") and not event.is_echo():
-		if new_inventory.visible:
+		if inventory_gui.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			new_inventory.hide()
+			inventory_gui.hide()
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			new_inventory.show()
-
-
+			inventory_gui.update(inventory.items)
+			inventory_gui.show()
 
 ## Players interact function. If an interactive object is found, it will be
 ## sent to that object's interact function. See [method item.interact]
@@ -96,7 +95,11 @@ func check_valid_method(
 							% [method["name"], method_name])
 		
 		return false
-		
+
+func add_item(item: ItemWrapper):
+	if inventory.add(item):
+		inventory_gui.update()
+
 func _physics_process(delta):
 	# This function will be called on each client for all player instances.
 	# This means that in a game with 4 players, each client will have this function

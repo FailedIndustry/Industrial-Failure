@@ -55,10 +55,7 @@ func interact():
 	Logger.info("local_update_state")
 	Logger.info("%d" % multiplayer.get_unique_id())
 	
-	# On the case of a success of [method ItemType.on_interact], delete
-	# the physical representation
-	if item_data.item_type.on_interact.call(item_data) == 0:
-		self.queue_free()
+	self.queue_free()
 
 func verify_raycast(node):
 	const ITEM_MASK = 0b100

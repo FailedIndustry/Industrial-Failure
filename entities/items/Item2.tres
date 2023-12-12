@@ -1,11 +1,14 @@
-[gd_resource type="Resource" script_class="ItemType" load_steps=3 format=3 uid="uid://7j4wxqrlbf7y"]
+[gd_resource type="Resource" script_class="ItemType" load_steps=4 format=3 uid="uid://7j4wxqrlbf7y"]
 
 [ext_resource type="Script" path="res://entities/item/item-type.gd" id="1_ec2q5"]
-[ext_resource type="Texture2D" uid="uid://te8npx3vgjdb" path="res://addons/godot-vim/icon.svg" id="2_27dd6"]
+[ext_resource type="PackedScene" uid="uid://cqmlxq11rejq3" path="res://entities/item/PhysicalItem.tscn" id="1_hnm6f"]
+[ext_resource type="Texture2D" uid="uid://b2k2iutnsgjfy" path="res://addons/qodot/icon.png" id="3_q3s3o"]
 
 [resource]
 script = ExtResource("1_ec2q5")
 name = "vim"
 description = "vim"
 stackable = true
-texture = ExtResource("2_27dd6")
+category = "weapon"
+texture = ExtResource("3_q3s3o")
+physical_item = ExtResource("1_hnm6f")

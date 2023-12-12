@@ -1,15 +1,14 @@
 [gd_resource type="Resource" script_class="ItemType" load_steps=4 format=3 uid="uid://de820ux77e5ik"]
 
+[ext_resource type="PackedScene" uid="uid://cqmlxq11rejq3" path="res://entities/item/PhysicalItem.tscn" id="1_dsk8k"]
 [ext_resource type="Script" path="res://entities/item/item-type.gd" id="1_mb1tc"]
 [ext_resource type="Texture2D" uid="uid://bjtihw5ccbitu" path="res://entities/items/frame.png" id="2_4yf2h"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_4u7oh"]
-size = Vector3(0.1, 0.1, 0.1)
 
 [resource]
 script = ExtResource("1_mb1tc")
 name = "Box"
 description = "box"
 stackable = true
+category = "food"
 texture = ExtResource("2_4yf2h")
-mesh = SubResource("BoxMesh_4u7oh")
+physical_item = ExtResource("1_dsk8k")
