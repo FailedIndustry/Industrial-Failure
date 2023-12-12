@@ -2,15 +2,18 @@ extends CharacterBody3D
 class_name Player
 
 @onready var camera = $Camera3D
+@onready var healthbar = $Healthbar
+@onready var new_inventory = $UI/NewInventory
 
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 100
+@export var maxHealth: int = 100
 @export var inventory: Inventory
-@onready var new_inventory = $UI/NewInventory
 
 var client_id: int
+var health: int = maxHealth : set = set_health 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -41,8 +44,10 @@ func _unhandled_input(event):
 		camera.rotate_x(-event.relative.y * MOUSE_SPEED)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 		return
-	
+
 	if event.is_action_pressed("interact") and not event.is_echo():
+		# TEST for damage system
+		damage(10)
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 	elif event.is_action_pressed("open_inventory") and not event.is_echo():
@@ -52,9 +57,40 @@ func _unhandled_input(event):
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			new_inventory.show()
+	# TEST for heal system. Jump is handled in [method _physics_process]
+	elif event.is_action_pressed("jump"):
+		heal(10)
 
+## Damages through [method set_health]. If health < 0, [method death] will be called.
+func damage(dmg: int):
+	Logger.info("Player took %s damage." % dmg)
+	health = health - dmg
+	
+## Heals through [method set_health]. Health will be clamped to maxHealth.
+func heal(hl: int):
+	Logger.info("Player healed by %s." % hl)
+	health = health + hl
 
+## Called whenever the player's health changes.
+func set_health(newHealth: int):
+	# Ensure that the player's health doesn't go below 0 or the maximum.
+	health = clamp(newHealth, 0, maxHealth)
+	healthbar.value = health
+	Logger.info("Player now has %s health." % health)
+	if (healthbar.value <= 0):
+		death()
 
+## Currently "kills" the player by respawning them immediately.
+func death():
+	Logger.info("Player died.")
+	respawn()
+
+## Currently "respawns" the player by setting their health to max and resetting their position.
+func respawn():
+	Logger.info("Player respawned.")
+	position = Vector3(0, 0, 3)
+	set_health(100)
+	
 ## Players interact function. If an interactive object is found, it will be
 ## sent to that object's interact function. See [method item.interact]
 func interact():
@@ -82,7 +118,7 @@ func check_valid_method(
 	args: Array
 ) -> bool:
 		Logger.debug("Player.check_valid_method: checking functionality on %s"\
-				  % object)
+			    % object)
 		for method in object.get_method_list():
 			if method["name"] == method_name:
 				if method["args"] == args:
