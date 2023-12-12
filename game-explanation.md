@@ -1,12 +1,13 @@
 # Player Driven
-Instead of creating vendors that sell and buy goods from players, creating
-factions, creating NPCs as police/military/etc forces, and other systems, we
-will put these requirements on the player base. A default, base social
+We aim to avoid hard-coding in item vendors, factions, NPC police/military forces,
+and other roleplay mechanisms; instead, we hope to encourage players to
+organically develop and create these systems themselves. A default, base social
 structure in the form of a ruthlessly efficient autocracy subservient to
-pseudo-Skynet will initially be put into place to make the game run smoothly at
-first, and that social structure is expected to persist for a while. If there
-aren’t enough structures in place in the game for it to function effectively,
-we can always go in and implement them ourselves to get it kickstarted.
+an autonomous, apathetic artificial-intelligence overlord will initially be put
+into place to make the game run smoothly at first, and that social structure is
+expected to persist for a while. If there aren’t enough structures in place in
+the game for it to function effectively, we can always go in and implement them
+ourselves to get it kickstarted.
 
 This is one of the base concepts of the game and follows our philosophy on
 development: implement creative, out-of-the-box ideas that either reduce
