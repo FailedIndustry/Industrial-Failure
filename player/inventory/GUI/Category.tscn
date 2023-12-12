@@ -5,7 +5,6 @@
 [node name="VBoxContainer" type="VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 mouse_filter = 2
-script = ExtResource("1_ceh8p")
 
 [node name="CategoryLabel" type="PanelContainer" parent="."]
 layout_mode = 2

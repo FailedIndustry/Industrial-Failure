@@ -15,7 +15,6 @@ uv1_triplanar = true
 size = Vector3(50, 1, 50)
 
 [node name="World" type="Node"]
-script = SubResource("GDScript_cvru0")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 
