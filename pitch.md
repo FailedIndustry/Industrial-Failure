@@ -1,9 +1,10 @@
 # Industrial Failure
 
 The epitome of player agency and freedom within an immersive futuristic
-dystopia where a pseudo-Skynet reigns supreme. This multiplayer RPG grants
-players unparalleled control over their destiny, as they navigate a world
-manipulated by the external forces of a pseudo-Skynet.
+dystopia where a an autonomous, apathetic artificial-intelligence overlord
+reigns supreme. This multiplayer RPG grants players unparalleled control over
+their destiny, as they navigate a world manipulated by the external forces of
+a pseudo-Skynet.
 
 Players become the masters of their destiny, making moral decisions that shape
 their path — whether to embrace autocracy, join the resistance, pursue wealth,

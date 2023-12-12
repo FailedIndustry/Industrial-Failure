@@ -12,9 +12,9 @@ survive and make a good game we have to balance effort and cost to reward,
 usually favoring less effort and cost.
 
 # Our Advantages
-We are a (relatively) small group of developers and freinds without huge money
+We are a (relatively) small group of developers and friends without huge money
 backing us up. However, this can be to our benefit. We do not have any technical
-debt, preconcieved opinions, deadlines, investors or shareholders breathing down
+debt, preconceived opinions, deadlines, investors or shareholders breathing down
 our backs, managers, and more. We have all the flexibility in the world and we
 must leverage this.
 
@@ -40,20 +40,20 @@ set in stone expectations or requirements, so we can always reanalyze our
 decisions.
 
 ### Independance / Mission-type tactics
-Although we do have a list of speicific things to create and add to the project
+Although we do have a list of specific things to create and add to the project
 (many of which are essential to the completion like graphics and character
 model), we have many good and creative minds here. No change is too small or
 potentially too destructive. A simple `git branch -M 'my-great-idea'` will
 isolate your changes and allow you to roam free. So if you have an idea, feel
 free to bring it up in the discord and discuss it. But there is no need to! If
 you want to get straight into making it then go ahead. This applies to new
-ideas, better versions of old ideas, or an entirely new way of implimenting some
+ideas, better versions of old ideas, or an entirely new way of implementing some
 kind of functionality.
 
 # What to Value
 As said before, we cannot compete with AAA studios on technical features or
 graphical fedelity, instead we should focus on creativity, great ideas, and
-reducing time-cost. An interesting, engaging concept implimented in five lines
+reducing time-cost. An interesting, engaging concept implemented in five lines
 of unprefomant code will always be better than implimenting preformant
 photo-realistic grass.
 
