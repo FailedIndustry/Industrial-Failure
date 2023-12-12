@@ -4,7 +4,7 @@ class_name Slot
 @onready var quantity_label = $QuantityLabel
 @onready var texture_rect = $MarginContainer/TextureRect
 
-var item: ItemData
+var item: ItemWrapper
 ## The index in the inventory from where the texture and quantity was drawn from.
 var index: int
 ## The item owner when set_item was called
@@ -16,7 +16,7 @@ var gui: Inventory_GUI
 ## 
 ## There is potential for an error if [method _ready] gets called before 
 ## [method set_item]
-func set_item(gui: Inventory_GUI, item: ItemData, index: int):
+func set_item(gui: Inventory_GUI, item: ItemWrapper, index: int):
 	self.item = item
 	self.index = index
 	self.gui = gui

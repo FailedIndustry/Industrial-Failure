@@ -3,7 +3,7 @@ extends PanelContainer
 @onready var quantity_label = $QuantityLabel
 @onready var texture_rect = $MarginContainer/TextureRect
 
-func set_item(item: ItemData):
+func set_item(item: ItemWrapper):
 	texture_rect.texture = item.texture
 
 	if item.quantity > 1:

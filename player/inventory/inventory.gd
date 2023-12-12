@@ -1,7 +1,7 @@
 extends Resource
 class_name Inventory
 
-@export var items: Array[ItemData]
+@export var items: Array[ItemWrapper]
 
 func drop_type(index: int) -> int:
 	var dropped_data = items[index]
@@ -15,7 +15,7 @@ func drop_type(index: int) -> int:
 
 ## Add item to inventory. Should never be called directly, only from interaction
 ## on an item. This is to make sure that there are checks in place for validation
-func add(item: ItemData) -> int:
+func add(item: ItemWrapper) -> int:
 	items.append(item)
 	return 0
 

@@ -2,12 +2,12 @@ extends VBoxContainer
 @onready var grid_container = $GridContainer
 const SLOT = preload("res://player/inventory/GUI/Slot.tscn")
 
-var items: Array[ItemData]
+var items: Array[ItemWrapper]
 var gui: Inventory_GUI
 
 ## There is potential for an error if [method _ready] gets called before 
 ## [method set_category]
-func set_category(gui: Inventory_GUI, items: Array[ItemData]) -> void:
+func set_category(gui: Inventory_GUI, items: Array[ItemWrapper]) -> void:
 	for i in items:
 		Logger.info("set_category: adding %s" % i)
 	self.items = items

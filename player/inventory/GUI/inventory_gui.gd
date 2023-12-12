@@ -6,7 +6,7 @@ const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
 @onready var grabbed_visual = $GrabbedSlot
 var grabbed_slot: Slot
 
-@export var items: Array[ItemData]
+@export var items: Array[ItemWrapper]
 
 var inventory_owner: Player
 
