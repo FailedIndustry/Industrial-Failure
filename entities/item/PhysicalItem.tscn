@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://cqmlxq11rejq3"]
+
+[node name="PhysicalItem" type="Node3D"]

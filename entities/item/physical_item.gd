@@ -1,6 +1,8 @@
 extends Node3D
+class_name PhysicalItem
 @onready var mesh = $MeshInstance3D
 @onready var area = $Area3D
+@export var item_data: ItemWrapper
 
 ## Interact entry point for each local item. This will be sent to the server
 ## in another function.
@@ -53,8 +55,10 @@ func interact():
 	Logger.info("local_update_state")
 	Logger.info("%d" % multiplayer.get_unique_id())
 	
-	# Simple proof of function working
-	mesh.hide()
+	# On the case of a success of [method ItemType.on_interact], delete
+	# the physical representation
+	if item_data.item_type.on_interact.call(item_data) == 0:
+		self.queue_free()
 
 func verify_raycast(node):
 	const ITEM_MASK = 0b100

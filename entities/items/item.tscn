@@ -1,6 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bloeiue5sua18"]
+[gd_scene load_steps=8 format=3 uid="uid://bloeiue5sua18"]
 
-[ext_resource type="Script" path="res://entities/item/item.gd" id="1_bqt6e"]
+[ext_resource type="Script" path="res://entities/item/physical_item.gd" id="1_bqt6e"]
+[ext_resource type="Resource" uid="uid://de820ux77e5ik" path="res://entities/items/Item1.tres" id="2_lb4cj"]
+[ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="3_egrbl"]
+
+[sub_resource type="Resource" id="Resource_acd5v"]
+script = ExtResource("3_egrbl")
+quantity = 1
+item_type = ExtResource("2_lb4cj")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k6ygt"]
 size = Vector3(2, 2, 2)
@@ -18,6 +25,7 @@ collision_layer = 4
 collision_mask = 7
 mass = 1000.0
 script = ExtResource("1_bqt6e")
+item_data = SubResource("Resource_acd5v")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_k6ygt")
