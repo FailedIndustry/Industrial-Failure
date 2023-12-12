@@ -9,5 +9,7 @@ func set_item(item: ItemData):
 	if item.quantity > 1:
 		quantity_label.text = "%s" % item.quantity
 		quantity_label.show()
+	elif item.quantity <= 0:
+		Logger.error("Item quantity is less than 0!")
 	else:
 		quantity_label.hide()
