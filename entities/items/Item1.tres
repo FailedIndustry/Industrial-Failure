@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ItemType" load_steps=3 format=3 uid="uid://de820ux77e5ik"]
+[gd_resource type="Resource" script_class="ItemType" load_steps=4 format=3 uid="uid://de820ux77e5ik"]
 
+[ext_resource type="PackedScene" uid="uid://cqmlxq11rejq3" path="res://entities/item/PhysicalItem.tscn" id="1_dsk8k"]
 [ext_resource type="Script" path="res://entities/item/item-type.gd" id="1_mb1tc"]
 [ext_resource type="Texture2D" uid="uid://bjtihw5ccbitu" path="res://entities/items/frame.png" id="2_4yf2h"]
 
@@ -8,4 +9,6 @@ script = ExtResource("1_mb1tc")
 name = "Box"
 description = "box"
 stackable = true
+category = "food"
 texture = ExtResource("2_4yf2h")
+physical_item = ExtResource("1_dsk8k")

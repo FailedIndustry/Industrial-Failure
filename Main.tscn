@@ -151,10 +151,6 @@ alignment = 1
 _spawnable_scenes = PackedStringArray("res://player/player.tscn")
 spawn_path = NodePath("..")
 
-[node name="Physics_tester3" parent="." instance=ExtResource("4_r6prq")]
-transform = Transform3D(-0.917186, 0, -0.398461, 0, 1, 0, 0.398461, 0, -0.917186, 0.00178951, 4.03, -0.00409096)
-wait = 100
-
 [node name="Physics_tester2" parent="." instance=ExtResource("4_r6prq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10034, 1.64702, 9.30101)
 wait = 100

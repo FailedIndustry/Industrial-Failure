@@ -1,6 +1,8 @@
 extends Node3D
+class_name PhysicalItem
 @onready var mesh = $MeshInstance3D
 @onready var area = $Area3D
+@export var item_data: ItemWrapper
 
 ## Interact entry point for each local item. This will be sent to the server
 ## in another function.
@@ -41,7 +43,7 @@ func interact():
 			if verify_raycast(node):
 				Logger.info("item.server_update_state: %d raycast verified" \
 					   % sender_id)
-				local_update_state.rpc()
+				local_update_state.rpc(node)
 		else:
 			Logger.info("item.server_update_state: %s id != %d id" \
 					  % [node.name, sender_id])
@@ -49,17 +51,25 @@ func interact():
 @rpc("authority",	# Only accept rpc calls from the server
 	 "call_local",	# Also initiate this call locally (on the server in this case)
 	 "reliable"		# Make sure all clients get this call
-) func local_update_state():
+) func local_update_state(player: Player):
 	Logger.info("local_update_state")
 	Logger.info("%d" % multiplayer.get_unique_id())
 	
-	# Simple proof of function working
-	mesh.hide()
+	add_item_to_player(player)
 
-func verify_raycast(node):
+func add_item_to_player(player: Player) -> void:
+	player.inventory.add(item_data)
+	self.queue_free()
+
+func verify_raycast(player: Player):
 	const ITEM_MASK = 0b100
-	var origin = node.camera.project_ray_origin(Vector2.ZERO)
-	var end = origin + node.camera.project_ray_normal(Vector2.ZERO) * 100
+	var origin = player.camera.global_position
+	var rotation = player.global_rotation
+	var x = cos(rotation.x)*sin(rotation.y)
+	var z = cos(rotation.x)*cos(rotation.y)
+	var y = sin(rotation.x)
+	var end = origin + Vector3(-x,y,-z).normalized() * 2
+	
 	var query = PhysicsRayQueryParameters3D.create(origin, end)
 	query.collide_with_areas = true
 	query.collision_mask = ITEM_MASK

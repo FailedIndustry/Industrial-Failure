@@ -1,16 +1,15 @@
 extends CharacterBody3D
 class_name Player
 
-@onready var camera = $Camera3D
-@onready var healthbar = $Healthbar
-@onready var new_inventory = $UI/NewInventory
-
+@onready var camera: Camera3D = $Camera3D
+@onready var healthbar: TextureProgressBar = $Healthbar
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
-@export var INTERACTION_DISTANCE = 100
+@export var INTERACTION_DISTANCE = 2
 @export var maxHealth: int = 100
 @export var inventory: Inventory
+@onready var inventory_gui: Inventory_GUI = $UI/InventoryGUI
 
 var client_id: int
 var health: int = maxHealth : set = set_health 
@@ -32,7 +31,10 @@ func _ready():
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
 	
-	new_inventory.create(self)
+	inventory_gui.set_player(self)
+	inventory_gui.update(inventory.items)
+	inventory.owner = self
+	rotation
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	healthbar.value = health
@@ -48,19 +50,24 @@ func _unhandled_input(event):
 
 	if event.is_action_pressed("interact") and not event.is_echo():
 		# TEST for damage system
-		damage(10)
+		# damage(10)
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 	elif event.is_action_pressed("open_inventory") and not event.is_echo():
-		if new_inventory.visible:
+		if inventory_gui.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			new_inventory.hide()
+			inventory_gui.hide()
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			new_inventory.show()
+			inventory_gui.update(inventory.items)
+			inventory_gui.show()
 	# TEST for heal system. Jump is handled in [method _physics_process]
 	elif event.is_action_pressed("jump"):
 		heal(10)
+
+func drop_item(item: ItemWrapper) -> void:
+	inventory.drop(item)
+	inventory_gui.delete_or_reduce_item(item)
 
 ## Damages through [method set_health]. If health < 0, [method death] will be called.
 func damage(dmg: int):
@@ -96,8 +103,13 @@ func respawn():
 ## sent to that object's interact function. See [method item.interact]
 func interact():
 	const ITEM_MASK = 0b100
-	var origin = camera.project_ray_origin(Vector2.ZERO)
-	var end = origin + camera.project_ray_normal(Vector2.ZERO) * INTERACTION_DISTANCE
+	var origin = camera.global_position
+	var rotation = camera.global_rotation
+	var z = cos(rotation.x)*cos(rotation.y)
+	var y = sin(rotation.x)
+	var x = cos(rotation.x)*sin(rotation.y)
+	var end = origin + Vector3(-x,y,-z).normalized() * INTERACTION_DISTANCE
+	
 	var query = PhysicsRayQueryParameters3D.create(origin, end)
 	query.collide_with_areas = true
 	query.collision_mask = ITEM_MASK
@@ -133,7 +145,11 @@ func check_valid_method(
 							% [method["name"], method_name])
 		
 		return false
-		
+
+func add_item(item: ItemWrapper):
+	if inventory.add(item):
+		inventory_gui.update(inventory.items)
+
 func _physics_process(delta):
 	# This function will be called on each client for all player instances.
 	# This means that in a game with 4 players, each client will have this function

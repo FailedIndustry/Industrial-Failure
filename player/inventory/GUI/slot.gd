@@ -5,21 +5,17 @@ class_name Slot
 @onready var texture_rect = $MarginContainer/TextureRect
 
 var item: ItemWrapper
-## The index in the inventory from where the texture and quantity was drawn from.
-var index: int
 ## The item owner when set_item was called
 var is_grabbed: bool = false
-var gui: Inventory_GUI
+var player: Player
 
-## [param index] is where the items lives in the underlying inventory.
 ## [param item] is the ItemData from which to draw quantity and texture.
 ## 
 ## There is potential for an error if [method _ready] gets called before 
 ## [method set_item]
-func set_item(gui: Inventory_GUI, item: ItemWrapper, index: int):
+func set_item(player: Player, item: ItemWrapper):
 	self.item = item
-	self.index = index
-	self.gui = gui
+	self.player = player
 	if texture_rect and quantity_label:
 		render()
 	else:
@@ -27,7 +23,7 @@ func set_item(gui: Inventory_GUI, item: ItemWrapper, index: int):
 		pass
 
 func render():
-	if gui.inventory_owner != item.owner:
+	if player != item.owner:
 		Logger.error("mismatch in owners during inventory render")
 		# self.hide()
 		# return 
@@ -46,13 +42,13 @@ func _ready():
 	render()
 
 func _on_gui_input(event):
-	if item.owner != gui.inventory_owner:
+	if item.owner != player:
 		Logger.error("Mismatch in owners during GUI event")
 		# self.hide()
 		# return
 	
 	if event is InputEventMouseButton:
 		if (event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed()):
-			gui.press_on_item(self)
+			player.inventory_gui.press_on_item(self)
 		elif (event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed()):
-			gui.show_item_menu(self)
+			player.inventory_gui.show_item_menu(self)
