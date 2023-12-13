@@ -41,9 +41,9 @@ func interact():
 			Logger.info("item.server_update_state: %d is verified as in range" \
 					   % sender_id)
 			if verify_raycast(node):
-				Logger.info("inem.server_update_state: %d raycast verified" \
+				Logger.info("item.server_update_state: %d raycast verified" \
 					   % sender_id)
-				local_update_state.rpc()
+				local_update_state.rpc(node)
 		else:
 			Logger.info("item.server_update_state: %s id != %d id" \
 					  % [node.name, sender_id])
@@ -51,10 +51,14 @@ func interact():
 @rpc("authority",	# Only accept rpc calls from the server
 	 "call_local",	# Also initiate this call locally (on the server in this case)
 	 "reliable"		# Make sure all clients get this call
-) func local_update_state():
+) func local_update_state(player: Player):
 	Logger.info("local_update_state")
 	Logger.info("%d" % multiplayer.get_unique_id())
 	
+	add_item_to_player(player)
+
+func add_item_to_player(player: Player) -> void:
+	player.inventory.add(item_data)
 	self.queue_free()
 
 func verify_raycast(node):
