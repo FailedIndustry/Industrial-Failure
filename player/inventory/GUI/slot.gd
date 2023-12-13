@@ -52,7 +52,7 @@ func _on_gui_input(event):
 		# return
 	
 	if event is InputEventMouseButton:
-		if (event.button_index == MOUSE_BUTTON_LEFT \
-				or event.button_index == MOUSE_BUTTON_RIGHT) \
-				and event.is_pressed():
+		if (event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed()):
 			gui.press_on_item(self)
+		elif (event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed()):
+			gui.show_item_menu(self)

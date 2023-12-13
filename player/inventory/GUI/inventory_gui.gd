@@ -2,6 +2,7 @@ extends PanelContainer
 class_name Inventory_GUI
 
 const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
+const SLOT_MENU = preload("res://player/inventory/GUI/SlotMenu.tscn")
 @onready var v_box_container = $ColorRect/VBoxContainer
 @onready var grabbed_visual = $GrabbedSlot
 var grabbed_slot: Slot
@@ -47,6 +48,11 @@ func press_on_item(slot: Slot):
 		swap_item(slot)
 	else:
 		grab_item(slot)
+		
+func show_item_menu(slot: Slot):
+	Logger.info("Creating item slot menu")
+	var slotMenu = SLOT_MENU.instantiate()
+	add_child(slotMenu)
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
