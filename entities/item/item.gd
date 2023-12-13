@@ -39,7 +39,7 @@ func interact():
 			Logger.info("item.server_update_state: %d is verified as in range" \
 					   % sender_id)
 			if verify_raycast(node):
-				Logger.info("inem.server_update_state: %d raycast verified" \
+				Logger.info("item.server_update_state: %d raycast verified" \
 					   % sender_id)
 				local_update_state.rpc()
 		else:

@@ -2,13 +2,20 @@ extends PanelContainer
 class_name Inventory_GUI
 
 const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
+const SLOT_MENU = preload("res://player/inventory/GUI/SlotMenu.tscn")
 @onready var v_box_container = $ColorRect/VBoxContainer
-@onready var grabbed_visual = $GrabbedSlot
-var grabbed_slot: Slot
+@onready var grabbed_visual = $Interactive/GrabbedSlot
+@onready var interactive = $Interactive
 
 @export var items: Array[ItemWrapper]
 
+var grabbed_slot: Slot
 var inventory_owner: Player
+var slot_menu
+
+## TODO: look at error debug and fix
+## TODO: make less messy (lots of if statements to decide when to open up and close item_menu for instance
+## TODO: there are literally no comments in this entire script
 
 func create(inventory_owner: Player) -> void:
 	Logger.info("Creating inventory for %s" % self)
@@ -43,18 +50,38 @@ func swap_item(slot: Slot):
 		grabbed_visual.hide()
 
 func press_on_item(slot: Slot):
+	clear_item_menu()
+	
 	if grabbed_slot:
 		swap_item(slot)
 	else:
 		grab_item(slot)
 
+func clear_item_menu():
+	if slot_menu:
+		slot_menu.queue_free()
+		slot_menu = null
+	
+func show_item_menu(slot: Slot):
+	clear_item_menu()
+	
+	if not grabbed_slot:
+		Logger.info("Creating item slot menu")
+		slot_menu = SLOT_MENU.instantiate()
+		interactive.add_child(slot_menu)
+		slot_menu.global_position = get_global_mouse_position() + Vector2(10, 10) # to slightly offset for better usability
+	
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if (event.button_index == MOUSE_BUTTON_LEFT) \
 				or (event.button_index == MOUSE_BUTTON_RIGHT) \
 				and event.is_pressed():
 			Logger.debug("InventoryInterface: button click")
+			
 			grabbed_visual.hide()
+				
+			clear_item_menu()
+				
 			if grabbed_slot:
 				grabbed_slot = null
 

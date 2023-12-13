@@ -54,8 +54,11 @@ bbcode_enabled = true
 text = "[font_size={20}][b]Weight:[/b] 50kg[/font_size]"
 fit_content = true
 
-[node name="GrabbedSlot" parent="." instance=ExtResource("2_80g3a")]
-layout_mode = 2
+[node name="Interactive" type="Node2D" parent="."]
+
+[node name="GrabbedSlot" parent="Interactive" instance=ExtResource("2_80g3a")]
+offset_right = 64.0
+offset_bottom = 64.0
 mouse_filter = 2
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
