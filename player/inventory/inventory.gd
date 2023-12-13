@@ -32,11 +32,9 @@ func create_item(item: ItemWrapper) -> int:
 	var query = PhysicsRayQueryParameters3D.create(origin, end)
 	query.collision_mask = 0x111
 	var result = space_state.intersect_ray(query)
-	Logger.info("%s" % end)
 	if result:
 		end = result["position"]
 	
-	Logger.info("%s" % end)
 	var world: Node = owner.get_node('/root/Main')
 	var physical_item = item.item_type.physical_item.instantiate()
 	physical_item.item_data = item
