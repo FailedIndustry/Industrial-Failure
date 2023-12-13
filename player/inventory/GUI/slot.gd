@@ -51,4 +51,4 @@ func _on_gui_input(event):
 		if (event.button_index == MOUSE_BUTTON_LEFT \
 				or event.button_index == MOUSE_BUTTON_RIGHT) \
 				and event.is_pressed():
-			player.inventory_gui.press_on_item(self)
+			player.inventory_gui.press_on_item(self, event.button_index)

@@ -41,7 +41,30 @@ func get_or_make_category(category: String) -> VBoxContainer:
 	new_category.set_player(player)
 	v_box_container.add_child(new_category)
 	return new_category
-	
+
+## Returns 0 for success or -1 for error
+func delete_or_reduce_item(item: ItemWrapper) -> int:
+	for category in v_box_container.get_children():
+		if category is PanelContainer: continue
+		
+		if category.label == item.item_type.category:
+			for slot: Slot in category.grid_container.get_children():
+				if slot.item.item_type == item.item_type:
+					if slot.item.quantity > item.quantity:
+						slot.item.quantity -= item.quantity
+						return 0
+					elif slot.item.quantity == item.quantity:
+						slot.queue_free()
+					else:
+						Logger.error("inventory_gui.delete_or_reduce_item: quantity mistmatch")
+						return -1
+		
+	# if no matches were found, return an error
+	Logger.error("Attempted to remove an item from inventory that is no longer there")
+	return -1
+
+func create_item_from(item_type: ItemType, quantity: int):
+	pass
 
 func grab_item(slot: Slot):
 	if slot.is_grabbed:
@@ -64,12 +87,16 @@ func swap_item(slot: Slot):
 		grabbed_slot = null
 		grabbed_visual.hide()
 
-func press_on_item(slot: Slot):
-	if grabbed_slot \
-			and grabbed_slot.item.item_type.category == slot.item.item_type.category:
-		swap_item(slot)
-	else:
-		grab_item(slot)
+func press_on_item(slot: Slot, button_index: int):
+	match button_index:
+		MOUSE_BUTTON_LEFT:
+			if grabbed_slot \
+					and grabbed_slot.item.item_type.category == slot.item.item_type.category:
+				swap_item(slot)
+			else:
+				grab_item(slot)
+		MOUSE_BUTTON_RIGHT:
+			player.drop_item(slot.item)
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
