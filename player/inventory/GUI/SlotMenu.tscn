@@ -1,6 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://l2g5nomvy6wo"]
-
-[ext_resource type="Script" path="res://player/inventory/GUI/slotmenu.gd" id="1_0cvsd"]
+[gd_scene format=3 uid="uid://l2g5nomvy6wo"]
 
 [node name="VBoxContainer" type="VBoxContainer"]
 offset_right = 73.0
@@ -8,7 +6,6 @@ offset_bottom = 93.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/separation = 0
-script = ExtResource("1_0cvsd")
 
 [node name="PanelContainer3" type="PanelContainer" parent="."]
 layout_mode = 2
