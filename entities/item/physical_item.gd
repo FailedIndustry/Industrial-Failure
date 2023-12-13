@@ -61,10 +61,15 @@ func add_item_to_player(player: Player) -> void:
 	player.inventory.add(item_data)
 	self.queue_free()
 
-func verify_raycast(node):
+func verify_raycast(player: Player):
 	const ITEM_MASK = 0b100
-	var origin = node.camera.project_ray_origin(Vector2.ZERO)
-	var end = origin + node.camera.project_ray_normal(Vector2.ZERO) * 100
+	var origin = player.camera.global_position
+	var rotation = player.global_rotation
+	var x = cos(rotation.x)*sin(rotation.y)
+	var z = cos(rotation.x)*cos(rotation.y)
+	var y = sin(rotation.x)
+	var end = origin + Vector3(-x,y,-z).normalized() * 2
+	
 	var query = PhysicsRayQueryParameters3D.create(origin, end)
 	query.collide_with_areas = true
 	query.collision_mask = ITEM_MASK

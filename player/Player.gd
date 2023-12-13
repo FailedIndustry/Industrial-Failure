@@ -6,7 +6,7 @@ class_name Player
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
-@export var INTERACTION_DISTANCE = 100
+@export var INTERACTION_DISTANCE = 2
 @export var maxHealth: int = 100
 @export var inventory: Inventory
 @onready var inventory_gui: Inventory_GUI = $UI/InventoryGUI
@@ -50,7 +50,7 @@ func _unhandled_input(event):
 
 	if event.is_action_pressed("interact") and not event.is_echo():
 		# TEST for damage system
-		damage(10)
+		# damage(10)
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 	elif event.is_action_pressed("open_inventory") and not event.is_echo():
@@ -103,8 +103,13 @@ func respawn():
 ## sent to that object's interact function. See [method item.interact]
 func interact():
 	const ITEM_MASK = 0b100
-	var origin = camera.project_ray_origin(Vector2.ZERO)
-	var end = origin + camera.project_ray_normal(Vector2.ZERO) * INTERACTION_DISTANCE
+	var origin = camera.global_position
+	var rotation = camera.global_rotation
+	var z = cos(rotation.x)*cos(rotation.y)
+	var y = sin(rotation.x)
+	var x = cos(rotation.x)*sin(rotation.y)
+	var end = origin + Vector3(-x,y,-z).normalized() * INTERACTION_DISTANCE
+	
 	var query = PhysicsRayQueryParameters3D.create(origin, end)
 	query.collide_with_areas = true
 	query.collision_mask = ITEM_MASK

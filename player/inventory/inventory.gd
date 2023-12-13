@@ -21,26 +21,26 @@ func add(item: ItemWrapper) -> int:
 ## CAUTION This should never be called directly, only from [method drop]. This
 ## will create or move ItemWrapper to a new [PhysicalItem] and place it on the ground.
 func create_item(item: ItemWrapper) -> int:
+	var origin = owner.camera.global_position
 	var rotation = owner.camera.global_rotation
-	var owner_position = owner.global_position
-	
+	var x = cos(rotation.x)*sin(rotation.y)
 	var z = cos(rotation.x)*cos(rotation.y)
 	var y = sin(rotation.x)
-	var x = sin(rotation.y)
-	var end = Vector3(-x,y,-z) * 3
+	var end = origin + Vector3(-x,y,-z).normalized() * 5
 	
 	var space_state = owner.get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(owner_position, end)
+	var query = PhysicsRayQueryParameters3D.create(origin, end)
 	query.collision_mask = 0x111
 	var result = space_state.intersect_ray(query)
-	if result["position"]:
+	Logger.info("%s" % end)
+	if result:
 		end = result["position"]
 	
-	Logger.info("%s" % end)    
+	Logger.info("%s" % end)
 	var world: Node = owner.get_node('/root/Main')
 	var physical_item = item.item_type.physical_item.instantiate()
 	physical_item.item_data = item
-	physical_item.global_position = end + owner_position
+	physical_item.global_position = end
 	world.add_child(physical_item)
 	return 0
 

@@ -63,9 +63,6 @@ func delete_or_reduce_item(item: ItemWrapper) -> int:
 	Logger.error("Attempted to remove an item from inventory that is no longer there")
 	return -1
 
-func create_item_from(item_type: ItemType, quantity: int):
-	pass
-
 func grab_item(slot: Slot):
 	if slot.is_grabbed:
 		pass
