@@ -3,12 +3,19 @@ class_name Inventory_GUI
 ## NOTICE this requires set_player to initialize properly
 
 const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
+const SLOT_MENU = preload("res://player/inventory/GUI/SlotMenu.tscn")
 @onready var v_box_container = $ColorRect/VBoxContainer
-@onready var grabbed_visual = $GrabbedSlot
-var grabbed_slot: Slot
-var player: Player
-
+@onready var grabbed_visual = $Interactive/GrabbedSlot
+@onready var interactive = $Interactive
 @export var items: Array[ItemWrapper]
+
+var player: Player
+var grabbed_slot: Slot
+var slot_menu
+
+## TODO: look at error debug and fix
+## TODO: make less messy (lots of if statements to decide when to open up and close item_menu for instance
+## TODO: there are literally no comments in this entire script
 
 func set_player(player: Player) -> void:
 	self.player = player
@@ -84,24 +91,39 @@ func swap_item(slot: Slot):
 		grabbed_slot = null
 		grabbed_visual.hide()
 
-func press_on_item(slot: Slot, button_index: int):
-	match button_index:
-		MOUSE_BUTTON_LEFT:
-			if grabbed_slot \
-					and grabbed_slot.item.item_type.category == slot.item.item_type.category:
-				swap_item(slot)
-			else:
-				grab_item(slot)
-		MOUSE_BUTTON_RIGHT:
-			player.drop_item(slot.item)
+func press_on_item(slot: Slot):
+	clear_item_menu()
+	
+	if grabbed_slot:
+		swap_item(slot)
+	else:
+		grab_item(slot)
 
+func clear_item_menu():
+	if slot_menu:
+		slot_menu.queue_free()
+		slot_menu = null
+	
+func show_item_menu(slot: Slot):
+	clear_item_menu()
+	
+	if not grabbed_slot:
+		Logger.info("Creating item slot menu")
+		slot_menu = SLOT_MENU.instantiate()
+		interactive.add_child(slot_menu)
+		slot_menu.global_position = get_global_mouse_position() + Vector2(10, 10) # to slightly offset for better usability
+	
 func _on_gui_input(event):
 	if event is InputEventMouseButton:
 		if (event.button_index == MOUSE_BUTTON_LEFT) \
 				or (event.button_index == MOUSE_BUTTON_RIGHT) \
 				and event.is_pressed():
 			Logger.debug("InventoryInterface: button click")
+			
 			grabbed_visual.hide()
+				
+			clear_item_menu()
+				
 			if grabbed_slot:
 				grabbed_slot = null
 

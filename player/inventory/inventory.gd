@@ -13,7 +13,7 @@ func drop(item: ItemWrapper) -> int:
 	return 0
 
 ## Add item to inventory. CAUTION Should never be called directly, only from interaction
-## on an item. This is to make sure that there are checks in place for validation
+## on an item. This is to make sure that there are checks in place for validation.
 func add(item: ItemWrapper) -> int:
 	items.append(item)
 	return 0
