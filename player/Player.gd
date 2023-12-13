@@ -1,15 +1,15 @@
 extends CharacterBody3D
 class_name Player
 
-@onready var camera = $Camera3D
-@onready var healthbar = $Healthbar
+@onready var camera: Camera3D = $Camera3D
+@onready var healthbar: TextureProgressBar = $Healthbar
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 100
 @export var maxHealth: int = 100
 @export var inventory: Inventory
-@onready var inventory_gui = $UI/InventoryGUI
+@onready var inventory_gui: Inventory_GUI = $UI/InventoryGUI
 
 var client_id: int
 var health: int = maxHealth : set = set_health 
@@ -33,6 +33,8 @@ func _ready():
 	
 	inventory_gui.set_player(self)
 	inventory_gui.update(inventory.items)
+	inventory.owner = self
+	rotation
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	healthbar.value = health
@@ -62,6 +64,10 @@ func _unhandled_input(event):
 	# TEST for heal system. Jump is handled in [method _physics_process]
 	elif event.is_action_pressed("jump"):
 		heal(10)
+
+func drop_item(item: ItemWrapper) -> void:
+	inventory.drop(item)
+	inventory_gui.delete_or_reduce_item(item)
 
 ## Damages through [method set_health]. If health < 0, [method death] will be called.
 func damage(dmg: int):
@@ -137,7 +143,7 @@ func check_valid_method(
 
 func add_item(item: ItemWrapper):
 	if inventory.add(item):
-		inventory_gui.update()
+		inventory_gui.update(inventory.items)
 
 func _physics_process(delta):
 	# This function will be called on each client for all player instances.
