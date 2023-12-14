@@ -72,6 +72,7 @@ func start_logger():
 	# File appender
 	var datetime = Time.get_datetime_string_from_system()
 	datetime = datetime.replace(":", "-")
+	DirAccess.make_dir_absolute("res://.log/")
 	var filelogger = Logger.add_appender(
 		FileAppender.new("res://.log/%s.log" % datetime)
 	)
