@@ -6,6 +6,17 @@
 [node name="InventoryGUI" type="Node2D"]
 script = ExtResource("1_8vt6t")
 
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(10000, 10000)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
 [node name="Main" type="PanelContainer" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
@@ -51,4 +62,5 @@ offset_right = 64.0
 offset_bottom = 64.0
 mouse_filter = 2
 
+[connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="gui_input" from="Main" to="." method="_on_gui_input"]

@@ -128,3 +128,13 @@ func _on_gui_input(event):
 func _physics_process(_delta):
 	if grabbed_slot and grabbed_visual:
 		grabbed_visual.global_position = get_global_mouse_position() + Vector2(10,10)
+
+
+func _on_control_gui_input(event):
+	if event is InputEventMouseButton \
+			and event.button_index == MOUSE_BUTTON_LEFT \
+			and grabbed_slot \
+			and grabbed_visual:
+		player.drop_item(grabbed_slot.item)
+		grabbed_slot = null
+		grabbed_visual.hide()
