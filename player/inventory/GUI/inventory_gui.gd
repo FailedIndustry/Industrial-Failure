@@ -1,13 +1,11 @@
-extends PanelContainer
+extends Node2D
 class_name Inventory_GUI
 ## NOTICE this requires set_player to initialize properly
 
 const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
 const SLOT_MENU = preload("res://player/inventory/GUI/SlotMenu.tscn")
-@onready var v_box_container = $ColorRect/VBoxContainer
-@onready var grabbed_visual = $Interactive/GrabbedSlot
-@onready var interactive = $Interactive
-@export var items: Array[ItemWrapper]
+@onready var category_container = $Main/Background/CategoryContainer
+@onready var grabbed_visual = $GrabbedSlot
 
 var player: Player
 var grabbed_slot: Slot
@@ -22,7 +20,7 @@ func set_player(player: Player) -> void:
 
 func update(items: Array[ItemWrapper]) -> void:
 	Logger.info("Creating inventory for %s" % self)
-	for child in v_box_container.get_children():
+	for child in category_container.get_children():
 		if child is PanelContainer: continue
 		child.queue_free()
 	
@@ -33,7 +31,7 @@ func update(items: Array[ItemWrapper]) -> void:
 		category.add(i)
 
 func get_or_make_category(category: String) -> VBoxContainer:
-	var categories = v_box_container.get_children()
+	var categories = category_container.get_children()
 	for c in categories:
 		if c is PanelContainer: continue
 		# [method update] frees children, but will not delete them by the time
@@ -46,12 +44,12 @@ func get_or_make_category(category: String) -> VBoxContainer:
 	var new_category = CATEGORY.instantiate()
 	new_category.set_label(category)
 	new_category.set_player(player)
-	v_box_container.add_child(new_category)
+	category_container.add_child(new_category)
 	return new_category
 
 ## Returns 0 for success or -1 for error
 func delete_or_reduce_item(item: ItemWrapper) -> int:
-	for category in v_box_container.get_children():
+	for category in category_container.get_children():
 		if category is PanelContainer: continue
 		
 		if category.label == item.item_type.category:
@@ -110,7 +108,7 @@ func show_item_menu(slot: Slot):
 	if not grabbed_slot:
 		Logger.info("Creating item slot menu")
 		slot_menu = SLOT_MENU.instantiate()
-		interactive.add_child(slot_menu)
+		add_child(slot_menu)
 		slot_menu.global_position = get_global_mouse_position() + Vector2(10, 10) # to slightly offset for better usability
 	
 func _on_gui_input(event):

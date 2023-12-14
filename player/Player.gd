@@ -59,7 +59,9 @@ func _unhandled_input(event):
 			inventory_gui.hide()
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			var viewport = DisplayServer.window_get_size()
 			inventory_gui.update(inventory.items)
+			inventory_gui.position = Vector2(viewport.x/2, viewport.y/2)
 			inventory_gui.show()
 	# TEST for heal system. Jump is handled in [method _physics_process]
 	elif event.is_action_pressed("jump"):
