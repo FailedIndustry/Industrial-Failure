@@ -1,5 +1,9 @@
 extends PanelContainer
 class_name Slot
+## A slot in a [Category]. Consumes mouse input on slots and sends it to [InventoryCtrl]
+##
+## [InventoryGUICtrl] controls [InventoryGUI]. [InventoryGUI] displays it's items in [Category]s
+## [Category]s displays it's items in [Slot]s.
 
 @onready var quantity_label = $QuantityLabel
 @onready var texture_rect = $MarginContainer/TextureRect
@@ -7,15 +11,15 @@ class_name Slot
 var item: ItemWrapper
 ## The item owner when set_item was called
 var is_grabbed: bool = false
-var player: Player
+var item_owner
 
 ## [param item] is the ItemData from which to draw quantity and texture.
 ## 
 ## There is potential for an error if [method _ready] gets called before 
 ## [method set_item]
-func set_item(player: Player, item: ItemWrapper):
+func set_item(item_owner, item: ItemWrapper):
 	self.item = item
-	self.player = player
+	self.item_owner = item_owner
 	if texture_rect and quantity_label:
 		render()
 	else:
@@ -23,7 +27,7 @@ func set_item(player: Player, item: ItemWrapper):
 		pass
 
 func render():
-	if player != item.owner:
+	if item_owner != item.owner:
 		Logger.error("mismatch in owners during inventory render")
 		# self.hide()
 		# return 
@@ -42,13 +46,10 @@ func _ready():
 	render()
 
 func _on_gui_input(event):
-	if item.owner != player:
+	if item.owner != item_owner:
 		Logger.error("Mismatch in owners during GUI event")
 		# self.hide()
 		# return
 	
-	if event is InputEventMouseButton:
-		if (event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed()):
-			player.inventory_gui.press_on_item(self)
-		elif (event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed()):
-			player.inventory_gui.show_item_menu(self)
+	if event is InputEventMouseButton and event.is_pressed():
+		item_owner.inventory_control._slot_clicked(self, event.button_index)

@@ -1,22 +1,21 @@
-extends Node2D
+extends PanelContainer
 class_name Inventory_GUI
-## NOTICE this requires set_player to initialize properly
+## The acutal GUI panel of [Inventory]. This does contain any persistant state or any authority
+## on inventory items (see [Player] for that). Nor does this handle input (see [InventoryControl]
+## for that)
+##
+## [Player] is the ultimate authority on their inventory, and [InventoryControl] handles 
+## modifications and actions on the inventory. For instance, this 
 
 const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
-const SLOT_MENU = preload("res://player/inventory/GUI/SlotMenu.tscn")
-@onready var category_container = $Main/Background/CategoryContainer
-@onready var grabbed_visual = $GrabbedSlot
+## A virtical box container for categories.
+@onready var category_container = $Background/CategoryContainer
 
-var player: Player
-var grabbed_slot: Slot
-var slot_menu
-
-## TODO: look at error debug and fix
-## TODO: make less messy (lots of if statements to decide when to open up and close item_menu for instance
-## TODO: there are literally no comments in this entire script
-
-func set_player(player: Player) -> void:
-	self.player = player
+## Signal for when the inventory panel itself is clicked with left or right mouse button.
+## See [method _on_gui_input]
+signal inventory_clicked
+## The owner of the inventory. Drop and/or add will be called on the owner.
+var inv_owner
 
 func update(items: Array[ItemWrapper]) -> void:
 	Logger.info("Creating inventory for %s" % self)
@@ -26,7 +25,7 @@ func update(items: Array[ItemWrapper]) -> void:
 	
 	var categories: Array[String]
 	for i in items:
-		var category = get_or_make_category(i.item_type.category)
+		var category: Category = get_or_make_category(i.item_type.category)
 		Logger.debug("Adding %s to %s" % [i.item_type.name, category.label])
 		category.add(i)
 
@@ -43,12 +42,13 @@ func get_or_make_category(category: String) -> VBoxContainer:
 	Logger.debug("adding new category %s" % category)
 	var new_category = CATEGORY.instantiate()
 	new_category.set_label(category)
-	new_category.set_player(player)
+	new_category.inv_owner = inv_owner
 	category_container.add_child(new_category)
 	return new_category
 
-## Returns 0 for success or -1 for error
-func delete_or_reduce_item(item: ItemWrapper) -> int:
+## If exact quantity match, delete the item. If < quantity in inventory, reduce. If there is inavlid
+## input, this will return -1, otherwise 0. This will also update the GUI.
+func delete_or_reduce(item: ItemWrapper) -> int:
 	for category in category_container.get_children():
 		if category is PanelContainer: continue
 		
@@ -68,73 +68,15 @@ func delete_or_reduce_item(item: ItemWrapper) -> int:
 	Logger.error("Attempted to remove an item from inventory that is no longer there")
 	return -1
 
-func grab_item(slot: Slot):
-	if slot.is_grabbed:
-		pass
-	else:
-		Logger.debug("Grabbed %s" % slot.item.item_type.name)
-		grabbed_visual.set_item(slot.item)
-		grabbed_visual.show()
-		grabbed_slot = slot
+## Swaps two slots in-place by swapping [member Slot.item] and calling [method Slot.render]
+func swap_slots(a: Slot, b: Slot):
+	var temp_item = a.item
+	a.item = b.item
+	b.item = temp_item
+	a.render()
+	b.render()
 
-func swap_item(slot: Slot):
-	if grabbed_slot \
-			and grabbed_slot.item.item_type.category == slot.item.item_type.category:
-		Logger.debug("Swapping %s and %s" % [slot.item.item_type.name, grabbed_slot.item.item_type.name])
-		var temp_item = grabbed_slot.item
-		grabbed_slot.item = slot.item
-		slot.item = temp_item
-		slot.render()
-		grabbed_slot.render()
-		grabbed_slot = null
-		grabbed_visual.hide()
-
-func press_on_item(slot: Slot):
-	clear_item_menu()
-	
-	if grabbed_slot:
-		swap_item(slot)
-	else:
-		grab_item(slot)
-
-func clear_item_menu():
-	if slot_menu:
-		slot_menu.queue_free()
-		slot_menu = null
-	
-func show_item_menu(slot: Slot):
-	clear_item_menu()
-	
-	if not grabbed_slot:
-		Logger.info("Creating item slot menu")
-		slot_menu = SLOT_MENU.instantiate()
-		add_child(slot_menu)
-		slot_menu.global_position = get_global_mouse_position() + Vector2(10, 10) # to slightly offset for better usability
-	
+## On input to the inventory GUI panel
 func _on_gui_input(event):
-	if event is InputEventMouseButton:
-		if (event.button_index == MOUSE_BUTTON_LEFT) \
-				or (event.button_index == MOUSE_BUTTON_RIGHT) \
-				and event.is_pressed():
-			Logger.debug("InventoryInterface: button click")
-			
-			grabbed_visual.hide()
-				
-			clear_item_menu()
-				
-			if grabbed_slot:
-				grabbed_slot = null
-
-func _physics_process(_delta):
-	if grabbed_slot and grabbed_visual:
-		grabbed_visual.global_position = get_global_mouse_position() + Vector2(10,10)
-
-
-func _on_control_gui_input(event):
-	if event is InputEventMouseButton \
-			and event.button_index == MOUSE_BUTTON_LEFT \
-			and grabbed_slot \
-			and grabbed_visual:
-		player.drop_item(grabbed_slot.item)
-		grabbed_slot = null
-		grabbed_visual.hide()
+	if event is InputEventMouseButton and event.is_pressed():
+			inventory_clicked.emit(self, event.button_index)

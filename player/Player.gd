@@ -3,13 +3,14 @@ class_name Player
 
 @onready var camera: Camera3D = $Camera3D
 @onready var healthbar: TextureProgressBar = $Healthbar
+@onready var inventory_control = $UI/InventoryControl
+@onready var inventory_gui = $UI/InventoryGUI
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var INTERACTION_DISTANCE = 2
 @export var maxHealth: int = 100
 @export var inventory: Inventory
-@onready var inventory_gui: Inventory_GUI = $UI/InventoryGUI
 
 var client_id: int
 var health: int = maxHealth : set = set_health 
@@ -31,10 +32,10 @@ func _ready():
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
 	
-	inventory_gui.set_player(self)
-	inventory_gui.update(inventory.items)
+	inventory_control.update(inventory.items)
+	inventory_control.player = self
+	inventory_gui.inv_owner = self
 	inventory.owner = self
-	rotation
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	healthbar.value = health
@@ -54,14 +55,16 @@ func _unhandled_input(event):
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 	elif event.is_action_pressed("open_inventory") and not event.is_echo():
-		if inventory_gui.visible:
+		if inventory_control.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			inventory_gui.hide()
+			inventory_control.hide()
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			var viewport = DisplayServer.window_get_size()
-			inventory_gui.update(inventory.items)
+			inventory_control.update(inventory.items)
 			inventory_gui.position = Vector2(viewport.x/2, viewport.y/2)
+			inventory_control.show()
 			inventory_gui.show()
 	# TEST for heal system. Jump is handled in [method _physics_process]
 	elif event.is_action_pressed("jump"):
@@ -69,7 +72,7 @@ func _unhandled_input(event):
 
 func drop_item(item: ItemWrapper) -> void:
 	inventory.drop(item)
-	inventory_gui.delete_or_reduce_item(item)
+	inventory_control.delete_or_reduce(item)
 
 ## Damages through [method set_health]. If health < 0, [method death] will be called.
 func damage(dmg: int):
@@ -150,7 +153,7 @@ func check_valid_method(
 
 func add_item(item: ItemWrapper):
 	if inventory.add(item):
-		inventory_gui.update(inventory.items)
+		inventory_control.update(inventory.items)
 
 func _physics_process(delta):
 	# This function will be called on each client for all player instances.

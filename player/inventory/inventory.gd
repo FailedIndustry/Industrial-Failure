@@ -9,7 +9,7 @@ var owner: Player
 func drop(item: ItemWrapper) -> int:
 	if remove(item) != 0: return -1
 	
-	create_item(item)
+	_create_item(item)
 	return 0
 
 ## Add item to inventory. CAUTION Should never be called directly, only from interaction
@@ -20,7 +20,7 @@ func add(item: ItemWrapper) -> int:
 
 ## CAUTION This should never be called directly, only from [method drop]. This
 ## will create or move ItemWrapper to a new [PhysicalItem] and place it on the ground.
-func create_item(item: ItemWrapper) -> int:
+func _create_item(item: ItemWrapper) -> int:
 	var origin = owner.camera.global_position
 	var rotation = owner.camera.global_rotation
 	var x = cos(rotation.x)*sin(rotation.y)
