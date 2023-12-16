@@ -26,17 +26,12 @@ var item_menu
 
 func _ready():
 	gui.inv_owner = player
-	gui.inventory_clicked.connect(_inventory_gui_clicked)
 
 ## If the Inventory GUI panel is clicked
 func _inventory_gui_clicked(gui: Inventory_GUI, button_index: int):
 	grabbed_visual.hide()
-	
+	grabbed_slot = null
 	clear_item_menu()
-	
-	if grabbed_slot:
-		grabbed_slot = null
-
 
 ## If the player clicks behind the invnetory GUI panel.
 func _background_gui_input(event):

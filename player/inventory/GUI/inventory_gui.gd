@@ -11,9 +11,6 @@ const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
 ## A virtical box container for categories.
 @onready var category_container = $Background/CategoryContainer
 
-## Signal for when the inventory panel itself is clicked with left or right mouse button.
-## See [method _on_gui_input]
-signal inventory_clicked
 ## The owner of the inventory. Drop and/or add will be called on the owner.
 var inv_owner
 
@@ -79,4 +76,4 @@ func swap_slots(a: Slot, b: Slot):
 ## On input to the inventory GUI panel
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.is_pressed():
-			inventory_clicked.emit(self, event.button_index)
+			inv_owner.inventory_control._inventory_gui_clicked(self, event.button_index)

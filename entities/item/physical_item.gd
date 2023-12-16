@@ -1,6 +1,5 @@
-extends Node3D
+extends RigidBody3D
 class_name PhysicalItem
-@onready var mesh = $MeshInstance3D
 @onready var area = $Area3D
 @export var item_data: ItemWrapper
 
