@@ -71,6 +71,7 @@ func _unhandled_input(event):
 		heal(10)
 
 func drop_item(item: ItemWrapper) -> void:
+	Logger.debug("Player.drop_item: Dropping %s (quantity %d)" % [item.item_type.name, item.quantity])
 	inventory.drop(item)
 	inventory_control.delete_or_reduce(item)
 

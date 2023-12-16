@@ -1,8 +1,6 @@
 extends NetworkedItem
 class_name Pickup
 
-@export var networked_item: NetworkedItem
-
 func _ready():
 	server_interact = server_function
 	client_interact = update_wrapper
@@ -15,17 +13,20 @@ func update_wrapper(player: Player):
 ## As seen in [method _ready], this is what will be called on the server. We will replicate
 ## the inventory to the player that this was called on, but no others. We will delete the object
 ## on all players via [method update].
-func server_function(item: ItemWrapper, player: Player):
-	add_item_to_player(item, player)
-	add_item_to_player.rpc_id(player.client_id)
+func server_function(player: Player):
+	add_item_to_player(player)
+	add_item_to_player.rpc_id(player.client_id, player)
 	update.rpc()
 
+## We need to send the client the item on our side because they may not have current state
+## of the item
 @rpc(
 	"authority",
 	"reliable"
-) func add_item_to_player(item: ItemWrapper, player: Player) -> void:
+) func add_item_to_player(player: Player) -> void:
 	Logger.debug("Pickupable.add_item_to_player: Adding item to player")
-	player.inventory.add(item)
+	item_data.owner = player
+	player.inventory.add(item_data)
 
 ## Delete object from all connected players. This is sent to all players in 
 ## [method add_item_to_player]

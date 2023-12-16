@@ -3,7 +3,7 @@ class_name NetworkedItem
 
 @export var item_data: ItemWrapper
 ## Function run on server after verifying raycast and in [method server_update_state]. Updating 
-## client must be done in this function too. This has the signature of (ItemWrapper, Player) -> void.
+## client must be done in this function too. This has the signature of (Player) -> void.
 ##
 ## It is suggested to use the following rpc arguments when updating the client:
 ## @rpc("authority",	# Only accept rpc calls from the server
@@ -59,7 +59,7 @@ func interact(player: Player):
 		return
 	elif verify_raycast(matches[0]):
 		Logger.debug("item.server_update_state: Raycast verfied, calling server_interact")
-		server_interact.call(item_data, matches[0])
+		server_interact.call(matches[0])
 	else:
 		Logger.debug("item.server_update_state: Raycast not verified server-side")
 
