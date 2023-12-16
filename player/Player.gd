@@ -124,32 +124,13 @@ func interact():
 		Logger.debug("Player.interact: No item found in raycast")
 		return
 	
-	if check_valid_method(result["collider"], "interact", []):
-		result["collider"].interact()
-		
-## Check for a valid method on the object matching method name and args
-## (`<object>.<method_name>(<args>)`)
-func check_valid_method(
-	object: Object, 
-	method_name: String, 
-	## Array of arguments to the function. No args would be []
-	args: Array
-) -> bool:
-		Logger.debug("Player.check_valid_method: checking functionality on %s"\
-				% object)
-		for method in object.get_method_list():
-			if method["name"] == method_name:
-				if method["args"] == args:
-					Logger.debug("Player.check_valid_method: Valid method found") 
-					return true
-				else:
-					Logger.debug("Player.check_valid_method: (args) %s != %s" \
-								% [method["args"], args])
-			else:
-				Logger.trace("Player.check_valid_method: %s != %s"\
-							% [method["name"], method_name])
-		
-		return false
+	var collider: Object = result["collider"]
+	Logger.debug("Player.interact: raycast hit %s" % collider.name)
+	for child in collider.get_children():
+		Logger.debug("Player.interact: child %s found" % child.name)
+		if child is NetworkedItem and child.has_method("interact"):
+			Logger.debug("Player.interact: child %s is NetworkedItem. Calling interact" % child.name)
+			child.interact(self)
 
 func add_item(item: ItemWrapper):
 	if inventory.add(item):

@@ -1,9 +1,11 @@
 extends Node
-@onready var main_menu = $MainMenu/CanvasLayer/MainMenu
 
 const PLAYER = preload("res://player/player.tscn")
 const Server = preload("res://multiplayer/Server.gd")
 const Client = preload("res://multiplayer/Client.gd")
+
+@onready var main_menu = $MainMenu/CanvasLayer/MainMenu
+@onready var server_global = get_node("/root/ServerGlobal")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -52,7 +54,9 @@ func add_player(peer_id):
 	
 	# this being set to peer_id is required for item's interaction check
 	# and other functions.
+	player.client_id = peer_id
 	player.name = str(peer_id)
+	server_global.players.append(player)
 	add_child(player)
 	Logger.info("Created Player")
 
