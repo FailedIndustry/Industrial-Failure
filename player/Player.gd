@@ -5,7 +5,8 @@ class_name Player
 @onready var healthbar: TextureProgressBar = $Healthbar
 @onready var inventory_control: InventoryGUICtrl = $UI/InventoryControl
 @onready var inventory_gui: InventoryGUI = $UI/InventoryGUI
-@onready var wictl: WICtl = $WICtl
+@onready var wictl = $WICtl
+@onready var mrctl = $MRCtl
 @onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
@@ -13,10 +14,6 @@ class_name Player
 @export var maxHealth: int = 100
 var client_id: int
 var health: int = maxHealth : set = set_health 
-var counter: int = 0
-var updating_rotation: bool = false
-var last_updated_rotation: Vector2
-var target_rotation: Vector2
 
 ## If this player instance is the one for the client. Obviously do not sync this.
 var _client_is_player: bool = false
@@ -50,7 +47,7 @@ func _unhandled_input(event):
 	if not _client_is_player: return
 	
 	if event is InputEventMouseMotion:
-		_update_rotation(event)
+		mrctl.update_rotation(event)
 	elif event.is_action_pressed("interact") and not event.is_echo():
 		# TEST for damage system
 		# damage(10)
@@ -71,24 +68,6 @@ func _unhandled_input(event):
 	# TEST for heal system. Jump is handled in [method _physics_process]
 	elif event.is_action_pressed("jump"):
 		heal(10)
-
-func _update_rotation(event):
-	rotate_y(-event.relative.x * MOUSE_SPEED)
-	camera.rotate_x(-event.relative.y * MOUSE_SPEED)
-	camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
-	var diff = abs(last_updated_rotation.y - rotation.y) \
-			 + abs(last_updated_rotation.x - camera.rotation.x)
-	
-	if (diff > 1) or (not updating_rotation and diff > .1):
-		last_updated_rotation = Vector2(camera.rotation.x, rotation.y)
-		updating_rotation = true
-		_client_update_rotation.rpc(camera.rotation.x, rotation.y)
-
-@rpc("any_peer", "unreliable", "call_remote")
-func _client_update_rotation(x: float, y: float):
-	Logger.debug("%s updating rotation" % multiplayer.get_unique_id())
-	updating_rotation = true
-	target_rotation = Vector2(x, y)
 
 func drop_item(item: ItemWrapper) -> void:
 	Logger.debug("Player.drop_item: Dropping %s (quantity %d)" % [item.item_type.name, item.quantity])
@@ -142,95 +121,9 @@ func add_item(item: ItemWrapper):
 	if wictl.inventory.add(item):
 		inventory_control.update(wictl.inventory.items)
 
-var pos_updated: bool = false
 func _physics_process(delta):
-	# This function will be called on each client for all player instances.
-	# This means that in a game with 4 players, each client will have this function
-	# called for all 4 players, but we do not want the player to control all 4
-	# players so we return early here.
-	if not _client_is_player:
-		if not is_on_floor():
-			velocity.y -= gravity * delta
-		move_and_slide()
-		
-		if updating_rotation:
-			var y_diff = target_rotation.y - rotation.y
-			if y_diff > PI:
-				y_diff -= 2 * PI
-			elif y_diff < -PI:
-				y_diff += 2 * PI
-			
-			var x_diff = target_rotation.x - camera.rotation.x
-			if x_diff > PI:
-				x_diff -= 2 * PI
-			elif x_diff < -PI:
-				x_diff += 2 * PI
-				
-			rotate_y(y_diff / 16 + 0.005)
-			camera.rotate_x(x_diff / 16 + 0.005)
-			if rotation.y == target_rotation.y and camera.rotation.x == target_rotation.x:
-				updating_rotation = false
-		return
-	
-	var old_vel = velocity
-	var changed_vel = false
-	
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-
-	# Handle Jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		changed_vel = true
-		Logger.trace("Player (%s) jumped with vel. y: %f" % [name, JUMP_VELOCITY])
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	var input_dir = Input.get_vector("left", "right", "up", "down")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-		Logger.trace("Moving Player %s with vel. x: %f z: %f" % [name, velocity.x, velocity.z])
+	if _client_is_player:
+		mrctl.local_move(delta)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-		
-	move_and_slide()
-		
-	counter += 1
-	if counter - 16 == 0:
-		Logger.info("Step")
-		counter = 0
-		if updating_rotation:
-			last_updated_rotation = Vector2(camera.rotation.x, rotation.y)
-			_client_update_rotation.rpc(camera.rotation.x, rotation.y)
-			updating_rotation = false
-		if not pos_updated:
-			Logger.info("Updating pos")
-			pos_updated = true
-			_server_update_pos.rpc(position)
-			return
-	
-	if changed_vel or old_vel.x != velocity.x or old_vel.z != velocity.z:
-		pos_updated = false 
-		_server_update_vel.rpc(velocity)
-	
+		mrctl.remote_move(delta)
 
-@rpc("unreliable", "any_peer")
-func _server_update_vel(vel: Vector3):
-	_update_vel.rpc(vel)
-
-@rpc("unreliable", "any_peer")
-func _server_update_pos(pos: Vector3):
-	_update_pos.rpc(pos)
-
-@rpc("call_local", "unreliable", "authority")
-func _update_vel(vel: Vector3):
-	Logger.info("%s Movnig %s with vel %s" % [multiplayer.get_unique_id(), client_id, vel])
-	velocity = vel
-	move_and_slide()
-
-@rpc("call_local", "unreliable", "authority")
-func _update_pos(pos: Vector3):
-	position = pos

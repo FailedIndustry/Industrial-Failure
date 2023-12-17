@@ -32,4 +32,3 @@ items = Array[ExtResource("3_2n0mp")]([SubResource("Resource_trvvm"), SubResourc
 [node name="WICtl" type="Node"]
 script = ExtResource("1_b6qbf")
 inventory = SubResource("Resource_shkuw")
-INTERACTION_DISTANCE = null
