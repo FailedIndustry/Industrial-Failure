@@ -3,6 +3,7 @@ class_name ItemWrapper
 
 @export var quantity: int = 1 : set = set_quantity
 @export var item_type: ItemType
+@export var id: int
 
 func set_quantity(value: int) -> void:
 	if value < 0:

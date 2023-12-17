@@ -5,12 +5,13 @@ const Server = preload("res://multiplayer/Server.gd")
 const Client = preload("res://multiplayer/Client.gd")
 
 @onready var main_menu = $MainMenu/CanvasLayer/MainMenu
-@onready var server_global = get_node("/root/ServerGlobal")
+@onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Logger.debug("Main scene ready")
 	start_logger()
+	server_global.initialize()
 	Logger.debug("Loggers initialized")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

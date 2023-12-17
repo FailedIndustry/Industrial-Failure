@@ -11,3 +11,5 @@ class_name ItemType
 @export var texture: Texture
 ## Physical representation of the item
 @export var physical_item: PackedScene = preload("res://entities/item/PhysicalItem.tscn")
+
+@export var id: int

@@ -6,11 +6,11 @@ class_name Player
 @onready var inventory_control: InventoryGUICtrl = $UI/InventoryControl
 @onready var inventory_gui: InventoryGUI = $UI/InventoryGUI
 @onready var wictl: WICtl = $WICtl
+@onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
 @export var maxHealth: int = 100
-
 var client_id: int
 var health: int = maxHealth : set = set_health 
 
@@ -38,6 +38,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	healthbar.value = health
+	wictl.inventory.items = server_global.generate_test_inv()
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return

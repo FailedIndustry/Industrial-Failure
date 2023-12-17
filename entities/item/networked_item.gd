@@ -36,6 +36,7 @@ var client_interact: Callable
 ## to identify if an item is interactable and then call the interaction through
 ## this method. See [method player.interact] for an example.
 func interact(player: Player):
+	Logger.debug("ID: %d" % multiplayer.get_unique_id())
 	Logger.debug("NetworkedItem.interact: peer_id %d interacted with item" \
 				% multiplayer.get_unique_id())
 	
@@ -47,21 +48,25 @@ func interact(player: Player):
 	 "call_local",	# Make sure client updates their local state too
 	 "reliable"		# Make sure the server gets the request
 ) func server_update_state():
+	Logger.debug("ID: %d" % multiplayer.get_unique_id())
 	var sender_id = multiplayer.get_remote_sender_id()
 	Logger.debug("NetworkedItem.server_update_state: peer_id %d interacted with item" \
 				% sender_id)
 	
 	var matches: Array[Player] = server_global.players.filter(
 		func(p): 
+			Logger.debug("Found %d" % p.client_id)
 			return p.client_id == sender_id)
 	
 	if matches.size() != 1:
 		Logger.error("NetworkedItem.server_update_state: There are %d peer_id %d" \
-					% [sender_id, matches.size()])
+					% [matches.size(), sender_id])
 		return
 	else: 
 		var player = matches[0]
-		var collider: Object = globals.interact_raycast(player)["collider"]
+		var result = globals.interact_raycast(player)
+		if not result: return -1
+		var collider: Object = result["collider"]
 		if collider.get_instance_id() == get_parent().get_instance_id():
 			server_interact.call(player)
 		else:
