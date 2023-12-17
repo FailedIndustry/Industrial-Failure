@@ -12,7 +12,7 @@ const ITEM_MENU = preload("res://player/inventory/GUI/ItemMenu.tscn")
 @onready var grabbed_visual = $GrabbedSlot
 
 ## The GUI panel of the inventory.
-@export var gui: Inventory_GUI
+@export var gui: InventoryGUI
 ## Player whose inventory this belongs to. For instance, dropping is called on this player.
 ##
 ## This may be changed to this due to multiple inventories.
@@ -28,7 +28,7 @@ func _ready():
 	gui.inv_owner = player
 
 ## If the Inventory GUI panel is clicked
-func _inventory_gui_clicked(gui: Inventory_GUI, button_index: int):
+func _inventory_gui_clicked(_gui: InventoryGUI, _button_index: int):
 	grabbed_visual.hide()
 	grabbed_slot = null
 	clear_item_menu()
@@ -117,5 +117,5 @@ func update(items: Array[ItemWrapper]):
 ## update the GUI
 ##
 ## Wrapper around [method InventoryGUI.delete_or_reduce_item]
-func delete_or_reduce(item: ItemWrapper):
-	gui.delete_or_reduce(item)
+func delete_or_reduce(item: ItemWrapper) -> int:
+	return gui.delete_or_reduce(item)

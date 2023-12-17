@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6dnkg2glqeh2"]
+
+[ext_resource type="Script" path="res://PlayerInvCtl.gd" id="1_b6qbf"]
+
+[node name="WICtl" type="Node"]
+script = ExtResource("1_b6qbf")

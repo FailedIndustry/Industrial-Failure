@@ -2,6 +2,9 @@ extends Node
 class_name NetworkedItem
 
 @export var item_data: ItemWrapper
+
+@onready var globals: Globals = get_node("/root/Globals")
+
 ## Function run on server after verifying raycast and in [method server_update_state]. Updating 
 ## client must be done in this function too. This has the signature of (Player) -> void.
 ##
@@ -33,7 +36,7 @@ var client_interact: Callable
 ## to identify if an item is interactable and then call the interaction through
 ## this method. See [method player.interact] for an example.
 func interact(player: Player):
-	Logger.debug("item.interact: peer_id %d interacted with item" \
+	Logger.debug("NetworkedItem.interact: peer_id %d interacted with item" \
 				% multiplayer.get_unique_id())
 	
 	client_interact.call(player)
@@ -45,44 +48,21 @@ func interact(player: Player):
 	 "reliable"		# Make sure the server gets the request
 ) func server_update_state():
 	var sender_id = multiplayer.get_remote_sender_id()
-	Logger.debug("%s" %multiplayer.get_unique_id())
-	Logger.debug("item.server_update_state: peer_id %d interacted with item" \
+	Logger.debug("NetworkedItem.server_update_state: peer_id %d interacted with item" \
 				% sender_id)
 	
 	var matches: Array[Player] = server_global.players.filter(
 		func(p): 
-			Logger.debug("%s == %s" % [p.client_id, sender_id])
 			return p.client_id == sender_id)
+	
 	if matches.size() != 1:
-		Logger.error("item.server_update_state: peer_id %d not found in player list" \
-					% sender_id)
+		Logger.error("NetworkedItem.server_update_state: There are %d peer_id %d" \
+					% [sender_id, matches.size()])
 		return
-	elif verify_raycast(matches[0]):
-		Logger.debug("item.server_update_state: Raycast verfied, calling server_interact")
-		server_interact.call(matches[0])
-	else:
-		Logger.debug("item.server_update_state: Raycast not verified server-side")
-
-func verify_raycast(player: Player) -> bool:
-	const ITEM_MASK = 0b100
-	var origin = player.camera.global_position
-	var rotation = player.global_rotation
-	var x = cos(rotation.x)*sin(rotation.y)
-	var z = cos(rotation.x)*cos(rotation.y)
-	var y = sin(rotation.x)
-	var end = origin + Vector3(-x,y,-z).normalized() * 2
-	
-	var query = PhysicsRayQueryParameters3D.create(origin, end)
-	query.collide_with_areas = true
-	query.collision_mask = ITEM_MASK
-	
-	var result = get_parent().get_world_3d().direct_space_state.intersect_ray(query)
-	if result.is_empty():
-		Logger.debug("item.verify_raycast: No item found in raycast")
-		return false
-	elif result["collider_id"] == get_parent().get_instance_id():
-		Logger.debug("item.verify_raycast: Raycast verified")
-		return true
-	else:
-		Logger.debug("item.verify_raycast: Raycast found wrong object in raycast")
-		return false
+	else: 
+		var player = matches[0]
+		var collider: Object = globals.interact_raycast(player)["collider"]
+		if collider.get_instance_id() == get_parent().get_instance_id():
+			server_interact.call(player)
+		else:
+			Logger.debug("NetworkedItem.server_update_state: mismatch in collision object IDs")

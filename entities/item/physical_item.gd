@@ -26,7 +26,7 @@ func server_function(player: Player):
 ) func add_item_to_player(player: Player) -> void:
 	Logger.debug("Pickupable.add_item_to_player: Adding item to player")
 	item_data.owner = player
-	player.inventory.add(item_data)
+	player.wictl.inventory.add(item_data)
 
 ## Delete object from all connected players. This is sent to all players in 
 ## [method add_item_to_player]

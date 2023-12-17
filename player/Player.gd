@@ -3,14 +3,13 @@ class_name Player
 
 @onready var camera: Camera3D = $Camera3D
 @onready var healthbar: TextureProgressBar = $Healthbar
-@onready var inventory_control = $UI/InventoryControl
-@onready var inventory_gui = $UI/InventoryGUI
+@onready var inventory_control: InventoryGUICtrl = $UI/InventoryControl
+@onready var inventory_gui: InventoryGUI = $UI/InventoryGUI
+@onready var wictl: WICtl = $WICtl
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3
 @export var MOUSE_SPEED = 0.0015
-@export var INTERACTION_DISTANCE = 2
 @export var maxHealth: int = 100
-@export var inventory: Inventory
 
 var client_id: int
 var health: int = maxHealth : set = set_health 
@@ -32,10 +31,10 @@ func _ready():
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
 	
-	inventory_control.update(inventory.items)
+	inventory_control.update(wictl.inventory.items)
 	inventory_control.player = self
 	inventory_gui.inv_owner = self
-	inventory.owner = self
+	wictl.inventory.owner = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	healthbar.value = health
@@ -62,7 +61,7 @@ func _unhandled_input(event):
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			var viewport = DisplayServer.window_get_size()
-			inventory_control.update(inventory.items)
+			inventory_control.update(wictl.inventory.items)
 			inventory_gui.position = Vector2(viewport.x/2, viewport.y/2)
 			inventory_control.show()
 			inventory_gui.show()
@@ -72,8 +71,8 @@ func _unhandled_input(event):
 
 func drop_item(item: ItemWrapper) -> void:
 	Logger.debug("Player.drop_item: Dropping %s (quantity %d)" % [item.item_type.name, item.quantity])
-	inventory.drop(item)
-	inventory_control.delete_or_reduce(item)
+	if inventory_control.delete_or_reduce(item) == 0:
+		wictl.drop_item(item)
 
 ## Damages through [method set_health]. If health < 0, [method death] will be called.
 func damage(dmg: int):
@@ -108,34 +107,11 @@ func respawn():
 ## Players interact function. If an interactive object is found, it will be
 ## sent to that object's interact function. See [method item.interact]
 func interact():
-	const ITEM_MASK = 0b100
-	var origin = camera.global_position
-	var rotation = camera.global_rotation
-	var z = cos(rotation.x)*cos(rotation.y)
-	var y = sin(rotation.x)
-	var x = cos(rotation.x)*sin(rotation.y)
-	var end = origin + Vector3(-x,y,-z).normalized() * INTERACTION_DISTANCE
-	
-	var query = PhysicsRayQueryParameters3D.create(origin, end)
-	query.collide_with_areas = true
-	query.collision_mask = ITEM_MASK
-	
-	var result = get_world_3d().direct_space_state.intersect_ray(query)
-	if result.is_empty():
-		Logger.debug("Player.interact: No item found in raycast")
-		return
-	
-	var collider: Object = result["collider"]
-	Logger.debug("Player.interact: raycast hit %s" % collider.name)
-	for child in collider.get_children():
-		Logger.debug("Player.interact: child %s found" % child.name)
-		if child is NetworkedItem and child.has_method("interact"):
-			Logger.debug("Player.interact: child %s is NetworkedItem. Calling interact" % child.name)
-			child.interact(self)
+	wictl.interact()
 
 func add_item(item: ItemWrapper):
-	if inventory.add(item):
-		inventory_control.update(inventory.items)
+	if wictl.inventory.add(item):
+		inventory_control.update(wictl.inventory.items)
 
 func _physics_process(delta):
 	# This function will be called on each client for all player instances.

@@ -24,6 +24,7 @@ func add(item: ItemWrapper) -> int:
 ## will create or move ItemWrapper to a new [PhysicalItem] and place it on the ground.
 func _create_item(item: ItemWrapper) -> int:
 	Logger.debug("Inventory: Creating %s" % item.item_type.name)
+	var mask = 0b111111111101
 	var origin = owner.camera.global_position
 	var rotation = owner.camera.global_rotation
 	var x = cos(rotation.x)*sin(rotation.y)
@@ -33,7 +34,7 @@ func _create_item(item: ItemWrapper) -> int:
 	
 	var space_state = owner.get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(origin, end)
-	query.collision_mask = 0x111
+	query.collision_mask = mask
 	var result = space_state.intersect_ray(query)
 	if result:
 		end = result["position"]
@@ -43,8 +44,9 @@ func _create_item(item: ItemWrapper) -> int:
 	for child in physical_item.get_children():
 		if child is NetworkedItem:
 			child.item_data = item
-	world.add_child(physical_item)
 	physical_item.global_position = end
+	world.add_child(physical_item)
+	Logger.info("%s" % end)
 	return 0
 
 ## Removes the item passed in from inventory. Can be a fraction of what the player actually has.

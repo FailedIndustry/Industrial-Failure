@@ -17,9 +17,9 @@ var item_owner
 ## 
 ## There is potential for an error if [method _ready] gets called before 
 ## [method set_item]
-func set_item(item_owner, item: ItemWrapper):
-	self.item = item
-	self.item_owner = item_owner
+func set_item(_item_owner: Object, _item: ItemWrapper):
+	self.item = _item
+	self.item_owner = _item_owner
 	if texture_rect and quantity_label:
 		render()
 	else:

@@ -1,55 +1,17 @@
-[gd_scene load_steps=25 format=3 uid="uid://d221bbe81j2o8"]
+[gd_scene load_steps=22 format=3 uid="uid://d221bbe81j2o8"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_ldrkm"]
-[ext_resource type="Resource" uid="uid://de820ux77e5ik" path="res://entities/items/Item1.tres" id="3_f8udo"]
-[ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="4_ahwjo"]
-[ext_resource type="Resource" uid="uid://7j4wxqrlbf7y" path="res://entities/items/Item2.tres" id="5_i3tof"]
-[ext_resource type="Script" path="res://player/inventory/inventory.gd" id="5_mpxmp"]
-[ext_resource type="Resource" uid="uid://bujw87o7kds1t" path="res://entities/items/Item3.tres" id="5_uv47r"]
 [ext_resource type="PackedScene" uid="uid://dwagi3friv266" path="res://player/inventory/InventoryControl.tscn" id="7_ajdw6"]
+[ext_resource type="PackedScene" uid="uid://c6dnkg2glqeh2" path="res://PlayerWICtl.tscn" id="7_tyi4r"]
 [ext_resource type="PackedScene" uid="uid://b4ssee72hbxdj" path="res://player/inventory/GUI/InventryGUI.tscn" id="8_0ioe3"]
+[ext_resource type="Resource" uid="uid://de820ux77e5ik" path="res://entities/items/Item1.tres" id="8_de15u"]
 [ext_resource type="Texture2D" uid="uid://cct550e52ibdj" path="res://player/health/textures/backhealthbar.png" id="8_kp41m"]
 [ext_resource type="Texture2D" uid="uid://dtkyhc37ku0mp" path="res://player/health/textures/border.png" id="9_0ht04"]
+[ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="9_in1ka"]
+[ext_resource type="Resource" uid="uid://7j4wxqrlbf7y" path="res://entities/items/Item2.tres" id="10_g5nnr"]
 [ext_resource type="Texture2D" uid="uid://odclbl6v2on6" path="res://player/health/textures/healthbar.png" id="10_r60m7"]
-
-[sub_resource type="Resource" id="Resource_c3dnv"]
-script = ExtResource("4_ahwjo")
-quantity = 1
-item_type = ExtResource("3_f8udo")
-
-[sub_resource type="Resource" id="Resource_2702t"]
-script = ExtResource("4_ahwjo")
-quantity = 1
-item_type = ExtResource("5_i3tof")
-
-[sub_resource type="Resource" id="Resource_q1w1d"]
-script = ExtResource("4_ahwjo")
-quantity = 1
-item_type = ExtResource("5_uv47r")
-
-[sub_resource type="Resource" id="Resource_jk0yl"]
-script = ExtResource("4_ahwjo")
-quantity = 1
-item_type = ExtResource("3_f8udo")
-
-[sub_resource type="Resource" id="Resource_7bpwg"]
-script = ExtResource("4_ahwjo")
-quantity = 1
-item_type = ExtResource("3_f8udo")
-
-[sub_resource type="Resource" id="Resource_fk212"]
-script = ExtResource("4_ahwjo")
-quantity = 1
-item_type = ExtResource("3_f8udo")
-
-[sub_resource type="Resource" id="Resource_2rskw"]
-script = ExtResource("4_ahwjo")
-quantity = 1
-item_type = ExtResource("3_f8udo")
-
-[sub_resource type="Resource" id="Resource_ruk88"]
-script = ExtResource("5_mpxmp")
-items = Array[ExtResource("4_ahwjo")]([SubResource("Resource_c3dnv"), SubResource("Resource_2702t"), SubResource("Resource_q1w1d"), SubResource("Resource_jk0yl"), SubResource("Resource_7bpwg"), SubResource("Resource_fk212"), SubResource("Resource_2rskw")])
+[ext_resource type="Resource" uid="uid://bujw87o7kds1t" path="res://entities/items/Item3.tres" id="11_xyuhh"]
+[ext_resource type="Script" path="res://player/inventory/inventory.gd" id="12_eyrjk"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rmgbt"]
 properties/0/path = NodePath(".:position")
@@ -70,12 +32,30 @@ properties/2/replication_mode = 1
 
 [sub_resource type="SphereMesh" id="SphereMesh_7wu1w"]
 
+[sub_resource type="Resource" id="Resource_781fl"]
+script = ExtResource("9_in1ka")
+quantity = 10
+item_type = ExtResource("8_de15u")
+
+[sub_resource type="Resource" id="Resource_fvisq"]
+script = ExtResource("9_in1ka")
+quantity = 5
+item_type = ExtResource("10_g5nnr")
+
+[sub_resource type="Resource" id="Resource_dpam4"]
+script = ExtResource("9_in1ka")
+quantity = 1
+item_type = ExtResource("11_xyuhh")
+
+[sub_resource type="Resource" id="Resource_g3t60"]
+script = ExtResource("12_eyrjk")
+items = Array[ExtResource("9_in1ka")]([SubResource("Resource_781fl"), SubResource("Resource_fvisq"), SubResource("Resource_dpam4")])
+
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_ldrkm")
-inventory = SubResource("Resource_ruk88")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.526454, -0.176086)
@@ -117,3 +97,6 @@ texture_under = ExtResource("8_kp41m")
 texture_over = ExtResource("9_0ht04")
 texture_progress = ExtResource("10_r60m7")
 metadata/_edit_use_anchors_ = true
+
+[node name="WICtl" parent="." instance=ExtResource("7_tyi4r")]
+inventory = SubResource("Resource_g3t60")

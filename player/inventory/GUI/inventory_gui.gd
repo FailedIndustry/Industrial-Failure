@@ -1,5 +1,5 @@
 extends PanelContainer
-class_name Inventory_GUI
+class_name InventoryGUI
 ## The acutal GUI panel of [Inventory]. This does contain any persistant state or any authority
 ## on inventory items (see [Player] for that). Nor does this handle input (see [InventoryControl]
 ## for that)
@@ -20,7 +20,6 @@ func update(items: Array[ItemWrapper]) -> void:
 		if child is PanelContainer: continue
 		child.queue_free()
 	
-	var categories: Array[String]
 	for i in items:
 		var category: Category = get_or_make_category(i.item_type.category)
 		Logger.debug("Adding %s to %s" % [i.item_type.name, category.label])
@@ -53,12 +52,17 @@ func delete_or_reduce(item: ItemWrapper) -> int:
 			for slot: Slot in category.grid_container.get_children():
 				if slot.item.item_type == item.item_type:
 					if slot.item.quantity > item.quantity:
+						Logger.debug("inventory_gui.delete_or_reduce: reducing %s by %d"
+									% [slot.item.item_type.name, slot.item.quantity])
 						slot.item.quantity -= item.quantity
 						return 0
 					elif slot.item.quantity == item.quantity:
+						Logger.debug("inventory_gui.delete_or_reduce: removing %s"
+									% slot.item.item_type.name)
 						slot.queue_free()
+						return 0
 					else:
-						Logger.error("inventory_gui.delete_or_reduce_item: quantity mistmatch")
+						Logger.error("inventory_gui.delete_or_reduce: quantity mistmatch")
 						return -1
 		
 	# if no matches were found, return an error
