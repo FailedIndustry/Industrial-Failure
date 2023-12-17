@@ -26,7 +26,7 @@ func _ready():
 func drop_item(item: ItemWrapper):
 	Logger.debug("wictl.drop_item")
 	_drop_completed = -1
-	_server_drop_item.rpc_id(0, item.id, item.item_type.id, item.quantity)
+	_server_drop_item.rpc_id(1, item.id, item.item_type.id, item.quantity)
 	
 	return 0
 
@@ -34,6 +34,10 @@ func drop_item(item: ItemWrapper):
 ## In the case of error, -1 is returned
 @rpc ("reliable","any_peer","call_local") 
 func _server_drop_item(item_id:int, type_id: int, quantity: int) -> int:
+	push_error("server")
+	Logger.debug("%s" % multiplayer.get_remote_sender_id())
+	Logger.debug("%s" % multiplayer.get_peers())
+	Logger.debug("%s" % multiplayer.get_unique_id())
 	var item = ItemWrapper.new()
 	item.id = item_id
 	item.quantity = quantity
