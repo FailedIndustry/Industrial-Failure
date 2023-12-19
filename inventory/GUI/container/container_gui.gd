@@ -14,6 +14,7 @@ const CATEGORY = preload("res://inventory/GUI/Category.tscn")
 ## The owner of the inventory. Drop and/or add will be called on the owner.
 var player: Player
 var external: ContainerItem
+
 func update(inv_owner: Object, pl_items: Array[ItemWrapper], ex_items: Array[ItemWrapper]) -> void:
 	_update_container(inv_owner, pl_items, pl_cat_container)
 	_update_container(inv_owner, ex_items, ex_cat_container)
@@ -79,14 +80,3 @@ func swap_slots(a: Slot, b: Slot):
 	b.item = temp_item
 	a.render()
 	b.render()
-
-## On input to the inventory GUI panel
-func _on_gui_input(event):
-	if event is InputEventMouseButton and event.is_pressed():
-			inv_owner.inventory_control._inventory_gui_clicked(self, event.button_index)
-
-func _on_player_gui_input(event):
-	pass # Replace with function body.
-
-func _on_external_gui_input(event):
-	pass # Replace with function body.

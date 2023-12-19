@@ -26,7 +26,7 @@ var server_interact: Callable
 ##
 ## Use [method server_update_state].rpc(0) to make sure that the call is sent to the server.
 var client_interact: Callable
-@onready var server_global = get_node("/root/ServerGlobal")
+@onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
 
 ## Interact entry point for each local item. This will be sent to the server
 ## in another function.

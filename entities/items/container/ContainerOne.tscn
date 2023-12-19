@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://3d0vaqnydf52"]
+[gd_scene load_steps=4 format=3 uid="uid://hffhwj1hnvfq"]
 
-[ext_resource type="PackedScene" uid="uid://cc6r4lxld2o0q" path="res://entities/items/Pickupable.tscn" id="1_tly31"]
+[ext_resource type="PackedScene" uid="uid://dkgy33bxu850" path="res://entities/items/container/container.tscn" id="1_mtgmg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k6ygt"]
 size = Vector3(2, 2, 2)
@@ -20,4 +20,4 @@ shape = SubResource("BoxShape3D_k6ygt")
 mesh = SubResource("BoxMesh_3irdy")
 skeleton = NodePath("../..")
 
-[node name="Pickupable" parent="." instance=ExtResource("1_tly31")]
+[node name="Container" parent="." instance=ExtResource("1_mtgmg")]

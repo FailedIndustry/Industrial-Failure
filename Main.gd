@@ -11,7 +11,6 @@ const Client = preload("res://multiplayer/Client.gd")
 func _ready():
 	Logger.debug("Main scene ready")
 	start_logger()
-	server_global.initialize()
 	Logger.debug("Loggers initialized")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

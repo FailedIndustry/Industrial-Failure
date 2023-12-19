@@ -100,6 +100,7 @@ func interact():
 	var collider: Object = result["collider"]
 	Logger.debug("WICtl.interact: raycast hit %s" % collider.name)
 	for child in collider.get_children():
+		Logger.debug("%s" % child)
 		if child is NetworkedItem and child.has_method("interact"):
 			Logger.debug("WICtl.interact: child %s is NetworkedItem. Calling interact" % child.name)
 			child.interact(player)
