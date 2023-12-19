@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://dndmrhxy0lg5b" path="res://world/world_environment.tscn" id="1_v4ulg"]
 [ext_resource type="Script" path="res://Main.gd" id="1_wum0p"]
-[ext_resource type="PackedScene" uid="uid://cqmlxq11rejq3" path="res://entities/item/PhysicalItem.tscn" id="3_h6s8g"]
-[ext_resource type="PackedScene" uid="uid://8xrn3nift1qn" path="res://testing/physics_tester.tscn" id="4_r6prq"]
-[ext_resource type="PackedScene" uid="uid://b0n6ph0jj5bwf" path="res://testing/Other.tscn" id="5_s68u2"]
+[ext_resource type="PackedScene" uid="uid://cqmlxq11rejq3" path="res://entities/items/PhysicalItem.tscn" id="3_h6s8g"]
+[ext_resource type="PackedScene" uid="uid://8xrn3nift1qn" path="res://player/inventory/testing/physics_tester.tscn" id="4_r6prq"]
+[ext_resource type="PackedScene" uid="uid://b0n6ph0jj5bwf" path="res://player/inventory/testing/Other.tscn" id="5_s68u2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bavfq"]
 

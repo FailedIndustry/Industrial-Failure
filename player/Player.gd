@@ -5,8 +5,8 @@ class_name Player
 @onready var healthbar: TextureProgressBar = $Healthbar
 @onready var inventory_control: InventoryGUICtrl = $UI/InventoryControl
 @onready var inventory_gui: InventoryGUI = $UI/InventoryGUI
-@onready var wictl = $WICtl
-@onready var mrctl = $MRCtl
+@onready var wictl: WICtl = $WICtl
+@onready var mrctl: MRCtl = $MRCtl
 @onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 3

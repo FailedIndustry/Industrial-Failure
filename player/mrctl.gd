@@ -7,43 +7,54 @@ var updating_rotation: bool = false
 var last_updated_rotation: Vector2
 var target_rotation: Vector2
 var pos_updated: bool = false
+var old_vel: Vector3
+var changed_vel = false
 
 var _player: Player
 
 func _ready():
 	_player = get_parent()
+	old_vel = _player.velocity
+
+var pos_smooth: Vector3
+var pos_diff: Vector3
+func new_pos(new_pos: Vector3):
+	pos_diff = new_pos - _player.position
+	# Take 1 second to update
+	pos_smooth = pos_diff
 
 func remote_move(delta):
-		if not _player.is_on_floor():
-			_player.velocity.y -= _player.gravity * delta
-		Logger.debug("%s vel: %s" % [multiplayer.get_unique_id(), _player.velocity])
-		_player.move_and_slide()
+	if not _player.is_on_floor():
+		_player.velocity.y -= _player.gravity * delta
+	if pos_diff < pos_smooth * delta:
+		pos_smooth = pos_diff
+	_player.velocity += pos_smooth * delta
+	pos_diff -= pos_smooth * delta
+	_player.move_and_slide()
+	
+	if updating_rotation:
+		var y_diff = target_rotation.y - _player.rotation.y
+		if y_diff > PI:
+			y_diff -= 2 * PI
+		elif y_diff < -PI:
+			y_diff += 2 * PI
 		
-		if updating_rotation:
-			var y_diff = target_rotation.y - _player.rotation.y
-			if y_diff > PI:
-				y_diff -= 2 * PI
-			elif y_diff < -PI:
-				y_diff += 2 * PI
+		var x_diff = target_rotation.x - _player.camera.rotation.x
+		if x_diff > PI:
+			x_diff -= 2 * PI
+		elif x_diff < -PI:
+			x_diff += 2 * PI
 			
-			var x_diff = target_rotation.x - _player.camera.rotation.x
-			if x_diff > PI:
-				x_diff -= 2 * PI
-			elif x_diff < -PI:
-				x_diff += 2 * PI
-				
-			_player.rotate_y(y_diff / 16 + 0.005)
-			_player.camera.rotate_x(x_diff / 16 + 0.005)
-			if _player.rotation.y == target_rotation.y and _player.camera.rotation.x == target_rotation.x:
-				updating_rotation = false
+		_player.rotate_y(y_diff / 16 + 0.005)
+		_player.camera.rotate_x(x_diff / 16 + 0.005)
+		if _player.rotation.y == target_rotation.y and _player.camera.rotation.x == target_rotation.x:
+			updating_rotation = false
 
 func local_move(delta):
 	# This function will be called on each client for all _player instances.
 	# This means that in a game with 4 _players, each client will have this function
 	# called for all 4 _players, but we do not want the _player to control all 4
 	# _players so we return early here.
-	var old_vel = _player.velocity
-	var changed_vel = false
 	
 	# Add the gravity.
 	if not _player.is_on_floor():
@@ -67,35 +78,45 @@ func local_move(delta):
 		_player.velocity.x = move_toward(_player.velocity.x, 0, _player.SPEED)
 		_player.velocity.z = move_toward(_player.velocity.z, 0, _player.SPEED)
 		
+	_player.velocity.x = clamp(_player.velocity.x, -2 * _player.SPEED, 2 * _player.SPEED)
+	_player.velocity.y = clamp(_player.velocity.y, -2 * _player.SPEED, 2 * _player.SPEED)
 	_player.move_and_slide()
 		
 	counter += 1
-	if counter - 16 == 0:
-		Logger.info("Step")
+	if counter == 128:
 		counter = 0
 		if updating_rotation:
 			last_updated_rotation = Vector2(_player.camera.rotation.x, _player.rotation.y)
 			_client_update_rotation.rpc(_player.camera.rotation.x, _player.rotation.y)
 			updating_rotation = false
 		if not pos_updated:
-			Logger.info("Updating pos")
+			Logger.info("fdjskl")
 			pos_updated = true
 			_server_update_pos.rpc(_player.position)
 			return
 	
-	if changed_vel or old_vel.x != _player.velocity.x or old_vel.z != _player.velocity.z:
-		pos_updated = false 
-		_server_update_vel(_player.velocity)
+	vel_updated = vel_updated or (changed_vel or old_vel.x != _player.velocity.x or old_vel.z != _player.velocity.z)
+	if vel_updated:
+		pos_updated = false
+		accumulate += _player.velocity
+		vel_counter += 1
+		if vel_counter == 4:
+			vel_updated = false
+			old_vel = accumulate / vel_counter
+			_server_update_vel.rpc(accumulate / vel_counter)
+			vel_counter = 0
+			accumulate = Vector3.ZERO
 
+var vel_counter: int
+var accumulate: Vector3 = Vector3.ZERO
+var vel_updated: bool = false
 @rpc("unreliable", "any_peer")
 func _server_update_vel(vel: Vector3):
 	_update_vel.rpc(vel)
 
-@rpc("call_local", "unreliable", "any_peer")
+@rpc("call_local", "unreliable", "authority")
 func _update_vel(vel: Vector3):
-	Logger.info("%s Movnig %s with vel %s" % [multiplayer.get_unique_id(), _player.client_id, vel])
 	_player.velocity = vel
-	Logger.info("fds %s %s" % [multiplayer.get_unique_id(), _player.velocity])
 	_player.move_and_slide()
 
 @rpc("unreliable", "any_peer")
@@ -104,7 +125,8 @@ func _server_update_pos(pos: Vector3):
 
 @rpc("call_local", "unreliable", "authority")
 func _update_pos(pos: Vector3):
-	_player.position = pos
+	Logger.info("%s" % (_player.position - pos))
+	new_pos(pos)
 
 func update_rotation(event):
 	_player.rotate_y(-event.relative.x * _player.MOUSE_SPEED)
@@ -120,6 +142,5 @@ func update_rotation(event):
 
 @rpc("any_peer", "unreliable", "call_remote")
 func _client_update_rotation(x: float, y: float):
-	Logger.debug("%s updating rotation" % multiplayer.get_unique_id())
 	updating_rotation = true
 	target_rotation = Vector2(x, y)

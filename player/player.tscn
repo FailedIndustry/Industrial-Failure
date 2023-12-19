@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=3 uid="uid://d221bbe81j2o8"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_ldrkm"]
-[ext_resource type="PackedScene" uid="uid://dwagi3friv266" path="res://player/inventory/InventoryControl.tscn" id="7_ajdw6"]
-[ext_resource type="PackedScene" uid="uid://c6dnkg2glqeh2" path="res://PlayerWICtl.tscn" id="7_tyi4r"]
-[ext_resource type="PackedScene" uid="uid://b4ssee72hbxdj" path="res://player/inventory/GUI/InventryGUI.tscn" id="8_0ioe3"]
+[ext_resource type="PackedScene" uid="uid://dwagi3friv266" path="res://inventory/GUI/player/InventoryControl.tscn" id="7_ajdw6"]
+[ext_resource type="PackedScene" uid="uid://c6dnkg2glqeh2" path="res://player/PlayerWICtl.tscn" id="7_tyi4r"]
+[ext_resource type="PackedScene" uid="uid://b4ssee72hbxdj" path="res://inventory/GUI/player/PlayerInventoryGUI.tscn" id="8_0ioe3"]
 [ext_resource type="Texture2D" uid="uid://cct550e52ibdj" path="res://player/health/textures/backhealthbar.png" id="8_kp41m"]
 [ext_resource type="PackedScene" uid="uid://c45v68a2fecq2" path="res://player/MRCtl.tscn" id="8_loiln"]
 [ext_resource type="Texture2D" uid="uid://dtkyhc37ku0mp" path="res://player/health/textures/border.png" id="9_0ht04"]
