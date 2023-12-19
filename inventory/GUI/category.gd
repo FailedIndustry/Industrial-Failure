@@ -4,7 +4,7 @@ class_name Category
 
 @onready var grid_container = $GridContainer
 @onready var rich_text_label = $CategoryLabel/RichTextLabel
-const SLOT = preload("res://player/inventory/GUI/Slot.tscn")
+const SLOT = preload("res://inventory/GUI/Slot.tscn")
 
 var items: Array[ItemWrapper]
 ## The owner of the category/inventory this represents.

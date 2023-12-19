@@ -4,7 +4,7 @@ class_name InventoryGUICtrl
 ## as a wrapper around [InventoryGUI]. This has not authority on [Inventory], only
 ## [Player] has this, but it will call [Player] for such things.
 
-const ITEM_MENU = preload("res://player/inventory/GUI/ItemMenu.tscn")
+const ITEM_MENU = preload("res://inventory/GUI/ItemMenu.tscn")
 ## The visual representation of the slot that has been grabbed. This only replicates
 ## texture and quantity label. 
 ##

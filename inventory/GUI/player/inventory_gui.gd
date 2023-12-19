@@ -7,7 +7,7 @@ class_name InventoryGUI
 ## [Player] is the ultimate authority on their inventory, and [InventoryControl] handles 
 ## modifications and actions on the inventory. For instance, this 
 
-const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
+const CATEGORY = preload("res://inventory/GUI/Category.tscn")
 ## A virtical box container for categories.
 @onready var category_container = $Background/CategoryContainer
 

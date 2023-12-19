@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqmlxq11rejq3"]
+[gd_scene load_steps=4 format=3 uid="uid://dcxeeuo5e7y0t"]
 
-[ext_resource type="PackedScene" uid="uid://cc6r4lxld2o0q" path="res://entities/item/Pickupable.tscn" id="1_tly31"]
+[ext_resource type="PackedScene" uid="uid://cc6r4lxld2o0q" path="res://entities/items/Pickupable.tscn" id="1_tly31"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k6ygt"]
 size = Vector3(2, 2, 2)

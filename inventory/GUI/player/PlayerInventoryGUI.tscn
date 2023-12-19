@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b4ssee72hbxdj"]
 
-[ext_resource type="Script" path="res://player/inventory/GUI/inventory_gui.gd" id="1_6jkmk"]
+[ext_resource type="Script" path="res://inventory/GUI/player/inventory_gui.gd" id="1_gnbgg"]
 
 [node name="Gui" type="PanelContainer"]
 anchors_preset = 8
@@ -14,7 +14,7 @@ offset_right = 200.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_6jkmk")
+script = ExtResource("1_gnbgg")
 
 [node name="Background" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(400, 400)
