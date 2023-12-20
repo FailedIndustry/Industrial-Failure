@@ -2,9 +2,10 @@ extends NetworkedItem
 class_name ContainerItem
 
 var inventory: Array[ItemWrapper]
+var inventory_control: ContainerGUICtrl
 
 func _ready():
-	inventory = server_global.generate_test_inv()
+	inventory = server_global.generate_test_inv(self)
 	server_interact = server_function
 	client_interact = open_container
 
@@ -50,7 +51,9 @@ func open_container(player: Player):
 	Logger.debug("open_container2")
 	var gui: ContainterContainer = CONTAINER_INVENTORY_GUI.instantiate()
 	gui.create(player, self)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	player.add_child(gui)
+	inventory_control = gui.container_control
 
 func server_function(player: Player):
 	pass

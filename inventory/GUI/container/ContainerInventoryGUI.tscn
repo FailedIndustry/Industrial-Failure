@@ -7,9 +7,7 @@
 [node name="Node" type="Node2D"]
 script = ExtResource("1_krhaj")
 
-[node name="ContainerControl" parent="." node_paths=PackedStringArray("player_gui", "container_gui") instance=ExtResource("1_s20rp")]
-player_gui = NodePath("../HBoxContainer/Player")
-container_gui = NodePath("../HBoxContainer/External")
+[node name="ContainerControl" parent="." instance=ExtResource("1_s20rp")]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchors_preset = 8

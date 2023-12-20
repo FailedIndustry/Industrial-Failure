@@ -1,4 +1,3 @@
-
 extends Node2D
 class_name ContainerGUICtrl
 ## The control for [InventoryGUI]. This is handles player input to the gui and serves 
@@ -13,12 +12,9 @@ const ITEM_MENU = preload("res://inventory/GUI/ItemMenu.tscn")
 @onready var grabbed_visual = $GrabbedSlot
 
 ## The GUI panel of the inventory.
-@export var player_gui: InventoryGUI
-@export var container_gui: InventoryGUI
+@onready var container_gui: InventoryGUI = $"../HBoxContainer/External"
+@onready var player_gui: InventoryGUI = $"../HBoxContainer/Player"
 
-## Player whose inventory this belongs to. For instance, dropping is called on this player.
-##
-## This may be changed to this due to multiple inventories.
 @export var player: Player
 @export var container: ContainerItem
 
@@ -29,16 +25,16 @@ var grabbed_slot: Slot
 var item_menu
 
 func _ready():
-	player_gui.inv_owner = player
+	player_gui.inv_owner = container
 	container_gui.inv_owner = container
 
 ## If the Inventory GUI panel is clicked
-func _player_gui_clicked(_gui: InventoryGUI, _button_index: int):
+func _player_gui_clicked(_button_index: int):
 	grabbed_visual.hide()
 	grabbed_slot = null
 	clear_item_menu()
 
-func _external_gui_clicked(_gui: InventoryGUI, _button_index: int):
+func _external_gui_clicked(_button_index: int):
 	grabbed_visual.hide()
 	grabbed_slot = null
 	clear_item_menu()
@@ -97,14 +93,14 @@ func press_on_item(slot: Slot):
 	clear_item_menu()
 	
 	if grabbed_slot:
-		if grabbed_slot.item_owner == slot.item_owner:
-			if slot.item_owner == player:
+		if grabbed_slot.item.owner == slot.item.owner:
+			if slot.item.owner == player:
 				swap_item(player_gui, slot)
 			else:
 				swap_item(container_gui, slot)
-		elif grabbed_slot.item_owner == player:
+		elif grabbed_slot.item.owner == player:
 			container.take_from_player(player, grabbed_slot.item)
-		elif grabbed_slot.item_owner == container:
+		elif grabbed_slot.item.owner == container:
 			player.wictl.take_from_container(container, grabbed_slot.item)
 		else:
 			Logger.error("container_control.press_on_item: Grabbed slot is not from an attached container or player")
@@ -127,3 +123,7 @@ func show_item_menu(slot: Slot):
 		add_child(item_menu)
 		 # to slightly offset for better usability
 		item_menu.global_position = get_global_mouse_position() + Vector2(10, 10)
+
+func _inventory_gui_clicked(gui: InventoryGUI, button_index: int):
+	if gui == player_gui: _player_gui_clicked(button_index)
+	elif gui == container_gui: _external_gui_clicked(button_index)

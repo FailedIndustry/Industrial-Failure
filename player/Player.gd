@@ -41,7 +41,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = true
 	healthbar.value = health
-	wictl.inventory.items = server_global.generate_test_inv()
+	wictl.inventory.items = server_global.generate_test_inv(self)
 
 func _unhandled_input(event):
 	if not _client_is_player: return
