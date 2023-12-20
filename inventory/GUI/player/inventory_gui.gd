@@ -25,6 +25,11 @@ func update(items: Array[ItemWrapper]) -> void:
 		Logger.debug("Adding %s to %s" % [i.item_type.name, category.label])
 		category.add(i)
 
+func add(item: ItemWrapper) -> void:
+	var category: Category = get_or_make_category(item.item_type.category)
+	Logger.debug("Adding %s to %s" % [item.item_type.name, category.label])
+	category.add(item)
+
 func get_or_make_category(category: String) -> VBoxContainer:
 	var categories = category_container.get_children()
 	for c in categories:
