@@ -7,7 +7,7 @@ class_name InventoryGUI
 ## [Player] is the ultimate authority on their inventory, and [InventoryControl] handles 
 ## modifications and actions on the inventory. For instance, this 
 
-const CATEGORY = preload("res://player/inventory/GUI/Category.tscn")
+const CATEGORY = preload("res://inventory/GUI/Category.tscn")
 ## A virtical box container for categories.
 @onready var category_container = $Background/CategoryContainer
 
@@ -24,6 +24,11 @@ func update(items: Array[ItemWrapper]) -> void:
 		var category: Category = get_or_make_category(i.item_type.category)
 		Logger.debug("Adding %s to %s" % [i.item_type.name, category.label])
 		category.add(i)
+
+func add(item: ItemWrapper) -> void:
+	var category: Category = get_or_make_category(item.item_type.category)
+	Logger.debug("Adding %s to %s" % [item.item_type.name, category.label])
+	category.add(item)
 
 func get_or_make_category(category: String) -> VBoxContainer:
 	var categories = category_container.get_children()

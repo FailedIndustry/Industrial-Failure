@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c45v68a2fecq2"]
+
+[ext_resource type="Script" path="res://player/mrctl.gd" id="1_uxfd3"]
+
+[node name="MrCtl" type="Node"]
+script = ExtResource("1_uxfd3")

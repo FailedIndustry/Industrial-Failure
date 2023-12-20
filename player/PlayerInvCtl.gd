@@ -6,9 +6,10 @@ class_name WICtl
 ## Unlike Player class that has no RPCs, WICtl is inherantly networked and handles networking
 ## functions for the player.
 
-@export var inventory: Inventory
+@export var inventory: Inventory = Inventory.new()
 @export var INTERACTION_DISTANCE = 2
-@onready var server_global: ServerGlobal
+@onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
+@onready var global: Globals = get_node("/root/Globals")
 
 ## Variable to determine if a drop has completed. In [method drop_item], it gets set to -1 for not
 ## complete. In [method _spawn_item], it is set to the id of the item for complete.
@@ -19,29 +20,29 @@ func _ready():
 	var parent = get_parent()
 	if parent is Player:
 		player = parent
-		server_global = player.get_node("/root/ServerGlobal")
 	else:
 		Logger.error("WICtl: parent node must be player, but found %s" % parent)
 
 func drop_item(item: ItemWrapper):
 	Logger.debug("wictl.drop_item")
 	_drop_completed = -1
-	_server_drop_item.rpc_id(0, item.id, item.item_type.id, item.quantity)
+	_server_drop_item.rpc_id(1, item.id, item.item_type.id, item.quantity)
 	
 	return 0
 
 ## Drops the item passed in. Can be a fraction of what the player actually has.
 ## In the case of error, -1 is returned
 @rpc ("reliable","any_peer","call_local") 
-func _server_drop_item(item_id:int, type_id: int, quantity: int) -> int:
-	var item = ItemWrapper.new()
-	item.id = item_id
-	item.quantity = quantity
-	item.item_type = server_global.item_types[type_id]
-	Logger.debug("wictl._server_drop_item: Dropping %d %s" % [item.quantity, item.item_type.name])
-	if inventory.remove(item, item.id) != 0: return -1
-	item.owner = get_node("/root/Main/Game")
-	if _server_create_item(item) != 0: return -1
+func _server_drop_item(item_id: int, type_id: int, quantity: int) -> int:
+	push_error("server")
+	Logger.debug("%s" % multiplayer.get_remote_sender_id())
+	Logger.debug("%s" % multiplayer.get_peers())
+	Logger.debug("%s" % multiplayer.get_unique_id())
+	var type = server_global.item_types[type_id]
+	Logger.debug("wictl._server_drop_item: Dropping %d %s" % [quantity, type.name])
+	var new_item = inventory.remove(type, quantity, item_id)
+	new_item.owner = get_node("/root/Main/Game")
+	if _server_create_item(new_item) != 0: return -1
 	
 	return 0
 
@@ -96,6 +97,7 @@ func interact():
 	var collider: Object = result["collider"]
 	Logger.debug("WICtl.interact: raycast hit %s" % collider.name)
 	for child in collider.get_children():
+		Logger.debug("%s" % child)
 		if child is NetworkedItem and child.has_method("interact"):
 			Logger.debug("WICtl.interact: child %s is NetworkedItem. Calling interact" % child.name)
 			child.interact(player)

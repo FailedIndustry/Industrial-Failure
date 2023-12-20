@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=3 uid="uid://c6dnkg2glqeh2"]
 
-[ext_resource type="Script" path="res://PlayerInvCtl.gd" id="1_b6qbf"]
+[ext_resource type="Script" path="res://player/PlayerInvCtl.gd" id="1_b6qbf"]
 [ext_resource type="Resource" uid="uid://bnltbb3fhxvc7" path="res://entities/items/Item1.tres" id="2_4iymj"]
 [ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="3_2n0mp"]
 [ext_resource type="Resource" uid="uid://gruvdrsla3ml" path="res://entities/items/Item2.tres" id="4_oybfb"]
 [ext_resource type="Resource" uid="uid://h13jdc8u70pc" path="res://entities/items/Item3.tres" id="5_xt3ud"]
-[ext_resource type="Script" path="res://player/inventory/inventory.gd" id="6_kjy1i"]
+[ext_resource type="Script" path="res://inventory/inventory.gd" id="6_kjy1i"]
 
 [sub_resource type="Resource" id="Resource_trvvm"]
 script = ExtResource("3_2n0mp")
@@ -32,4 +32,3 @@ items = Array[ExtResource("3_2n0mp")]([SubResource("Resource_trvvm"), SubResourc
 [node name="WICtl" type="Node"]
 script = ExtResource("1_b6qbf")
 inventory = SubResource("Resource_shkuw")
-INTERACTION_DISTANCE = null

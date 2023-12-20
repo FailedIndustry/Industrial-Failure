@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ylu2yrcosmal"]
+
+[ext_resource type="PackedScene" uid="uid://dkgy33bxu850" path="res://entities/items/container/container.tscn" id="1_sypsu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5gx3c"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ka0ul"]
+
+[node name="Container1" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_5gx3c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ka0ul")
+
+[node name="Container" parent="." instance=ExtResource("1_sypsu")]

@@ -11,15 +11,15 @@ class_name Slot
 var item: ItemWrapper
 ## The item owner when set_item was called
 var is_grabbed: bool = false
-var item_owner
+var inv_owner
 
 ## [param item] is the ItemData from which to draw quantity and texture.
 ## 
 ## There is potential for an error if [method _ready] gets called before 
 ## [method set_item]
-func set_item(_item_owner: Object, _item: ItemWrapper):
+func set_item(_inv_owner: Object, _item: ItemWrapper):
 	self.item = _item
-	self.item_owner = _item_owner
+	self.inv_owner = _inv_owner
 	if texture_rect and quantity_label:
 		render()
 	else:
@@ -27,10 +27,6 @@ func set_item(_item_owner: Object, _item: ItemWrapper):
 		pass
 
 func render():
-	if item_owner != item.owner:
-		Logger.error("mismatch in owners during inventory render")
-		# self.hide()
-		# return 
 	texture_rect.texture = item.item_type.texture
 	tooltip_text = "%s\n%s" % [item.item_type.name, item.item_type.description]
 
@@ -46,10 +42,5 @@ func _ready():
 	render()
 
 func _on_gui_input(event):
-	if item.owner != item_owner:
-		Logger.error("Mismatch in owners during GUI event")
-		# self.hide()
-		# return
-	
 	if event is InputEventMouseButton and event.is_pressed():
-		item_owner.inventory_control._slot_clicked(self, event.button_index)
+		inv_owner.inventory_control._slot_clicked(self, event.button_index)

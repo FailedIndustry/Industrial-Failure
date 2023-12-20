@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0kqxtgfh7l0d"]
+
+[ext_resource type="Script" path="res://inventory/GUI/container/ContainerContainer.gd" id="1_krhaj"]
+[ext_resource type="PackedScene" uid="uid://bxst272g1nkvm" path="res://inventory/GUI/container/ContainerControl.tscn" id="1_s20rp"]
+[ext_resource type="PackedScene" uid="uid://b4ssee72hbxdj" path="res://inventory/GUI/player/PlayerInventoryGUI.tscn" id="2_edq4l"]
+
+[node name="Node" type="Node2D"]
+script = ExtResource("1_krhaj")
+
+[node name="ContainerControl" parent="." instance=ExtResource("1_s20rp")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -402.0
+offset_top = -200.0
+offset_right = 402.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Player" parent="HBoxContainer" instance=ExtResource("2_edq4l")]
+layout_mode = 2
+
+[node name="External" parent="HBoxContainer" instance=ExtResource("2_edq4l")]
+layout_mode = 2
