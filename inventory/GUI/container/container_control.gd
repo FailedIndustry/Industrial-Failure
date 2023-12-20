@@ -99,9 +99,17 @@ func press_on_item(slot: Slot):
 			else:
 				swap_item(container_gui, slot)
 		elif grabbed_slot.item.owner == player:
-			container.take_from_player(player, grabbed_slot.item)
+			var res = await container.take_from_player(grabbed_slot.item)
+			if res != 0: return
+			player_gui.delete_or_reduce(grabbed_slot.item)
+			container_gui.add(grabbed_slot.item)
+			_unset_grabbed()
 		elif grabbed_slot.item.owner == container:
-			player.wictl.take_from_container(container, grabbed_slot.item)
+			var res = await container.take_from_container(player, grabbed_slot.item)
+			if res != 0: return
+			container_gui.delete_or_reduce(grabbed_slot.item)
+			player_gui.add(grabbed_slot.item)
+			_unset_grabbed()
 		else:
 			Logger.error("container_control.press_on_item: Grabbed slot is not from an attached container or player")
 	else:

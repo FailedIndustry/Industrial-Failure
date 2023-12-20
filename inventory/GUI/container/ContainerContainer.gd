@@ -16,7 +16,7 @@ func _ready():
 	external_gui.inv_owner = container
 	
 	player_gui.update(player.wictl.inventory.items)
-	external_gui.update(container.inventory)
+	external_gui.update(container.inventory.items)
 	
 	var viewport = DisplayServer.window_get_size()
 	position = Vector2(viewport.x/2, viewport.y/2)
