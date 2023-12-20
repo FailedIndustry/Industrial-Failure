@@ -1,23 +1,24 @@
 extends CharacterBody3D
 class_name Player
 
-@onready var camera: Camera3D = $Camera3D
+@onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
 @onready var healthbar: TextureProgressBar = $Healthbar
 @onready var inventory_control: InventoryGUICtrl = $UI/InventoryControl
 @onready var inventory_gui: InventoryGUI = $UI/InventoryGUI
-@onready var wictl: WICtl = $WICtl
-@onready var mrctl: MRCtl = $MRCtl
-@onready var server_global: ServerGlobal = get_node("/root/ServerGlobal")
-@export var SPEED = 5.0
-@export var JUMP_VELOCITY = 3
-@export var MOUSE_SPEED = 0.0015
-@export var maxHealth: int = 100
+@onready var camera: Camera3D 	= $Camera3D
+@onready var wictl: WICtl 		= $WICtl
+@onready var mrctl: MRCtl 		= $MRCtl
+@onready var ui: CanvasLayer 	= $UI
+
+@export var SPEED 			= 5.0
+@export var JUMP_VELOCITY 	= 3
+@export var MOUSE_SPEED		= 0.0015
+@export var maxHealth: int 	= 100
+
 var client_id: int
 var health: int = maxHealth : set = set_health 
-
 ## If this player instance is the one for the client. Obviously do not sync this.
 var _client_is_player: bool = false
-
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -54,13 +55,17 @@ func _unhandled_input(event):
 		Logger.debug("_unhandled_input: Player pressed interact button")
 		interact()
 	elif event.is_action_pressed("open_inventory") and not event.is_echo():
-		if inventory_control.visible:
+		if ui.visible:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			inventory_gui.hide()
-			inventory_control.hide()
+			for child in ui.get_children():
+				child.hide()
+			ui.hide()
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			var viewport = DisplayServer.window_get_size()
+			for child in ui.get_children():
+				child.hide()
+			ui.show()
 			inventory_control.update(wictl.inventory.items)
 			inventory_gui.position = Vector2(viewport.x/2, viewport.y/2)
 			inventory_control.show()

@@ -30,6 +30,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.526454, -0.176086)
 shape = SubResource("CapsuleShape3D_dqykd")
 
 [node name="UI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="InventoryControl" parent="UI" node_paths=PackedStringArray("gui", "player") instance=ExtResource("7_ajdw6")]
 visible = false
