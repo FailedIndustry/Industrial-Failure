@@ -8,7 +8,7 @@ func _ready():
 	pass
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	counter += 1
 	if counter % (wait + 1) == 0:
 		if counter % 60 == 0:

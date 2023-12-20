@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cpxh5hbpbrlae"]
+[gd_scene load_steps=11 format=3 uid="uid://cpxh5hbpbrlae"]
 
 [ext_resource type="PackedScene" uid="uid://dndmrhxy0lg5b" path="res://world/world_environment.tscn" id="1_v4ulg"]
 [ext_resource type="Script" path="res://Main.gd" id="1_wum0p"]
-[ext_resource type="PackedScene" uid="uid://bloeiue5sua18" path="res://entities/items/item.tscn" id="3_ug6o5"]
+[ext_resource type="PackedScene" uid="uid://3d0vaqnydf52" path="res://entities/items/PhysicalItem.tscn" id="3_h6s8g"]
+[ext_resource type="PackedScene" uid="uid://hffhwj1hnvfq" path="res://entities/items/container/ContainerOne.tscn" id="4_4v34a"]
 [ext_resource type="PackedScene" uid="uid://8xrn3nift1qn" path="res://testing/physics_tester.tscn" id="4_r6prq"]
 [ext_resource type="PackedScene" uid="uid://b0n6ph0jj5bwf" path="res://testing/Other.tscn" id="5_s68u2"]
 
@@ -24,9 +25,6 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="Ground" parent="Game" instance=ExtResource("1_v4ulg")]
-
-[node name="Item" parent="Game" instance=ExtResource("3_ug6o5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.312881, 2, -3.07517)
 
 [node name="Stairs" type="Node3D" parent="Game"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00432, 9.82942)
@@ -100,6 +98,11 @@ shape = SubResource("BoxShape3D_iuybl")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Game/Ramp/StaticBody3D"]
 mesh = SubResource("BoxMesh_0ksnv")
 
+[node name="RigidBody3D" parent="Game" instance=ExtResource("3_h6s8g")]
+
+[node name="RigidBody3D2" parent="Game" instance=ExtResource("4_4v34a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.27071, 1.84481, 0)
+
 [node name="MainMenu" type="Node" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="MainMenu"]
@@ -150,10 +153,6 @@ alignment = 1
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player/player.tscn")
 spawn_path = NodePath("..")
-
-[node name="Physics_tester3" parent="." instance=ExtResource("4_r6prq")]
-transform = Transform3D(-0.917186, 0, -0.398461, 0, 1, 0, 0.398461, 0, -0.917186, 0.00178951, 4.03, -0.00409096)
-wait = 100
 
 [node name="Physics_tester2" parent="." instance=ExtResource("4_r6prq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10034, 1.64702, 9.30101)

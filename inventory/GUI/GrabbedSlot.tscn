@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bpbydykh21aim"]
 
-[ext_resource type="Script" path="res://player/inventory/GUI/grabbed_slot.gd" id="1_wgyt4"]
+[ext_resource type="Script" path="res://inventory/GUI/grabbed_slot.gd" id="1_wgyt4"]
 
 [node name="GrabbedSlot" type="PanelContainer"]
 visible = false

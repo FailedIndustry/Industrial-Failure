@@ -13,20 +13,18 @@ config_version=5
 config/name="Projects"
 run/main_scene="res://Main.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+run/max_fps=144
 config/icon="res://icon.svg"
 
 [autoload]
 
 Logger="*res://addons/gs_logger/logger.gd"
-
-[debug]
-
-settings/stdout/print_fps=true
-settings/stdout/print_gpu_profile=true
+ServerGlobal="*res://multiplayer/server_global.gd"
+Globals="*res://globals.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gs_logger/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-vim/plugin.cfg", "res://addons/gs_logger/plugin.cfg")
 
 [input]
 
@@ -76,3 +74,9 @@ open_inventory={
 3d/physics_engine="JoltPhysics3D"
 3d/default_linear_damp=1.071
 3d/default_angular_damp=1.394
+
+[rendering]
+
+anti_aliasing/quality/msaa_2d=1
+anti_aliasing/quality/msaa_3d=1
+anti_aliasing/quality/screen_space_aa=1

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cc6r4lxld2o0q"]
+
+[ext_resource type="Script" path="res://entities/items/physical_item.gd" id="1_i4eq4"]
+
+[node name="Pickupable" type="Node"]
+script = ExtResource("1_i4eq4")

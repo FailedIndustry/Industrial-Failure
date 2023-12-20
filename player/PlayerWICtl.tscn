@@ -1,0 +1,34 @@
+[gd_scene load_steps=11 format=3 uid="uid://c6dnkg2glqeh2"]
+
+[ext_resource type="Script" path="res://player/PlayerInvCtl.gd" id="1_b6qbf"]
+[ext_resource type="Resource" uid="uid://bnltbb3fhxvc7" path="res://entities/items/Item1.tres" id="2_4iymj"]
+[ext_resource type="Script" path="res://entities/item/item-wrapper.gd" id="3_2n0mp"]
+[ext_resource type="Resource" uid="uid://gruvdrsla3ml" path="res://entities/items/Item2.tres" id="4_oybfb"]
+[ext_resource type="Resource" uid="uid://h13jdc8u70pc" path="res://entities/items/Item3.tres" id="5_xt3ud"]
+[ext_resource type="Script" path="res://inventory/inventory.gd" id="6_kjy1i"]
+
+[sub_resource type="Resource" id="Resource_trvvm"]
+script = ExtResource("3_2n0mp")
+quantity = 1
+item_type = ExtResource("2_4iymj")
+id = 0
+
+[sub_resource type="Resource" id="Resource_lksn3"]
+script = ExtResource("3_2n0mp")
+quantity = 1
+item_type = ExtResource("4_oybfb")
+id = 1
+
+[sub_resource type="Resource" id="Resource_63hag"]
+script = ExtResource("3_2n0mp")
+quantity = 1
+item_type = ExtResource("5_xt3ud")
+id = 2
+
+[sub_resource type="Resource" id="Resource_shkuw"]
+script = ExtResource("6_kjy1i")
+items = Array[ExtResource("3_2n0mp")]([SubResource("Resource_trvvm"), SubResource("Resource_lksn3"), SubResource("Resource_63hag")])
+
+[node name="WICtl" type="Node"]
+script = ExtResource("1_b6qbf")
+inventory = SubResource("Resource_shkuw")
