@@ -46,7 +46,7 @@ func generate_test_inv(item_owner) -> Array[ItemWrapper]:
 	if item_types.is_empty(): initialize()
 	var arr: Array[ItemWrapper]
 	for type in item_types:
-		var item = create_item(item_owner, type, type.id)
+		var item = create_item(item_owner, type, type.id + 1)
 		arr.append(item)
 	
 	return arr

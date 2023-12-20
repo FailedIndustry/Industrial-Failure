@@ -51,7 +51,7 @@ func filter_for_type(type: ItemType):
 				Logger.error("inventory.filter_for_type: two %s in inventory" % type.name)
 				return -1
 			else:
-				index = i
+				return i
 	
 	return index
 

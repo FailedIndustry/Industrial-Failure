@@ -63,6 +63,7 @@ func _client_get_container_inventory(ids: PackedInt32Array, type_ids: PackedInt3
 		item.item_type = server_global.item_types[type_ids[i]]
 		item.quantity = quantities[i]
 		item.owner = self
+		Logger.info("%s" % item)
 		inventory.add(item)
 	
 	container_inventory_update.emit()
