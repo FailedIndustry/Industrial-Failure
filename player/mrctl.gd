@@ -20,15 +20,14 @@ var pos_smooth: Vector3
 var pos_diff: Vector3
 func new_pos(new_pos: Vector3):
 	pos_diff = new_pos - _player.position
-	# Take 1 second to update
-	pos_smooth = pos_diff
+	pos_smooth = pos_diff.normalized() * _player.SPEED / 2
 
 func remote_move(delta):
 	if not _player.is_on_floor():
 		_player.velocity.y -= _player.gravity * delta
-	if pos_diff < pos_smooth * delta:
-		pos_smooth = pos_diff
-	_player.velocity += pos_smooth * delta
+	if abs(pos_diff) < abs(pos_smooth * delta):
+		pos_smooth = pos_diff / delta
+	_player.position += pos_smooth * delta
 	pos_diff -= pos_smooth * delta
 	_player.move_and_slide()
 	
@@ -90,12 +89,11 @@ func local_move(delta):
 			_client_update_rotation.rpc(_player.camera.rotation.x, _player.rotation.y)
 			updating_rotation = false
 		if not pos_updated:
-			Logger.info("fdjskl")
 			pos_updated = true
 			_server_update_pos.rpc(_player.position)
 			return
 	
-	vel_updated = vel_updated or (changed_vel or old_vel.x != _player.velocity.x or old_vel.z != _player.velocity.z)
+	vel_updated = vel_updated or (old_vel != _player.velocity)
 	if vel_updated:
 		pos_updated = false
 		accumulate += _player.velocity
