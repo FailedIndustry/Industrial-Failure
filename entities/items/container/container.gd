@@ -13,7 +13,7 @@ func _ready():
 
 func _container_raycast(player: Player, container_id: int):
 	var hitscan_results = globals.interact_raycast(player)
-	if not hitscan_results: return -1
+	if hitscan_results.is_empty(): return
 	for child in hitscan_results["collider"].get_children():
 		if child is ContainerItem:
 			return child
@@ -73,7 +73,15 @@ signal _tfp_res(int)
 
 func take_from_player(item: ItemWrapper):
 	_server_take_from_player.rpc_id(1, item.item_type.id, item.quantity)
-	return _tfp_res
+	var res: int = await _tfp_res
+	if res == 0:
+		var player = server_global.local_player
+		var player_inv = player.wictl.inventory
+		var removed = player_inv.remove(item.item_type, item.quantity)
+		removed.owner = self
+		inventory.add(removed)
+	
+	return res
 
 @rpc("any_peer", "call_remote", "reliable")
 func _server_take_from_player(type_id: int, quantity: int):
@@ -97,9 +105,17 @@ func _client_take_from_player(res: int):
 ##### Take From Container #####
 signal _tfc_res(int)
 
-func take_from_container(player: Player, item: ItemWrapper):
+func take_from_container(item: ItemWrapper):
 	_server_take_from_container.rpc_id(1, item.id, item.item_type.id, item.quantity)
-	return _tfc_res
+	var res: int = await _tfc_res
+	if res == 0:
+		var player = server_global.local_player
+		var player_inv = player.wictl.inventory
+		
+		var removed = inventory.remove(item.item_type, item.quantity)
+		removed.owner = player
+		player_inv.add(removed)
+	return res
 
 @rpc("any_peer", "call_remote", "reliable")
 func _server_take_from_container(container_id: int, 
@@ -123,3 +139,4 @@ func _server_take_from_container(container_id: int,
 @rpc("authority", "reliable")
 func _client_take_from_container(res: int):
 	_tfc_res.emit(res)
+

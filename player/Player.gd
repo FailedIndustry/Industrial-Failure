@@ -32,6 +32,8 @@ func _ready():
 					% name)
 		return
 	
+	server_global.local_player = self
+	server_global.client_id = client_id
 	Logger.debug("_ready: Local is authority for %s, capturing mouse and setting \
 				  current camera" % name)
 	
