@@ -102,19 +102,13 @@ func press_on_item(slot: Slot):
 			var res = await container.take_from_player(grabbed_slot.item)
 			if res != 0: return
 			player_gui.delete_or_reduce(grabbed_slot.item)
-			var item = player.wictl.inventory.remove(grabbed_slot.item.item_type, grabbed_slot.item.quantity)
-			item.owner = container
-			container.inventory.add(item)
-			container_gui.add(item)
+			container_gui.add(grabbed_slot.item)
 			_unset_grabbed()
 		elif grabbed_slot.item.owner == container:
-			var res = await container.take_from_container(player, grabbed_slot.item)
+			var res = await container.take_from_container(grabbed_slot.item)
 			if res != 0: return
 			container_gui.delete_or_reduce(grabbed_slot.item)
-			var item = container.inventory.remove(grabbed_slot.item.item_type, grabbed_slot.item.quantity)
-			item.owner = player
-			player.wictl.inventory.add(item)
-			player_gui.add(item)
+			player_gui.add(grabbed_slot.item)
 			_unset_grabbed()
 		else:
 			Logger.error("container_control.press_on_item: Grabbed slot is not from an attached container or player")

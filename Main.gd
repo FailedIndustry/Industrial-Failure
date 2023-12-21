@@ -22,7 +22,6 @@ func _unhandled_input(_event):
 		Logger.info("Exiting game")
 		get_tree().quit()
 
-
 func _on_host_button_pressed():
 	var enet_peer = ENetMultiplayerPeer.new()
 	var server = Server.new()

@@ -1,5 +1,7 @@
 extends Node
 
+var client_id: int
+var local_player: Player
 var players: Array[Player]
 var item_types: Array[ItemType]
 var counter: int = 0
