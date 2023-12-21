@@ -82,23 +82,28 @@ func local_move(delta):
 	_player.move_and_slide()
 		
 	counter += 1
-	if counter == 128:
+	if counter == 16 \
+			or old_pos.distance_to(_player.position) > 4 \
+			or (_player.velocity == Vector3.ZERO and old_vel != Vector3.ZERO):
 		counter = 0
 		if updating_rotation:
 			last_updated_rotation = Vector2(_player.camera.rotation.x, _player.rotation.y)
 			_client_update_rotation.rpc(_player.camera.rotation.x, _player.rotation.y)
 			updating_rotation = false
 		if not pos_updated:
+			Logger.info("%s" % (_player.velocity == Vector3.ZERO and old_vel != Vector3.ZERO))
 			pos_updated = true
+			old_pos = _player.position
 			_server_update_pos.rpc(_player.position)
-			return
 	
 	vel_updated = vel_updated or (old_vel != _player.velocity)
 	if vel_updated:
 		pos_updated = false
 		accumulate += _player.velocity
 		vel_counter += 1
-		if vel_counter == 4:
+		if vel_counter == 8 \
+				or old_vel.distance_to(_player.velocity) > 3 \
+				or (_player.velocity == Vector3.ZERO and old_vel != Vector3.ZERO):
 			vel_updated = false
 			old_vel = accumulate / vel_counter
 			_server_update_vel.rpc(accumulate / vel_counter)
@@ -106,6 +111,7 @@ func local_move(delta):
 			accumulate = Vector3.ZERO
 
 var vel_counter: int
+var old_pos: Vector3 = Vector3.ZERO
 var accumulate: Vector3 = Vector3.ZERO
 var vel_updated: bool = false
 @rpc("unreliable", "any_peer")
