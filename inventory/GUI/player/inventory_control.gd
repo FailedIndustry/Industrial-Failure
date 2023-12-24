@@ -100,11 +100,21 @@ func show_item_menu(slot: Slot):
 	clear_item_menu()
 	
 	if not grabbed_slot:
+		if slot.item.item_type.actions.is_empty(): 
+			Logger.info("Item does not have any actions")
+			return
 		Logger.info("Creating item slot menu")
 		item_menu = ITEM_MENU.instantiate()
 		item_menu.z_index = 1000
+		for i in range(0,slot.item.item_type.actions[0].size()):
+			var action_panel = PanelContainer.new()
+			var action_button = Button.new()
+			action_button.text = slot.item.item_type.actions[1][i]
+			action_button.button_up.connect(slot.item.item_type.actions[0][i])
+			action_panel.add_child(action_button)
+			item_menu.add_child(action_panel)
 		add_child(item_menu)
-		 # to slightly offset for better usability
+		# to slightly offset for better usability
 		item_menu.global_position = get_global_mouse_position() + Vector2(10, 10)
 
 ## Updates the GUI with the items passed in.

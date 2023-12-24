@@ -7,6 +7,7 @@ var counter: int = 0
 const ITEM_1 = preload("res://entities/items/Item1.tres")
 const ITEM_2 = preload("res://entities/items/Item2.tres")
 const ITEM_3 = preload("res://entities/items/Item3.tres")
+const ITEM_4 = preload("res://entities/items/equipitem2.tres")
 
 func get_item_type_id(type: ItemType) -> int:
 	if item_types.is_empty(): initialize()
@@ -31,6 +32,7 @@ func initialize():
 	add_item_type(ITEM_1)
 	add_item_type(ITEM_2)
 	add_item_type(ITEM_3)
+	add_item_type(ITEM_4)
 
 func create_item(item_owner, type: ItemType, quantity: int) -> ItemWrapper:
 	if item_types.is_empty(): initialize()

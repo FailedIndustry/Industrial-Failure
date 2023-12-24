@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EquipableItem" load_steps=3 format=3 uid="uid://0njd5l1a5qs"]
+
+[ext_resource type="Script" path="res://entities/items/equipable_item_type.gd" id="2_45r3i"]
+[ext_resource type="Texture2D" uid="uid://bqxdtf8grm16e" path="res://addons/godot-vim/icon.svg" id="3_sc2yp"]
+
+[resource]
+script = ExtResource("2_45r3i")
+name = "Equipable Item"
+description = "Can be equipped"
+stackable = true
+category = "Equip"
+texture = ExtResource("3_sc2yp")
+actions = null
+id = 3
