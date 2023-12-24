@@ -105,15 +105,16 @@ func show_item_menu(slot: Slot):
 			return
 		Logger.info("Creating item slot menu")
 		item_menu = ITEM_MENU.instantiate()
-		item_menu.z_index = 1000
+		add_child(item_menu)
 		for i in range(0,slot.item.item_type.actions[0].size()):
 			var action_panel = PanelContainer.new()
 			var action_button = Button.new()
 			action_button.text = slot.item.item_type.actions[1][i]
-			action_button.button_up.connect(slot.item.item_type.actions[0][i])
-			action_panel.add_child(action_button)
+			action_button.pressed.connect(func equip_wrapper():
+				slot.item.item_type.actions[0][i].call(player)
+			)
 			item_menu.add_child(action_panel)
-		add_child(item_menu)
+			action_panel.add_child(action_button)
 		# to slightly offset for better usability
 		item_menu.global_position = get_global_mouse_position() + Vector2(10, 10)
 

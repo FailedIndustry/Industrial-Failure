@@ -17,7 +17,6 @@ func set_item(item: ItemWrapper) -> int:
 	
 	texture_rect.texture = item.item_type.texture
 	show()
-	z_index = 1000
 	return 0
 
 func unset_item():

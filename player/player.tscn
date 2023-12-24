@@ -32,13 +32,28 @@ shape = SubResource("CapsuleShape3D_dqykd")
 [node name="UI" type="CanvasLayer" parent="."]
 visible = false
 
+[node name="Control" type="Control" parent="UI"]
+custom_minimum_size = Vector2(10000, 10000)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4424.0
+offset_top = -4676.0
+offset_right = 4424.0
+offset_bottom = 4676.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InventoryGUI" parent="UI" instance=ExtResource("8_0ioe3")]
+visible = false
+
 [node name="InventoryControl" parent="UI" node_paths=PackedStringArray("gui", "player") instance=ExtResource("7_ajdw6")]
 visible = false
 gui = NodePath("../InventoryGUI")
 player = NodePath("../..")
-
-[node name="InventoryGUI" parent="UI" instance=ExtResource("8_0ioe3")]
-visible = false
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("ImmediateMesh_r1u4s")
@@ -65,3 +80,5 @@ metadata/_edit_use_anchors_ = true
 [node name="WICtl" parent="." instance=ExtResource("7_tyi4r")]
 
 [node name="MRCtl" parent="." instance=ExtResource("8_loiln")]
+
+[connection signal="gui_input" from="UI/Control" to="UI/InventoryControl" method="_background_gui_input"]
