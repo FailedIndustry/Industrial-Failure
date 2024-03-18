@@ -34,17 +34,16 @@ func drop_item(item: ItemWrapper):
 ## In the case of error, -1 is returned
 @rpc ("reliable","any_peer","call_local") 
 func _server_drop_item(item_id: int, type_id: int, quantity: int) -> int:
-	push_error("server")
-	Logger.debug("%s" % multiplayer.get_remote_sender_id())
-	Logger.debug("%s" % multiplayer.get_peers())
-	Logger.debug("%s" % multiplayer.get_unique_id())
+	Logger.debug("_server_drop_item: %s dropped %s %s" \
+		% multiplayer.get_remote_sender_id() \
+		% quantity \
+		% server_global.item_types[type_id].name)
 	var type = server_global.item_types[type_id]
 	Logger.debug("wictl._server_drop_item: Dropping %d %s" % [quantity, type.name])
 	var new_item = inventory.remove(type, quantity, item_id)
 	new_item.owner = get_node("/root/Main/Game")
-	if _server_create_item(new_item) != 0: return -1
 	
-	return 0
+	return _server_create_item(new_item)
 
 ## CAUTION This should never be called directly, only from [method drop]. This
 ## will create or move ItemWrapper to a new [PhysicalItem] and place it on the ground.
@@ -79,10 +78,9 @@ func _spawn_item(item_id: int, item_type_id: int, quantity: int, position: Vecto
 	item.item_type = item_type
 	item.quantity = quantity
 	var world: Node = player.get_node('/root/Main')
-	var physical_item = item.item_type.physical_item.instantiate()
-	for child in physical_item.get_children():
-		if child is NetworkedItem:
-			child.item_data = item
+	var physical_item: RigidBody3D = item.item_type.physical_item.instantiate()
+	physical_item.add_child(Pickup.new(item))
+	
 	world.add_child(physical_item)
 	physical_item.global_position = position
 	Logger.debug("%s is adding %s at %s" % [multiplayer.get_unique_id(), item.item_type.name, position])
@@ -98,7 +96,7 @@ func interact():
 	Logger.debug("WICtl.interact: raycast hit %s" % collider.name)
 	for child in collider.get_children():
 		Logger.debug("%s" % child)
-		if child is NetworkedItem and child.has_method("interact"):
+		if child is NetworkedItem:
 			Logger.debug("WICtl.interact: child %s is NetworkedItem. Calling interact" % child.name)
 			child.interact(player)
 			return
