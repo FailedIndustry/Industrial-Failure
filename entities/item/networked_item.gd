@@ -42,6 +42,9 @@ func interact(player: Player):
 	
 	client_interact.call(player)
 
+func _init(item_data: ItemWrapper):
+	self.item_data = item_data
+
 ## Call the server to update the state of the item. The server will verify
 ## this request and then send it to all clients.
 @rpc("any_peer", 	# Any client can request and update in state
